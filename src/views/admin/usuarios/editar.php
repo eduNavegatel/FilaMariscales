@@ -22,8 +22,9 @@ $isNew = empty($user->id);
     </div>
 <?php endif; ?>
 
-<form method="POST" action="/admin/usuarios/guardar/<?= $user->id ?>">
+<form method="POST" action="/prueba-php/public/admin/editarUsuario/<?= $user->id ?>">
     <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+    <input type="hidden" name="user_id" value="<?= $user->id ?>">
     
     <div class="row">
         <div class="col-md-6">
@@ -100,7 +101,8 @@ $isNew = empty($user->id);
             <div class="mb-3">
                 <label for="rol" class="form-label">Rol</label>
                 <select class="form-select" id="rol" name="rol">
-                    <option value="usuario" <?= $user->rol === 'usuario' ? 'selected' : '' ?>>Usuario</option>
+                    <option value="user" <?= $user->rol === 'user' ? 'selected' : '' ?>>Usuario</option>
+                    <option value="socio" <?= $user->rol === 'socio' ? 'selected' : '' ?>>Socio</option>
                     <option value="admin" <?= $user->rol === 'admin' ? 'selected' : '' ?>>Administrador</option>
                 </select>
             </div>
@@ -111,9 +113,9 @@ $isNew = empty($user->id);
                 <label class="form-label">Estado</label>
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" role="switch" id="activo" name="activo" 
-                           value="1" <?= $user->activo ? 'checked' : '' ?>>
+                           value="1" <?= ($user->activo == 1 || $user->activo === true) ? 'checked' : '' ?>>
                     <label class="form-check-label" for="activo">
-                        <?= $user->activo ? 'Activo' : 'Inactivo' ?>
+                        <?= ($user->activo == 1 || $user->activo === true) ? 'Activo' : 'Inactivo' ?>
                     </label>
                 </div>
             </div>
@@ -121,14 +123,14 @@ $isNew = empty($user->id);
     </div>
     
     <div class="d-flex justify-content-between mt-4">
-        <a href="/admin/usuarios" class="btn btn-secondary">
+        <a href="/prueba-php/public/admin/usuarios" class="btn btn-secondary">
             <i class="fas fa-arrow-left me-1"></i> Volver
         </a>
         
         <div>
             <?php if (!$isNew): ?>
                 <button type="button" class="btn btn-danger me-2" 
-                        onclick="confirmDelete('usuario', <?= $user->id ?>, '<?= htmlspecialchars($user->nombre) ?>')">
+                        onclick="confirmDelete(<?= $user->id ?>, '<?= htmlspecialchars($user->nombre) ?>')">
                     <i class="fas fa-trash me-1"></i> Eliminar
                 </button>
             <?php endif; ?>
@@ -205,10 +207,10 @@ document.querySelector('form').addEventListener('submit', function(e) {
 });
 
 // Delete confirmation
-function confirmDelete(type, id, name) {
+function confirmDelete(id, name) {
     const modal = new bootstrap.Modal(document.getElementById('deleteModal'));
     document.getElementById('entityName').textContent = name;
-    document.getElementById('deleteForm').action = `/admin/${type}s/eliminar/${id}`;
+    document.getElementById('deleteForm').action = `/prueba-php/public/admin/eliminarUsuario/${id}`;
     modal.show();
 }
 </script>

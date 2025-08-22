@@ -28,6 +28,9 @@ class AdminController extends Controller {
         // Initialize models only if they exist
         if (class_exists('User')) {
             $this->userModel = $this->model('User');
+            error_log("User model initialized successfully");
+        } else {
+            error_log("User class not found");
         }
         if (class_exists('Event')) {
             $this->eventModel = $this->model('Event');
@@ -40,7 +43,7 @@ class AdminController extends Controller {
     }
     
     public function index() {
-        redirect('/prueba-php/public/admin/dashboard');
+        $this->redirect('/admin/dashboard');
     }
     
     // Admin dashboard
@@ -183,62 +186,131 @@ class AdminController extends Controller {
         $this->view('admin/users/index', $data);
     }
     
+    // Show edit user form
+    public function editarUsuarioForm($id = null) {
+        error_log("editarUsuarioForm called with ID: " . $id);
+        
+        if (!$id || !is_numeric($id)) {
+            error_log("Invalid ID provided: " . $id);
+            setFlashMessage('error', 'ID de usuario inválido');
+            $this->redirect('/admin/usuarios');
+        }
+        
+        // Get user data
+        $user = null;
+        if ($this->userModel) {
+            error_log("User model available, getting user by ID");
+            $user = $this->userModel->getUserById($id);
+        } else {
+            error_log("User model not available");
+        }
+        
+        if (!$user) {
+            error_log("User not found for ID: " . $id);
+            setFlashMessage('error', 'Usuario no encontrado');
+            $this->redirect('/admin/usuarios');
+        }
+        
+        error_log("User found: " . print_r($user, true));
+        
+        $data = [
+            'title' => 'Editar Usuario',
+            'user' => $user,
+            'errors' => []
+        ];
+        
+        $this->loadViewDirectly('admin/usuarios/editar', $data);
+    }
+    
     // Edit user
     public function editarUsuario($id = null) {
+        // Debug logging
+        error_log("editarUsuario called with ID: " . $id);
+        error_log("Request method: " . $_SERVER['REQUEST_METHOD']);
+        error_log("POST data: " . print_r($_POST, true));
+        
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Validate CSRF token if SecurityHelper exists
             if ($this->securityHelper && !$this->securityHelper->validateCsrfToken($_POST['csrf_token'] ?? '')) {
                 setFlashMessage('error', 'Token de seguridad inválido.');
-                redirect('/admin/users');
+                $this->redirect('/admin/usuarios');
             }
             
-            // Process form
-            $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-            
+            // Process form data safely (without deprecated FILTER_SANITIZE_STRING)
             $userData = [
-                'id' => $id,
-                'nombre' => trim($_POST['nombre']),
-                'apellidos' => trim($_POST['apellidos']),
-                'email' => filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL),
-                'rol' => trim($_POST['rol']),
-                'activo' => isset($_POST['activo']) ? 1 : 0,
+                'id' => $id ?: ($_POST['user_id'] ?? null),
+                'nombre' => trim(htmlspecialchars($_POST['nombre'] ?? '')),
+                'apellidos' => trim(htmlspecialchars($_POST['apellidos'] ?? '')),
+                'email' => filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL),
+                'rol' => trim(htmlspecialchars($_POST['rol'] ?? 'user')),
+                'activo' => isset($_POST['activo']) && $_POST['activo'] == '1' ? 1 : 0,
                 'errors' => []
             ];
             
             // Validate data
             if (empty($userData['nombre'])) $userData['errors']['nombre'] = 'Nombre requerido';
             if (empty($userData['email'])) $userData['errors']['email'] = 'Email requerido';
+            if (!filter_var($userData['email'], FILTER_VALIDATE_EMAIL)) {
+                $userData['errors']['email'] = 'Email inválido';
+            }
             
-            if (empty($userData['errors']) && $this->userModel) {
-                // Update or create user
-                if ($id) {
-                    $result = $this->userModel->updateUser($userData);
+            // Validate role
+            $validRoles = ['user', 'admin'];
+            if (!in_array($userData['rol'], $validRoles)) {
+                // If trying to set 'socio' role, check if database supports it
+                if ($userData['rol'] === 'socio') {
+                    error_log("Attempting to set 'socio' role - checking database support");
+                    // For now, fallback to 'user' if 'socio' is not supported
+                    $userData['rol'] = 'user';
+                    error_log("Fallback to 'user' role due to database limitation");
                 } else {
-                    $result = $this->userModel->register($userData);
-                }
-                
-                if ($result) {
-                    setFlashMessage('success', 'Usuario guardado correctamente');
-                    redirect('/prueba-php/public/admin/usuarios');
-                } else {
-                    setFlashMessage('error', 'Error al guardar el usuario');
+                    $userData['errors']['rol'] = 'Rol inválido. Debe ser: ' . implode(', ', $validRoles);
                 }
             }
+            
+            // Debug: Log the data being processed
+            error_log("User data to update: " . print_r($userData, true));
+            error_log("POST data received: " . print_r($_POST, true));
+            error_log("ID from URL: " . $id);
+            error_log("ID from POST: " . ($_POST['user_id'] ?? 'not set'));
+            error_log("Activo field: " . (isset($_POST['activo']) ? $_POST['activo'] : 'not set'));
+            error_log("Activo processed: " . (isset($_POST['activo']) && $_POST['activo'] == '1' ? 1 : 0));
+            error_log("Rol field: " . ($_POST['rol'] ?? 'not set'));
+            error_log("Rol processed: " . trim(htmlspecialchars($_POST['rol'] ?? 'user')));
+            error_log("Email field: " . ($_POST['email'] ?? 'not set'));
+            error_log("Email processed: " . filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL));
+            error_log("Nombre field: " . ($_POST['nombre'] ?? 'not set'));
+            error_log("Nombre processed: " . trim(htmlspecialchars($_POST['nombre'] ?? '')));
+            error_log("Apellidos field: " . ($_POST['apellidos'] ?? 'not set'));
+            error_log("Apellidos processed: " . trim(htmlspecialchars($_POST['apellidos'] ?? '')));
+            
+            if (empty($userData['errors']) && $this->userModel) {
+                // Update user
+                if ($id && is_numeric($id)) {
+                    error_log("Attempting to update user with ID: " . $id);
+                    $result = $this->userModel->updateUser($userData);
+                    error_log("Update result: " . ($result ? 'success' : 'failed'));
+                    
+                    if ($result) {
+                        setFlashMessage('success', 'Usuario actualizado correctamente');
+                        $this->redirect('/admin/usuarios');
+                    } else {
+                        setFlashMessage('error', 'Error al actualizar el usuario');
+                    }
+                } else {
+                    error_log("Invalid ID provided: " . $id);
+                    setFlashMessage('error', 'ID de usuario requerido para edición');
+                    $this->redirect('/admin/usuarios');
+                }
+            } else {
+                // Show validation errors
+                setFlashMessage('error', 'Errores de validación: ' . implode(', ', $userData['errors']));
+                $this->redirect('/admin/usuarios');
+            }
+        } else {
+            // GET request - redirect to users list
+            $this->redirect('/admin/usuarios');
         }
-        
-        // Get user data for editing
-        $user = null;
-        if ($id && $this->userModel) {
-            $user = $this->userModel->getUserById($id);
-        }
-        
-        $data = [
-            'title' => $id ? 'Editar Usuario' : 'Nuevo Usuario',
-            'user' => $user,
-            'errors' => $userData['errors'] ?? []
-        ];
-        
-        $this->view('admin/users/edit', $data);
     }
     
     // Delete user
@@ -248,7 +320,7 @@ class AdminController extends Controller {
         } else {
             setFlashMessage('error', 'Error al eliminar el usuario');
         }
-        redirect('/prueba-php/public/admin/usuarios');
+        $this->redirect('/admin/usuarios');
     }
     
     // Event management
@@ -334,7 +406,7 @@ class AdminController extends Controller {
             // Validate CSRF token if SecurityHelper exists
             if ($this->securityHelper && !$this->securityHelper->validateCsrfToken($_POST['csrf_token'] ?? '')) {
                 setFlashMessage('error', 'Token de seguridad inválido.');
-                redirect('/admin/eventos');
+                $this->redirect('/admin/eventos');
             }
             
             // Process form
@@ -359,7 +431,7 @@ class AdminController extends Controller {
                 
                 if ($result) {
                     setFlashMessage('success', 'Evento creado correctamente');
-                    redirect('/prueba-php/public/admin/eventos');
+                    $this->redirect('/admin/eventos');
                 } else {
                     setFlashMessage('error', 'Error al crear el evento');
                 }
@@ -381,7 +453,7 @@ class AdminController extends Controller {
             // Validate CSRF token if SecurityHelper exists
             if ($this->securityHelper && !$this->securityHelper->validateCsrfToken($_POST['csrf_token'] ?? '')) {
                 setFlashMessage('error', 'Token de seguridad inválido.');
-                redirect('/prueba-php/public/admin/eventos');
+                $this->redirect('/admin/eventos');
             }
             
             // Process form
@@ -411,7 +483,7 @@ class AdminController extends Controller {
                 
                 if ($result) {
                     setFlashMessage('success', 'Evento guardado correctamente');
-                    redirect('/prueba-php/public/admin/eventos');
+                    $this->redirect('/admin/eventos');
                 } else {
                     setFlashMessage('error', 'Error al guardar el evento');
                 }
@@ -440,7 +512,7 @@ class AdminController extends Controller {
         } else {
             setFlashMessage('error', 'Error al eliminar el evento');
         }
-        redirect('admin/events');
+        $this->redirect('/admin/eventos');
     }
     
     // Settings
@@ -534,7 +606,7 @@ class AdminController extends Controller {
             }
         }
         
-        redirect('/prueba-php/public/admin/galeria');
+        $this->redirect('/admin/galeria');
     }
     
     // Delete media from gallery
@@ -547,7 +619,7 @@ class AdminController extends Controller {
             setFlashMessage('error', 'Error al eliminar el archivo');
         }
         
-        redirect('/prueba-php/public/admin/galeria');
+        $this->redirect('/admin/galeria');
     }
     
     // Upload images to carousel
@@ -608,7 +680,7 @@ class AdminController extends Controller {
             }
         }
         
-        redirect('/prueba-php/public/admin/galeria');
+        $this->redirect('/admin/galeria');
     }
     
     // Delete image from carousel
@@ -621,7 +693,7 @@ class AdminController extends Controller {
             setFlashMessage('error', 'Error al eliminar la imagen del carrusel');
         }
         
-        redirect('/prueba-php/public/admin/galeria');
+        $this->redirect('/admin/galeria');
     }
     
     // Get media files from gallery
@@ -634,13 +706,21 @@ class AdminController extends Controller {
             foreach ($mediaFiles as $file) {
                 if (is_file($file)) {
                     $fileInfo = pathinfo($file);
+                    $fileName = $fileInfo['basename'];
+                    
+                    // Excluir archivos de configuración y descripciones
+                    if ($fileName === 'descriptions.json' || $fileName === '.htaccess' || $fileName === 'index.html') {
+                        continue;
+                    }
+                    
                     $files[] = [
-                        'name' => $fileInfo['basename'],
+                        'name' => $fileName,
                         'path' => $file,
                         'url' => $this->getImageUrl($file),
                         'size' => filesize($file),
                         'type' => mime_content_type($file),
-                        'date' => date('Y-m-d H:i:s', filemtime($file))
+                        'date' => date('Y-m-d H:i:s', filemtime($file)),
+                        'description' => $this->getImageDescription($fileName, 'gallery')
                     ];
                 }
             }
@@ -659,13 +739,21 @@ class AdminController extends Controller {
             foreach ($mediaFiles as $file) {
                 if (is_file($file)) {
                     $fileInfo = pathinfo($file);
+                    $fileName = $fileInfo['basename'];
+                    
+                    // Excluir archivos de configuración y descripciones
+                    if ($fileName === 'descriptions.json' || $fileName === '.htaccess' || $fileName === 'index.html') {
+                        continue;
+                    }
+                    
                     $files[] = [
-                        'name' => $fileInfo['basename'],
+                        'name' => $fileName,
                         'path' => $file,
                         'url' => $this->getImageUrl($file),
                         'size' => filesize($file),
                         'type' => mime_content_type($file),
-                        'date' => date('Y-m-d H:i:s', filemtime($file))
+                        'date' => date('Y-m-d H:i:s', filemtime($file)),
+                        'description' => $this->getImageDescription($fileName, 'carousel')
                     ];
                 }
             }
@@ -683,6 +771,78 @@ class AdminController extends Controller {
         
         // Usar el script servidor para asegurar que funcione
         return '/prueba-php/public/serve-image.php?path=' . urlencode($filePath);
+    }
+    
+    // Obtener descripción de una imagen
+    private function getImageDescription($fileName, $type = 'gallery') {
+        $descriptionsFile = 'uploads/' . $type . '/descriptions.json';
+        
+        if (file_exists($descriptionsFile)) {
+            $descriptions = json_decode(file_get_contents($descriptionsFile), true);
+            return $descriptions[$fileName] ?? '';
+        }
+        
+        return '';
+    }
+    
+    // Guardar descripción de una imagen
+    private function saveImageDescription($fileName, $description, $type = 'gallery') {
+        $descriptionsFile = 'uploads/' . $type . '/descriptions.json';
+        $descriptions = [];
+        
+        if (file_exists($descriptionsFile)) {
+            $descriptions = json_decode(file_get_contents($descriptionsFile), true) ?? [];
+        }
+        
+        $descriptions[$fileName] = trim($description);
+        
+        // Asegurar que el directorio existe
+        $dir = dirname($descriptionsFile);
+        if (!is_dir($dir)) {
+            mkdir($dir, 0755, true);
+        }
+        
+        return file_put_contents($descriptionsFile, json_encode($descriptions, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    }
+    
+    // Update gallery image description
+    public function actualizarDescripcionGaleria() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $fileName = $_POST['fileName'] ?? '';
+            $description = $_POST['description'] ?? '';
+            
+            if (!empty($fileName)) {
+                if ($this->saveImageDescription($fileName, $description, 'gallery')) {
+                    setFlashMessage('success', 'Descripción actualizada correctamente');
+                } else {
+                    setFlashMessage('error', 'Error al actualizar la descripción');
+                }
+            } else {
+                setFlashMessage('error', 'Nombre de archivo requerido');
+            }
+        }
+        
+        $this->redirect('/admin/galeria');
+    }
+    
+    // Update carousel image description
+    public function actualizarDescripcionCarousel() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $fileName = $_POST['fileName'] ?? '';
+            $description = $_POST['description'] ?? '';
+            
+            if (!empty($fileName)) {
+                if ($this->saveImageDescription($fileName, $description, 'carousel')) {
+                    setFlashMessage('success', 'Descripción del carrusel actualizada correctamente');
+                } else {
+                    setFlashMessage('error', 'Error al actualizar la descripción del carrusel');
+                }
+            } else {
+                setFlashMessage('error', 'Nombre de archivo requerido');
+            }
+        }
+        
+        $this->redirect('/admin/galeria');
     }
     
     // User Management - Create custom user
@@ -751,7 +911,7 @@ class AdminController extends Controller {
                     
                     if ($result) {
                         setFlashMessage('success', 'Usuario creado correctamente');
-                        redirect('/prueba-php/public/admin/usuarios');
+                        $this->redirect('/admin/usuarios');
                         return;
                     } else {
                         $userData['errors']['general'] = 'Error al crear el usuario en la base de datos';
@@ -781,7 +941,7 @@ class AdminController extends Controller {
                 setFlashMessage('error', 'Error al desactivar el usuario');
             }
         }
-        redirect('/prueba-php/public/admin/usuarios');
+        $this->redirect('/admin/usuarios');
     }
     
     // User Management - Activate user
@@ -794,7 +954,7 @@ class AdminController extends Controller {
                 setFlashMessage('error', 'Error al activar el usuario');
             }
         }
-        redirect('/prueba-php/public/admin/usuarios');
+        $this->redirect('/admin/usuarios');
     }
     
     // User Management - Reset password
@@ -818,6 +978,54 @@ class AdminController extends Controller {
             }
         }
         
-        redirect('/prueba-php/public/admin/usuarios');
+        $this->redirect('/admin/usuarios');
+    }
+    
+    // User Management - Toggle user status (AJAX)
+    public function toggleUserStatus($id) {
+        // Verificar que sea una petición AJAX
+        if (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) !== 'xmlhttprequest') {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Petición inválida']);
+            return;
+        }
+        
+        // Obtener el contenido JSON de la petición
+        $input = json_decode(file_get_contents('php://input'), true);
+        
+        if (!$input) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Datos inválidos']);
+            return;
+        }
+        
+        // Validar token CSRF si SecurityHelper existe
+        if ($this->securityHelper && !$this->securityHelper->validateCsrfToken($input['csrf_token'] ?? '')) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'message' => 'Token de seguridad inválido']);
+            return;
+        }
+        
+        // Validar el estado
+        $status = $input['status'] ?? null;
+        if (!in_array($status, [0, 1])) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Estado inválido']);
+            return;
+        }
+        
+        // Actualizar el estado del usuario
+        if ($this->userModel) {
+            $result = $this->userModel->updateUserStatus($id, $status);
+            
+            if ($result) {
+                $action = $status ? 'activado' : 'desactivado';
+                echo json_encode(['success' => true, 'message' => "Usuario {$action} correctamente"]);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Error al actualizar el estado del usuario']);
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Error interno del servidor']);
+        }
     }
 }

@@ -38,9 +38,12 @@ class User {
 
     // Find user by ID
     public function findUserById($id) {
+        error_log("User::findUserById called with ID: " . $id);
         $this->db->query('SELECT * FROM ' . $this->table . ' WHERE id = :id');
         $this->db->bind(':id', $id);
-        return $this->db->single();
+        $result = $this->db->single();
+        error_log("User::findUserById result: " . ($result ? 'found' : 'not found'));
+        return $result;
     }
 
     // Get user by ID (alias for findUserById)
@@ -138,7 +141,7 @@ class User {
     // Get all users with pagination
     public function getAllUsers($page = 1, $perPage = 10) {
         $offset = ($page - 1) * $perPage;
-        $this->db->query('SELECT id, nombre, apellidos, email, rol, fecha_registro, ultimo_acceso FROM ' . $this->table . ' ORDER BY fecha_registro DESC LIMIT :limit OFFSET :offset');
+        $this->db->query('SELECT id, nombre, apellidos, email, rol, activo, fecha_registro, ultimo_acceso FROM ' . $this->table . ' ORDER BY fecha_registro DESC LIMIT :limit OFFSET :offset');
         $this->db->bind(':limit', $perPage);
         $this->db->bind(':offset', $offset);
         return $this->db->resultSet();
@@ -153,6 +156,9 @@ class User {
 
     // Update user
     public function updateUser($data) {
+        // Debug logging
+        error_log("User::updateUser called with data: " . print_r($data, true));
+        
         $query = 'UPDATE ' . $this->table . ' SET nombre = :nombre, apellidos = :apellidos, email = :email, rol = :rol, activo = :activo';
         
         // Add password to query if provided
@@ -161,6 +167,8 @@ class User {
         }
         
         $query .= ' WHERE id = :id';
+        
+        error_log("SQL Query: " . $query);
         
         $this->db->query($query);
         
@@ -177,9 +185,13 @@ class User {
         }
 
         // Execute
-        if ($this->db->execute()) {
-            return true;
-        } else {
+        try {
+            $result = $this->db->execute();
+            error_log("Database execute result: " . ($result ? 'true' : 'false'));
+            error_log("Rows affected: " . $this->db->rowCount());
+            return $result;
+        } catch (Exception $e) {
+            error_log("Database error in updateUser: " . $e->getMessage());
             return false;
         }
     }

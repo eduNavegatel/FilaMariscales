@@ -158,3 +158,4 @@ echo "   • Login seguro y atractivo\n";
 echo "\n🚀 ¡El sistema de administración está listo para usar!\n";
 
 
+

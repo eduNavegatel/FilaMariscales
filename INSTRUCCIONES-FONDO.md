@@ -54,3 +54,4 @@ Si la imagen no aparece, verifica que:
 ¡El fondo se aplicará automáticamente una vez que coloques la imagen en la ubicación correcta!
 
 
+

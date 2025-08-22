@@ -56,7 +56,16 @@ class Database {
 
     // Execute the prepared statement
     public function execute() {
-        return $this->stmt->execute();
+        try {
+            $result = $this->stmt->execute();
+            if (!$result) {
+                error_log("Database execute failed: " . print_r($this->stmt->errorInfo(), true));
+            }
+            return $result;
+        } catch (PDOException $e) {
+            error_log("Database execute exception: " . $e->getMessage());
+            return false;
+        }
     }
 
     // Get result set as array of objects

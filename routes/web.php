@@ -70,9 +70,11 @@ $router->group('admin', function($router) {
     $router->get('crearUsuario', 'Admin\AdminController@crearUsuario');
     $router->post('crearUsuario', 'Admin\AdminController@crearUsuario');
     $router->get('usuarios', 'Admin\AdminController@usuarios');
+    $router->get('editarUsuario/{id}', 'Admin\AdminController@editarUsuarioForm');
     $router->post('editarUsuario/{id}', 'Admin\AdminController@editarUsuario');
     $router->post('desactivarUsuario/{id}', 'Admin\AdminController@desactivarUsuario');
     $router->post('activarUsuario/{id}', 'Admin\AdminController@activarUsuario');
+    $router->post('toggleUserStatus/{id}', 'Admin\AdminController@toggleUserStatus');
     $router->post('resetearPassword/{id}', 'Admin\AdminController@resetearPassword');
     $router->get('export/dashboard', 'Admin\AdminController@exportDashboard');
     $router->post('eliminarUsuario/{id}', 'Admin\AdminController@eliminarUsuario');
@@ -90,11 +92,13 @@ $router->group('admin', function($router) {
     });
     
     // Gallery management
-    $router->group('gallery', function($router) {
-        $router->get('', 'Admin\GalleryController@index');
-        $router->post('upload', 'Admin\GalleryController@upload');
-        $router->post('{id}/delete', 'Admin\GalleryController@delete');
-    });
+    $router->get('galeria', 'Admin\AdminController@galeria');
+    $router->post('subirMedia', 'Admin\AdminController@subirMedia');
+    $router->get('eliminarMedia/{fileName}', 'Admin\AdminController@eliminarMedia');
+    $router->post('subirCarousel', 'Admin\AdminController@subirCarousel');
+    $router->get('eliminarCarousel/{fileName}', 'Admin\AdminController@eliminarCarousel');
+    $router->post('actualizarDescripcionGaleria', 'Admin\AdminController@actualizarDescripcionGaleria');
+    $router->post('actualizarDescripcionCarousel', 'Admin\AdminController@actualizarDescripcionCarousel');
     
     // Settings
     $router->group('settings', function($router) {

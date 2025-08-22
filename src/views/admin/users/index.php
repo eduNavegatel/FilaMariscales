@@ -15,6 +15,24 @@
         .card { box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .btn-group .btn { margin-right: 2px; }
         
+        /* Estilos para botones con texto */
+        .btn-group .btn {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            white-space: nowrap;
+        }
+        
+        /* Asegurar que los botones de grupo tengan el mismo tamaño */
+        .btn-group .btn {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        /* Espaciado entre icono y texto */
+        .btn i {
+            margin-right: 0.25rem;
+        }
+        
         /* Modal personalizado */
         .custom-modal {
             display: none;
@@ -154,7 +172,7 @@
                                                         class="btn btn-sm btn-outline-primary" 
                                                         onclick="openEditModal(<?= $user->id ?>, '<?= htmlspecialchars($user->nombre) ?>', '<?= htmlspecialchars($user->apellidos) ?>', '<?= htmlspecialchars($user->email) ?>', '<?= $user->rol ?>', <?= $user->activo ? 'true' : 'false' ?>)"
                                                         title="Editar usuario">
-                                                    <i class="fas fa-edit"></i>
+                                                    <i class="fas fa-edit me-1"></i>Editar
                                                 </button>
                                                 
                                                 <!-- Botón Activar/Desactivar -->
@@ -163,14 +181,14 @@
                                                             class="btn btn-sm btn-outline-warning"
                                                             onclick="toggleUserStatus(<?= $user->id ?>, 'desactivar')"
                                                             title="Desactivar usuario">
-                                                        <i class="fas fa-user-slash"></i>
+                                                        <i class="fas fa-user-slash me-1"></i>Desactivar
                                                     </button>
                                                 <?php else: ?>
                                                     <button type="button" 
                                                             class="btn btn-sm btn-outline-success"
                                                             onclick="toggleUserStatus(<?= $user->id ?>, 'activar')"
                                                             title="Activar usuario">
-                                                        <i class="fas fa-user-check"></i>
+                                                        <i class="fas fa-user-check me-1"></i>Activar
                                                     </button>
                                                 <?php endif; ?>
                                                 
@@ -179,7 +197,7 @@
                                                         class="btn btn-sm btn-outline-info"
                                                         onclick="openResetModal(<?= $user->id ?>)"
                                                         title="Resetear contraseña">
-                                                    <i class="fas fa-key"></i>
+                                                    <i class="fas fa-key me-1"></i>Resetear
                                                 </button>
                                                 
                                                 <!-- Botón Eliminar -->
@@ -187,7 +205,7 @@
                                                         class="btn btn-sm btn-outline-danger"
                                                         onclick="deleteUser(<?= $user->id ?>)"
                                                         title="Eliminar usuario">
-                                                    <i class="fas fa-trash"></i>
+                                                    <i class="fas fa-trash me-1"></i>Eliminar
                                                 </button>
                                             </div>
                                         </td>
@@ -281,6 +299,7 @@
     // Función para abrir modal de edición
     function openEditModal(userId, nombre, apellidos, email, rol, activo) {
         console.log('Abriendo modal de edición para usuario:', userId);
+        console.log('Datos del usuario:', { userId, nombre, apellidos, email, rol, activo });
         
         // Guardar el ID del usuario actual
         currentUserId = userId;
@@ -293,7 +312,9 @@
         document.getElementById('editActivo').checked = activo;
         
         // Actualizar la acción del formulario
-        document.getElementById('editUserForm').action = '/prueba-php/public/admin/editarUsuario/' + userId;
+        const formAction = '<?= URL_ROOT ?>/admin/editarUsuario/' + userId;
+        document.getElementById('editUserForm').action = formAction;
+        console.log('Form action set to:', formAction);
         
         // Mostrar el modal
         document.getElementById('editUserModal').style.display = 'block';
@@ -309,7 +330,7 @@
         console.log('Abriendo modal de reset para usuario:', userId);
         
         // Actualizar la acción del formulario
-        document.getElementById('resetPasswordForm').action = '/prueba-php/public/admin/resetearPassword/' + userId;
+        document.getElementById('resetPasswordForm').action = '<?= URL_ROOT ?>/admin/resetearPassword/' + userId;
         
         // Mostrar el modal
         document.getElementById('resetPasswordModal').style.display = 'block';
@@ -328,8 +349,8 @@
             
         if (confirm(message)) {
             const url = action === 'activar' ? 
-                '/prueba-php/public/admin/activarUsuario/' + userId :
-                '/prueba-php/public/admin/desactivarUsuario/' + userId;
+                '<?= URL_ROOT ?>/admin/activarUsuario/' + userId :
+                '<?= URL_ROOT ?>/admin/desactivarUsuario/' + userId;
                 
             // Crear formulario temporal y enviarlo
             const form = document.createElement('form');
@@ -353,7 +374,7 @@
             // Crear formulario temporal y enviarlo
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = '/prueba-php/public/admin/eliminarUsuario/' + userId;
+            form.action = '<?= URL_ROOT ?>/admin/eliminarUsuario/' + userId;
             
             const csrfInput = document.createElement('input');
             csrfInput.type = 'hidden';
@@ -365,6 +386,19 @@
             form.submit();
         }
     }
+
+    // Event listener para el formulario de edición
+    document.getElementById('editUserForm').addEventListener('submit', function(e) {
+        console.log('Formulario de edición enviado');
+        console.log('Form action:', this.action);
+        console.log('Form data:', new FormData(this));
+        
+        // Log form values
+        const formData = new FormData(this);
+        for (let [key, value] of formData.entries()) {
+            console.log(key + ': ' + value);
+        }
+    });
 
     // Cerrar modales al hacer clic fuera de ellos
     window.onclick = function(event) {

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba Cursor Espada - Filá Mariscales</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="public/assets/css/style.css">
+    <style>
+        .test-section {
+            padding: 2rem;
+            margin: 1rem 0;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .test-button {
+            margin: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .test-input {
+            margin: 0.5rem;
+            padding: 0.5rem;
+            border: 2px solid var(--primary);
+            border-radius: 5px;
+            width: 200px;
+        }
+        
+        .cursor-info {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">⚔️ Prueba del Cursor Espada ⚔️</h1>
+        
+        <div class="cursor-info">
+            <h3>🎯 Información del Cursor Personalizado</h3>
+            <ul>
+                <li><strong>Cursor Normal:</strong> Emoji de espada roja (⚔️)</li>
+                <li><strong>Cursor en Enlaces/Botones:</strong> Emoji de espada dorada (⚔️)</li>
+                <li><strong>Cursor de Texto:</strong> Cursor de texto estándar para inputs</li>
+                <li><strong>Cursor de Espera:</strong> Cursor de espera estándar</li>
+            </ul>
+            
+            <div class="mt-3">
+                <h4>🔄 Cambiar Tipo de Cursor:</h4>
+                <button class="btn btn-outline-light me-2" onclick="changeCursor('emoji')">Cursor Emoji</button>
+                <button class="btn btn-outline-light me-2" onclick="changeCursor('detailed')">Cursor Detallado</button>
+                <button class="btn btn-outline-light" onclick="changeCursor('default')">Cursor Normal</button>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>🖱️ Prueba de Cursor Normal</h2>
+            <p>Mueve el cursor por esta área para ver la espada plateada con empuñadura dorada.</p>
+            <div style="height: 100px; background: rgba(220, 20, 60, 0.1); border: 2px dashed var(--primary); display: flex; align-items: center; justify-content: center;">
+                <span>Área de prueba - Mueve el cursor aquí</span>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>🔗 Prueba de Cursor en Enlaces y Botones</h2>
+            <p>Pasa el cursor sobre estos elementos para ver la espada dorada con empuñadura roja.</p>
+            
+            <button class="test-button btn btn-primary">Botón Primario</button>
+            <button class="test-button btn btn-success">Botón Éxito</button>
+            <button class="test-button btn btn-danger">Botón Peligro</button>
+            <button class="test-button btn btn-warning">Botón Advertencia</button>
+            
+            <br><br>
+            
+            <a href="#" class="btn btn-outline-primary test-button">Enlace Botón</a>
+            <a href="#" class="btn btn-outline-success test-button">Enlace Éxito</a>
+            <a href="#" class="btn btn-outline-danger test-button">Enlace Peligro</a>
+            <a href="#" class="btn btn-outline-warning test-button">Enlace Advertencia</a>
+            
+            <br><br>
+            
+            <a href="#" style="color: var(--primary); text-decoration: none; font-weight: bold; margin: 0.5rem; display: inline-block;">Enlace de Texto</a>
+            <a href="#" style="color: var(--success); text-decoration: none; font-weight: bold; margin: 0.5rem; display: inline-block;">Enlace Verde</a>
+        </div>
+        
+        <div class="test-section">
+            <h2>📝 Prueba de Cursor de Texto</h2>
+            <p>Haz clic en estos campos para ver el cursor de texto estándar.</p>
+            
+            <input type="text" class="test-input" placeholder="Campo de texto" value="Texto de ejemplo">
+            <input type="email" class="test-input" placeholder="Email" value="ejemplo@email.com">
+            <input type="password" class="test-input" placeholder="Contraseña" value="password123">
+            
+            <br><br>
+            
+            <textarea class="test-input" rows="3" placeholder="Área de texto">Este es un área de texto de ejemplo para probar el cursor.</textarea>
+            
+            <br><br>
+            
+            <select class="test-input">
+                <option>Opción 1</option>
+                <option>Opción 2</option>
+                <option>Opción 3</option>
+            </select>
+        </div>
+        
+        <div class="test-section">
+            <h2>⏳ Prueba de Cursor de Espera</h2>
+            <p>Haz clic en el botón para simular una carga y ver el cursor de espera.</p>
+            
+            <button class="test-button btn btn-info" onclick="simulateLoading()">Simular Carga</button>
+            <button class="test-button btn btn-secondary" disabled>Botón Deshabilitado</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>🎨 Colores del Tema Templario</h2>
+            <p>Estos son los colores utilizados en el cursor personalizado:</p>
+            
+            <div class="row">
+                <div class="col-md-3">
+                    <div style="background: #DC143C; color: white; padding: 1rem; border-radius: 5px; margin: 0.5rem;">
+                        <strong>Rojo Templario</strong><br>
+                        #DC143C
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div style="background: #FFD700; color: black; padding: 1rem; border-radius: 5px; margin: 0.5rem;">
+                        <strong>Dorado</strong><br>
+                        #FFD700
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div style="background: #C0C0C0; color: black; padding: 1rem; border-radius: 5px; margin: 0.5rem;">
+                        <strong>Plateado</strong><br>
+                        #C0C0C0
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div style="background: #8B0000; color: white; padding: 1rem; border-radius: 5px; margin: 0.5rem;">
+                        <strong>Rojo Oscuro</strong><br>
+                        #8B0000
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function simulateLoading() {
+            const button = event.target;
+            const originalText = button.textContent;
+            const originalClass = button.className;
+            
+            button.textContent = '⏳ Cargando...';
+            button.className = 'test-button btn btn-info loading';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.className = originalClass;
+                button.disabled = false;
+            }, 3000);
+        }
+        
+        // Función para cambiar el tipo de cursor
+        function changeCursor(type) {
+            const body = document.body;
+            
+            // Remover clases anteriores
+            body.classList.remove('cursor-espada-detallado');
+            
+            switch(type) {
+                case 'emoji':
+                    // Cursor emoji (por defecto)
+                    body.style.cursor = '';
+                    break;
+                case 'detailed':
+                    // Cursor detallado
+                    body.classList.add('cursor-espada-detallado');
+                    break;
+                case 'default':
+                    // Cursor normal del sistema
+                    body.style.cursor = 'default';
+                    break;
+            }
+            
+            // Mostrar mensaje de confirmación
+            showCursorChangeMessage(type);
+        }
+        
+        function showCursorChangeMessage(type) {
+            const messages = {
+                'emoji': '⚔️ Cursor emoji activado',
+                'detailed': '🗡️ Cursor detallado activado',
+                'default': '🖱️ Cursor normal activado'
+            };
+            
+            // Crear toast de confirmación
+            const toast = document.createElement('div');
+            toast.className = 'position-fixed top-0 end-0 p-3';
+            toast.style.zIndex = '9999';
+            toast.innerHTML = `
+                <div class="toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${messages[type]}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            const toastElement = toast.querySelector('.toast');
+            const bsToast = new bootstrap.Toast(toastElement, {
+                autohide: true,
+                delay: 2000
+            });
+            bsToast.show();
+            
+            // Eliminar el toast del DOM después de que se oculte
+            toastElement.addEventListener('hidden.bs.toast', () => {
+                toast.remove();
+            });
+        }
+        
+        // Efecto de hover para mostrar información del cursor
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('button, a, input, textarea, select');
+            
+            elements.forEach(element => {
+                element.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.05)';
+                    this.style.transition = 'transform 0.2s ease';
+                });
+                
+                element.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

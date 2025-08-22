@@ -53,3 +53,17 @@ function isActive($path) {
     $current_path = str_replace($base_path, '', $current_path);
     return $current_path === $path ? 'active' : '';
 }
+
+// Generate CSRF token
+function generateCsrfToken() {
+    if (class_exists('SecurityHelper')) {
+        return SecurityHelper::generateCsrfToken();
+    }
+    
+    // Fallback if SecurityHelper is not available
+    if (function_exists('random_bytes')) {
+        return bin2hex(random_bytes(32));
+    } else {
+        return bin2hex(openssl_random_pseudo_bytes(32));
+    }
+}
