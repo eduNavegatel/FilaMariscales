@@ -546,3 +546,4 @@ document.addEventListener('DOMContentLoaded', () => {
 window.PWAManager = PWAManager;
 window.pwaManager = pwaManager;
 
+

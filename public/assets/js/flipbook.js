@@ -1,6 +1,5 @@
 /**
- * 📖 Flip Book Moderno y Espectacular
- * Funcionalidad completa para un flip book interactivo
+ * Flip Book - Estilo Libro Antiguo
  */
 
 class FlipBook {
@@ -9,7 +8,6 @@ class FlipBook {
         this.pages = pages;
         this.currentPage = 0;
         this.isFlipping = false;
-        this.flipDirection = 'forward';
         
         this.init();
     }
@@ -17,13 +15,7 @@ class FlipBook {
     init() {
         this.createFlipBook();
         this.setupControls();
-        this.setupEventListeners();
         this.showPage(0);
-        
-        // Agregar efecto de entrada
-        setTimeout(() => {
-            this.container.classList.add('loaded');
-        }, 500);
     }
     
     createFlipBook() {
@@ -31,35 +23,19 @@ class FlipBook {
             <div class="flipbook">
                 ${this.pages.map((page, index) => this.createPage(page, index)).join('')}
             </div>
-            <div class="flipbook-controls">
-                <button class="flipbook-btn" id="prevPage" disabled>
-                    <i class="fas fa-chevron-left"></i> Anterior
-                </button>
-                <div class="page-indicator">
-                    <span id="currentPageNum">1</span> / <span id="totalPages">${this.pages.length}</span>
-                </div>
-                <button class="flipbook-btn" id="nextPage">
-                    Siguiente <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
         `;
         
         this.pageElements = this.container.querySelectorAll('.flipbook-page');
-        this.prevBtn = this.container.querySelector('#prevPage');
-        this.nextBtn = this.container.querySelector('#nextPage');
-        this.currentPageNum = this.container.querySelector('#currentPageNum');
-        this.totalPages = this.container.querySelector('#totalPages');
     }
     
     createPage(pageData, index) {
-        const isEven = index % 2 === 0;
         const pageNumber = index + 1;
         
         return `
             <div class="flipbook-page" data-page="${pageNumber}">
                 <div class="page-front">
                     <div class="page-header">
-                        <div class="page-number">Capítulo ${pageNumber}</div>
+                        <div class="page-number">CAPÍTULO ${pageNumber}</div>
                         <div class="page-date">${pageData.fecha}</div>
                     </div>
                     
@@ -73,7 +49,7 @@ class FlipBook {
                         
                         ${pageData.imagen ? `
                             <div class="page-image">
-                                <img src="${pageData.imagen}" alt="${pageData.titulo}" loading="lazy">
+                                <img src="${pageData.imagen}" alt="${pageData.titulo}">
                             </div>
                         ` : ''}
                     </div>
@@ -88,7 +64,7 @@ class FlipBook {
                 
                 <div class="page-back">
                     <div class="page-header">
-                        <div class="page-number">Capítulo ${pageNumber + 1}</div>
+                        <div class="page-number">CAPÍTULO ${pageNumber + 1}</div>
                         <div class="page-date">${this.pages[index + 1]?.fecha || 'Continuará...'}</div>
                     </div>
                     
@@ -99,21 +75,19 @@ class FlipBook {
                             
                             <div class="page-text">
                                 ${this.pages[index + 1].contenido.slice(0, 2).map(parrafo => `<p>${parrafo}</p>`).join('')}
-                                <p><em>Continúa en la siguiente página...</em></p>
                             </div>
                         ` : `
                             <div class="page-text">
-                                <h2 class="page-title">Fin del Libro</h2>
-                                <p>Has llegado al final de esta crónica histórica de la Filá Mariscales de Caballeros Templarios.</p>
-                                <p>Que el legado de honor, tradición y excelencia perdure por siempre.</p>
+                                <p>Este es el final del libro de la historia de la Filá Mariscales.</p>
+                                <p>Que la tradición templaria perdure por siempre.</p>
                             </div>
                         `}
                     </div>
                     
                     <div class="page-footer">
                         <div class="page-quote">
-                            "El honor de los templarios vive en cada uno de nosotros."
-                            <br><small>- Filá Mariscales</small>
+                            "Honor, valor y tradición."
+                            <br><small>- Caballeros Templarios</small>
                         </div>
                     </div>
                 </div>
@@ -122,15 +96,8 @@ class FlipBook {
     }
     
     setupControls() {
-        this.prevBtn.addEventListener('click', () => this.previousPage());
-        this.nextBtn.addEventListener('click', () => this.nextPage());
-    }
-    
-    setupEventListeners() {
-        // Navegación con teclado
+        // Teclado
         document.addEventListener('keydown', (e) => {
-            if (this.isFlipping) return;
-            
             switch(e.key) {
                 case 'ArrowLeft':
                     this.previousPage();
@@ -138,198 +105,97 @@ class FlipBook {
                 case 'ArrowRight':
                     this.nextPage();
                     break;
-                case 'Home':
-                    this.goToPage(0);
-                    break;
-                case 'End':
-                    this.goToPage(this.pages.length - 1);
-                    break;
             }
         });
         
-        // Navegación con clic en páginas
+        // Clic en páginas
         this.pageElements.forEach((page, index) => {
             page.addEventListener('click', (e) => {
-                if (this.isFlipping) return;
-                
                 const rect = page.getBoundingClientRect();
-                const clickX = e.clientX - rect.left;
-                const pageWidth = rect.width;
+                const x = e.clientX - rect.left;
+                const width = rect.width;
                 
-                // Si se hace clic en la mitad derecha, siguiente página
-                if (clickX > pageWidth / 2) {
-                    this.nextPage();
-                } else {
+                if (x < width / 2) {
                     this.previousPage();
+                } else {
+                    this.nextPage();
                 }
             });
         });
-        
-        // Navegación con gestos táctiles
-        let startX = 0;
-        let startY = 0;
-        
-        this.container.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-            startY = e.touches[0].clientY;
-        });
-        
-        this.container.addEventListener('touchend', (e) => {
-            if (this.isFlipping) return;
-            
-            const endX = e.changedTouches[0].clientX;
-            const endY = e.changedTouches[0].clientY;
-            const deltaX = endX - startX;
-            const deltaY = endY - startY;
-            
-            // Solo procesar si el gesto es horizontal y suficientemente largo
-            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
-                if (deltaX > 0) {
-                    this.previousPage();
-                } else {
-                    this.nextPage();
-                }
-            }
-        });
     }
     
-    async flipPage(direction) {
+    previousPage() {
+        if (this.currentPage > 0 && !this.isFlipping) {
+            this.flipPage(this.currentPage - 1, 'backward');
+        }
+    }
+    
+    nextPage() {
+        if (this.currentPage < this.pages.length - 1 && !this.isFlipping) {
+            this.flipPage(this.currentPage + 1, 'forward');
+        }
+    }
+    
+    flipPage(targetPage, direction) {
         if (this.isFlipping) return;
         
         this.isFlipping = true;
-        this.flipDirection = direction;
-        
         const currentPageElement = this.pageElements[this.currentPage];
         
+        // Agregar clase de giro
+        currentPageElement.classList.add('flipping');
+        
+        // Efecto de giro
         if (direction === 'forward') {
-            currentPageElement.classList.add('flipping-forward');
-            
-            // Esperar a que termine la animación
-            await this.waitForAnimation(currentPageElement, 'flipping-forward');
-            
-            currentPageElement.classList.remove('flipping-forward');
-            currentPageElement.classList.add('flipped');
-            
+            currentPageElement.style.transform = 'translate(-50%, -50%) rotateY(-180deg)';
         } else {
-            currentPageElement.classList.remove('flipped');
-            currentPageElement.classList.add('flipping-backward');
-            
-            // Esperar a que termine la animación
-            await this.waitForAnimation(currentPageElement, 'flipping-backward');
-            
-            currentPageElement.classList.remove('flipping-backward');
+            currentPageElement.style.transform = 'translate(-50%, -50%) rotateY(180deg)';
         }
         
-        this.isFlipping = false;
-        this.updateControls();
-    }
-    
-    waitForAnimation(element, className) {
-        return new Promise((resolve) => {
-            const duration = getComputedStyle(document.documentElement)
-                .getPropertyValue('--flip-duration') || '1.2s';
+        // Actualizar página actual
+        setTimeout(() => {
+            this.currentPage = targetPage;
+            this.isFlipping = false;
             
-            setTimeout(() => {
-                resolve();
-            }, parseFloat(duration) * 1000);
+            // Actualizar estado de todas las páginas
+            this.updatePageStates();
+            
+            // Actualizar botones de capítulos
+            this.updateChapterButtons(this.currentPage);
+        }, 1000);
+    }
+    
+    updatePageStates() {
+        this.pageElements.forEach((page, index) => {
+            if (index < this.currentPage) {
+                page.classList.add('flipped');
+                page.classList.remove('flipping');
+                page.style.transform = 'translate(-50%, -50%) rotateY(-180deg)';
+            } else {
+                page.classList.remove('flipped', 'flipping');
+                page.style.transform = 'translate(-50%, -50%)';
+            }
         });
-    }
-    
-    async nextPage() {
-        if (this.currentPage < this.pages.length - 1 && !this.isFlipping) {
-            await this.flipPage('forward');
-            this.currentPage++;
-            this.showPage(this.currentPage);
-        }
-    }
-    
-    async previousPage() {
-        if (this.currentPage > 0 && !this.isFlipping) {
-            this.currentPage--;
-            this.showPage(this.currentPage);
-            await this.flipPage('backward');
-        }
     }
     
     goToPage(pageIndex) {
         if (pageIndex < 0 || pageIndex >= this.pages.length || this.isFlipping) return;
         
-        // Resetear todas las páginas
-        this.pageElements.forEach((page, index) => {
-            if (index < pageIndex) {
-                page.classList.add('flipped');
-            } else {
-                page.classList.remove('flipped');
-            }
-        });
-        
         this.currentPage = pageIndex;
         this.showPage(this.currentPage);
-        this.updateControls();
     }
     
     showPage(pageIndex) {
-        // Ocultar todas las páginas
-        this.pageElements.forEach((page, index) => {
-            if (index < pageIndex) {
-                page.style.zIndex = index;
-                page.style.transform = 'translate(-50%, -50%) rotateY(-180deg)';
-            } else {
-                page.style.zIndex = this.pages.length - index;
-                page.style.transform = 'translate(-50%, -50%) rotateY(0deg)';
-            }
+        this.currentPage = pageIndex;
+        this.updatePageStates();
+        this.updateChapterButtons(pageIndex);
+    }
+    
+    updateChapterButtons(currentPage) {
+        const chapterBtns = document.querySelectorAll('.chapter-btn');
+        chapterBtns.forEach((btn, index) => {
+            btn.classList.toggle('active', index === currentPage);
         });
-        
-        this.updateControls();
-    }
-    
-    updateControls() {
-        this.currentPageNum.textContent = this.currentPage + 1;
-        
-        this.prevBtn.disabled = this.currentPage === 0;
-        this.nextBtn.disabled = this.currentPage === this.pages.length - 1;
-        
-        // Agregar efectos visuales
-        if (this.prevBtn.disabled) {
-            this.prevBtn.style.opacity = '0.5';
-        } else {
-            this.prevBtn.style.opacity = '1';
-        }
-        
-        if (this.nextBtn.disabled) {
-            this.nextBtn.style.opacity = '0.5';
-        } else {
-            this.nextBtn.style.opacity = '1';
-        }
-    }
-    
-    // Métodos públicos para control externo
-    getCurrentPage() {
-        return this.currentPage;
-    }
-    
-    getTotalPages() {
-        return this.pages.length;
-    }
-    
-    // Efectos especiales
-    addPageEffect() {
-        const currentPageElement = this.pageElements[this.currentPage];
-        currentPageElement.style.transform += ' scale(1.02)';
-        
-        setTimeout(() => {
-            currentPageElement.style.transform = currentPageElement.style.transform.replace(' scale(1.02)', '');
-        }, 200);
-    }
-    
-    // Método para recargar el flip book
-    reload() {
-        this.currentPage = 0;
-        this.isFlipping = false;
-        this.createFlipBook();
-        this.setupControls();
-        this.setupEventListeners();
-        this.showPage(0);
     }
 }
 

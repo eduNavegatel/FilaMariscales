@@ -125,12 +125,8 @@ $total_paginas = count($libro_paginas);
                             <span>Usa las flechas del teclado</span>
                         </div>
                         <div class="instruction-item">
-                            <i class="fas fa-mobile-alt"></i>
-                            <span>Desliza en dispositivos móviles</span>
-                        </div>
-                        <div class="instruction-item">
-                            <i class="fas fa-home"></i>
-                            <span>Home/End para ir al inicio/final</span>
+                            <i class="fas fa-list"></i>
+                            <span>Usa los botones de capítulos abajo</span>
                         </div>
                     </div>
                 </div>
@@ -156,7 +152,7 @@ $total_paginas = count($libro_paginas);
                 <div class="chapter-grid">
                     <?php foreach ($libro_paginas as $index => $pagina): ?>
                     <button class="chapter-btn <?php echo $index === 0 ? 'active' : ''; ?>" 
-                            data-page="<?php echo $index + 1; ?>">
+                            data-page="<?php echo $index; ?>">
                         <div class="chapter-number"><?php echo $index + 1; ?></div>
                         <div class="chapter-title"><?php echo $pagina['titulo']; ?></div>
                         <div class="chapter-date"><?php echo $pagina['fecha']; ?></div>
@@ -167,13 +163,12 @@ $total_paginas = count($libro_paginas);
         </div>
     </div>
 </section>
-    
-    <style>
+
+<style>
 /* Book Styles */
 .hero-section {
     background: linear-gradient(135deg, rgba(220, 20, 60, 0.05) 0%, rgba(255, 255, 255, 0.7) 50%, rgba(220, 20, 60, 0.05) 100%);
     border-bottom: 3px solid var(--primary);
-    backdrop-filter: blur(5px);
 }
 
 .book-stats .stat-item {
@@ -183,7 +178,6 @@ $total_paginas = count($libro_paginas);
     border-radius: 10px;
     border: 2px solid var(--primary);
     min-width: 120px;
-    backdrop-filter: blur(10px);
 }
 
 /* Flip Book Instructions */
@@ -192,7 +186,6 @@ $total_paginas = count($libro_paginas);
     border-radius: 15px;
     padding: 2rem;
     border: 2px solid var(--primary);
-    backdrop-filter: blur(10px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
@@ -223,7 +216,6 @@ $total_paginas = count($libro_paginas);
 .chapter-nav {
     background: rgba(248, 249, 250, 0.8);
     border-top: 2px solid var(--primary);
-    backdrop-filter: blur(10px);
 }
 
 .chapter-grid {
@@ -240,7 +232,6 @@ $total_paginas = count($libro_paginas);
     text-align: center;
     transition: all 0.3s ease;
     cursor: pointer;
-    backdrop-filter: blur(5px);
 }
 
 .chapter-btn:hover {
@@ -257,14 +248,12 @@ $total_paginas = count($libro_paginas);
 }
 
 .chapter-number {
-    font-family: 'Cinzel', serif;
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
 }
 
 .chapter-title {
-    font-family: 'Cinzel', serif;
     font-size: 1rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
@@ -273,11 +262,6 @@ $total_paginas = count($libro_paginas);
 .chapter-date {
     font-size: 0.9rem;
     opacity: 0.8;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
 }
 
 /* Responsive */
@@ -295,7 +279,7 @@ $total_paginas = count($libro_paginas);
         gap: 1rem;
     }
 }
-    </style>
+</style>
 
 <script>
 // Datos del libro para el flip book
@@ -310,8 +294,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (typeof FlipBook !== 'undefined') {
             flipBookInstance = new FlipBook(document.getElementById('flipbookContainer'), libroPaginas);
             
-            console.log('📖 Flip Book inicializado correctamente');
-            
             // Conectar botones de capítulos con el flip book
             chapterBtns.forEach((btn, index) => {
                 btn.addEventListener('click', () => {
@@ -319,75 +301,36 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             });
         } else {
-            console.error('❌ FlipBook class no está disponible');
+            console.error('FlipBook class no está disponible');
+            setTimeout(initFlipBookInstance, 500);
         }
     }
     
-    // Cargar los archivos CSS y JS del flip book
+    // Cargar recursos del flip book
     function loadFlipBookResources() {
         // Cargar CSS
-        const flipbookCSS = document.createElement('link');
-        flipbookCSS.rel = 'stylesheet';
-        flipbookCSS.href = '/prueba-php/public/assets/css/flipbook.css';
-        document.head.appendChild(flipbookCSS);
+        if (!document.querySelector('link[href*="flipbook.css"]')) {
+            const flipbookCSS = document.createElement('link');
+            flipbookCSS.rel = 'stylesheet';
+            flipbookCSS.href = '/prueba-php/public/assets/css/flipbook.css';
+            document.head.appendChild(flipbookCSS);
+        }
         
         // Cargar JS
-        const flipbookJS = document.createElement('script');
-        flipbookJS.src = '/prueba-php/public/assets/js/flipbook.js';
-        flipbookJS.onload = () => {
-            // Esperar un poco para que se cargue completamente
+        if (!document.querySelector('script[src*="flipbook.js"]')) {
+            const flipbookJS = document.createElement('script');
+            flipbookJS.src = '/prueba-php/public/assets/js/flipbook.js';
+            flipbookJS.onload = () => {
+                setTimeout(initFlipBookInstance, 100);
+            };
+            document.head.appendChild(flipbookJS);
+        } else {
             setTimeout(initFlipBookInstance, 100);
-        };
-        document.head.appendChild(flipbookJS);
+        }
     }
     
     // Iniciar carga de recursos
     loadFlipBookResources();
-    
-    // Actualizar botones de capítulos
-    function updateChapterButtons(currentPage) {
-        chapterBtns.forEach((btn, index) => {
-            btn.classList.toggle('active', index === currentPage);
-        });
-    }
-    
-    // Event listener para actualizar botones cuando cambie la página
-    document.addEventListener('flipbookPageChanged', (e) => {
-        updateChapterButtons(e.detail.currentPage);
-    });
-    
-    // Keyboard shortcuts adicionales
-    document.addEventListener('keydown', (e) => {
-        if (!flipBookInstance) return;
-        
-        switch(e.key) {
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-                const pageIndex = parseInt(e.key) - 1;
-                if (pageIndex < libroPaginas.length) {
-                    flipBookInstance.goToPage(pageIndex);
-                }
-                break;
-        }
-    });
-    
-    // Efectos especiales al cargar
-    setTimeout(() => {
-        const container = document.getElementById('flipbookContainer');
-        if (container) {
-            container.style.opacity = '0';
-            container.style.transform = 'scale(0.9)';
-            
-            setTimeout(() => {
-                container.style.transition = 'all 0.8s ease';
-                container.style.opacity = '1';
-                container.style.transform = 'scale(1)';
-            }, 100);
-        }
-    }, 500);
 });
 </script>
+
