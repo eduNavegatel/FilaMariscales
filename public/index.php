@@ -10,6 +10,7 @@ require_once 'src/config/admin_credentials.php';
 // Load controllers
 require_once 'src/controllers/Controller.php';
 require_once 'src/controllers/Pages.php';
+require_once 'src/controllers/SociosController.php';
 
 // Parse the URL
 $url = isset($_GET['url']) ? explode('/', filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL)) : [''];
@@ -45,12 +46,24 @@ if (empty($url[0])) {
     $controller->patrocinadores();
 } elseif ($url[0] === 'hermanamientos') {
     $controller->hermanamientos();
-} elseif ($url[0] === 'socios') {
-    $controller->socios();
 } elseif ($url[0] === 'login') {
     $controller->login();
 } elseif ($url[0] === 'registro') {
     $controller->registro();
+} elseif ($url[0] === 'socios') {
+    // Handle socios routes
+    $sociosController = new SociosController();
+    
+    if (isset($url[1])) {
+        $action = $url[1];
+        if (method_exists($sociosController, $action)) {
+            $sociosController->$action();
+        } else {
+            $sociosController->index();
+        }
+    } else {
+        $sociosController->index();
+    }
 } elseif ($url[0] === 'admin') {
     // Admin routes (simple guard + custom login/logout)
     $action = isset($url[1]) ? $url[1] : (isAdminLoggedIn() ? 'dashboard' : 'login');
@@ -83,7 +96,13 @@ if (empty($url[0])) {
         $adminController = new AdminController();
 
         if (method_exists($adminController, $action)) {
-            call_user_func_array([$adminController, $action], array_slice($url, 2));
+            // Handle dynamic routes with parameters
+            if (($action === 'editarUsuario' || $action === 'obtenerPassword') && isset($url[2])) {
+                $userId = $url[2];
+                call_user_func_array([$adminController, $action], [$userId]);
+            } else {
+                call_user_func_array([$adminController, $action], array_slice($url, 2));
+            }
         } else {
             $adminController->dashboard();
         }
@@ -94,3 +113,4 @@ if (empty($url[0])) {
     // Page not found
     $controller->notFound();
 }
+?>

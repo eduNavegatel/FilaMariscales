@@ -1,6 +1,11 @@
 /* Global Styles - Templar Theme */
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap');
 
+/* Importar estilos modernos */
+@import url('responsive-modern.css');
+@import url('components-modern.css');
+@import url('flipbook.css');
+
 :root {
     /* Templar Colors - Red and White */
     --templar-red: #DC143C;

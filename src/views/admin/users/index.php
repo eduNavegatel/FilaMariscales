@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:;">
     <title>Gestión de Usuarios - Filá Mariscales</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    
+
     
     <style>
         body { background-color: #f8f9fa; }
@@ -118,16 +121,19 @@
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Gestión de Usuarios</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
-                <a href="/prueba-php/public/admin/crearUsuario" class="btn btn-primary">
-                    <i class="fas fa-plus me-2"></i>Nuevo Usuario
-                </a>
+                <button type="button" class="btn btn-warning me-2" onclick="testJavaScript()">
+                    <i class="bi bi-bug me-2"></i>Test JavaScript
+                </button>
+                                    <a href="/prueba-php/public/admin/crearUsuario" class="btn btn-primary">
+                        <i class="bi bi-plus me-2"></i>Nuevo Usuario
+                    </a>
             </div>
         </div>
 
         <!-- Users Table -->
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0">Lista de Usuarios</h5>
+                <h5 class="mb-0 text-white">Lista de Usuarios</h5>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -140,6 +146,7 @@
                                 <th>Rol</th>
                                 <th>Estado</th>
                                 <th>Fecha Registro</th>
+                                <th>Contraseña</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -164,7 +171,15 @@
                                                 <span class="badge bg-danger">Inactivo</span>
                                             <?php endif; ?>
                                         </td>
-                                        <td><?= date('d/m/Y H:i', strtotime($user->created_at)) ?></td>
+                                        <td><?= $user->fecha_registro ? date('d/m/Y H:i', strtotime($user->fecha_registro)) : 'N/A' ?></td>
+                                        <td>
+                                            <button type="button" 
+                                                    class="btn btn-sm btn-outline-secondary"
+                                                    onclick="showPasswordInfo(<?= $user->id ?>, '<?= htmlspecialchars($user->email) ?>')"
+                                                    title="Ver información de contraseña">
+                                                <i class="bi bi-eye me-1"></i>Ver
+                                            </button>
+                                        </td>
                                         <td>
                                             <div class="btn-group" role="group">
                                                 <!-- Botón Editar -->
@@ -172,7 +187,7 @@
                                                         class="btn btn-sm btn-outline-primary" 
                                                         onclick="openEditModal(<?= $user->id ?>, '<?= htmlspecialchars($user->nombre) ?>', '<?= htmlspecialchars($user->apellidos) ?>', '<?= htmlspecialchars($user->email) ?>', '<?= $user->rol ?>', <?= $user->activo ? 'true' : 'false' ?>)"
                                                         title="Editar usuario">
-                                                    <i class="fas fa-edit me-1"></i>Editar
+                                                    <i class="bi bi-pencil me-1"></i>Editar
                                                 </button>
                                                 
                                                 <!-- Botón Activar/Desactivar -->
@@ -181,14 +196,14 @@
                                                             class="btn btn-sm btn-outline-warning"
                                                             onclick="toggleUserStatus(<?= $user->id ?>, 'desactivar')"
                                                             title="Desactivar usuario">
-                                                        <i class="fas fa-user-slash me-1"></i>Desactivar
+                                                        <i class="bi bi-person-x me-1"></i>Desactivar
                                                     </button>
                                                 <?php else: ?>
                                                     <button type="button" 
                                                             class="btn btn-sm btn-outline-success"
                                                             onclick="toggleUserStatus(<?= $user->id ?>, 'activar')"
                                                             title="Activar usuario">
-                                                        <i class="fas fa-user-check me-1"></i>Activar
+                                                        <i class="bi bi-person-check me-1"></i>Activar
                                                     </button>
                                                 <?php endif; ?>
                                                 
@@ -197,7 +212,7 @@
                                                         class="btn btn-sm btn-outline-info"
                                                         onclick="openResetModal(<?= $user->id ?>)"
                                                         title="Resetear contraseña">
-                                                    <i class="fas fa-key me-1"></i>Resetear
+                                                    <i class="bi bi-key me-1"></i>Resetear
                                                 </button>
                                                 
                                                 <!-- Botón Eliminar -->
@@ -205,7 +220,7 @@
                                                         class="btn btn-sm btn-outline-danger"
                                                         onclick="deleteUser(<?= $user->id ?>)"
                                                         title="Eliminar usuario">
-                                                    <i class="fas fa-trash me-1"></i>Eliminar
+                                                    <i class="bi bi-trash me-1"></i>Eliminar
                                                 </button>
                                             </div>
                                         </td>
@@ -213,7 +228,7 @@
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="7" class="text-center">No hay usuarios registrados</td>
+                                    <td colspan="8" class="text-center">No hay usuarios registrados</td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>
@@ -232,6 +247,7 @@
             </div>
             <form id="editUserForm" method="POST">
                 <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+                <input type="hidden" name="user_id" id="editUserId">
                 <div class="custom-modal-body">
                     <div class="mb-3">
                         <label for="editNombre" class="form-label">Nombre</label>
@@ -292,6 +308,14 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
+    <!-- Forzar recarga del cache -->
+    <script>
+        // Forzar recarga del cache
+        if (performance.navigation.type === 1) {
+            console.log('Página recargada - limpiando cache');
+        }
+    </script>
+    
     <script>
     // Variables globales
     let currentUserId;
@@ -305,6 +329,7 @@
         currentUserId = userId;
         
         // Llenar el formulario
+        document.getElementById('editUserId').value = userId;
         document.getElementById('editNombre').value = nombre;
         document.getElementById('editApellidos').value = apellidos;
         document.getElementById('editEmail').value = email;
@@ -315,6 +340,16 @@
         const formAction = '<?= URL_ROOT ?>/admin/editarUsuario/' + userId;
         document.getElementById('editUserForm').action = formAction;
         console.log('Form action set to:', formAction);
+        console.log('User ID set to:', userId);
+        
+        // Verificar que el campo oculto tenga el ID
+        const hiddenUserId = document.getElementById('editUserId');
+        if (hiddenUserId) {
+            hiddenUserId.value = userId;
+            console.log('Hidden user ID set to:', hiddenUserId.value);
+        } else {
+            console.error('ERROR: Campo oculto editUserId no encontrado');
+        }
         
         // Mostrar el modal
         document.getElementById('editUserModal').style.display = 'block';
@@ -389,15 +424,62 @@
 
     // Event listener para el formulario de edición
     document.getElementById('editUserForm').addEventListener('submit', function(e) {
-        console.log('Formulario de edición enviado');
+        console.log('=== ENVÍO DE FORMULARIO DE EDICIÓN ===');
         console.log('Form action:', this.action);
-        console.log('Form data:', new FormData(this));
+        console.log('Usuario ID:', currentUserId);
+        
+        // Verificar que el ID esté presente
+        const userId = document.getElementById('editUserId').value;
+        if (!userId) {
+            e.preventDefault();
+            alert('Error: ID de usuario no encontrado');
+            return false;
+        }
         
         // Log form values
         const formData = new FormData(this);
+        console.log('=== DATOS DEL FORMULARIO ===');
         for (let [key, value] of formData.entries()) {
             console.log(key + ': ' + value);
         }
+        
+        // Verificar que el rol se está enviando correctamente
+        const rolValue = document.getElementById('editRol').value;
+        console.log('Rol seleccionado en el dropdown:', rolValue);
+        
+        // Verificar que todos los campos requeridos estén presentes
+        const nombre = document.getElementById('editNombre').value;
+        const email = document.getElementById('editEmail').value;
+        
+        if (!nombre || !email || !rolValue) {
+            e.preventDefault();
+            alert('Error: Todos los campos requeridos deben estar completos');
+            return false;
+        }
+        
+        // Verificación adicional del rol
+        if (rolValue === 'socio') {
+            console.log('✅ Rol "socio" detectado correctamente');
+        } else {
+            console.log('⚠️ Rol detectado:', rolValue);
+        }
+        
+        console.log('✅ Formulario válido, enviando...');
+        
+        // Mostrar confirmación al usuario
+        if (!confirm('¿Estás seguro de que quieres guardar los cambios?')) {
+            e.preventDefault();
+            return false;
+        }
+        
+        // Mostrar indicador de carga
+        const submitBtn = this.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Guardando...';
+        }
+        
+        // No prevenir el envío por defecto, dejar que se envíe normalmente
     });
 
     // Cerrar modales al hacer clic fuera de ellos
@@ -413,18 +495,153 @@
         }
     }
 
+    // Función de prueba JavaScript
+    function testJavaScript() {
+        console.log('=== PRUEBA DE JAVASCRIPT ===');
+        console.log('✅ JavaScript está funcionando correctamente');
+        
+        // Verificar elementos del modal
+        const modal = document.getElementById('editUserModal');
+        const form = document.getElementById('editUserForm');
+        const rolSelect = document.getElementById('editRol');
+        
+        if (modal) {
+            console.log('✅ Modal encontrado');
+        } else {
+            console.log('❌ Modal NO encontrado');
+        }
+        
+        if (form) {
+            console.log('✅ Formulario encontrado');
+        } else {
+            console.log('❌ Formulario NO encontrado');
+        }
+        
+        if (rolSelect) {
+            console.log('✅ Select de rol encontrado');
+            console.log('Opciones disponibles:', rolSelect.options.length);
+            for (let i = 0; i < rolSelect.options.length; i++) {
+                console.log(`Opción ${i}: ${rolSelect.options[i].value} - ${rolSelect.options[i].text}`);
+            }
+        } else {
+            console.log('❌ Select de rol NO encontrado');
+        }
+        
+        alert('Prueba de JavaScript completada. Revisa la consola del navegador (F12).');
+    }
+
+    // Función para mostrar información de contraseña
+    function showPasswordInfo(userId, userEmail) {
+        // Mostrar indicador de carga
+        const loadingInfo = `
+🔐 OBTENIENDO CONTRASEÑA...
+
+👤 Usuario ID: ${userId}
+📧 Email: ${userEmail}
+
+⏳ Consultando base de datos...
+        `;
+        
+        if (!confirm(loadingInfo)) {
+            return;
+        }
+
+        // Hacer petición AJAX para obtener la contraseña
+        fetch(`<?= URL_ROOT ?>/admin/obtenerPassword/${userId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({
+                csrf_token: '<?= generateCsrfToken() ?>'
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const info = `
+🔐 INFORMACIÓN DE CONTRASEÑA
+
+👤 Usuario: ${data.user_name}
+📧 Email: ${data.user_email}
+🎭 Rol: ${data.user_role}
+
+🔑 Contraseña del Usuario:
+✅ ${data.password}
+
+📋 Estado:
+${data.status}
+
+🛠️ Acciones Disponibles:
+• Botón "Resetear" - Genera nueva contraseña
+• Se envía por email al usuario
+
+⚠️ IMPORTANTE:
+• Esta es la contraseña actual del usuario
+• El usuario debe cambiarla en su primer acceso
+• Por seguridad, no la compartas por email
+
+¿Deseas resetear la contraseña de este usuario?
+                `;
+                
+                if (confirm(info)) {
+                    openResetModal(userId);
+                }
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al obtener la contraseña. Revisa la consola para más detalles.');
+        });
+    }
+
     // Inicializar cuando el DOM esté listo
     document.addEventListener('DOMContentLoaded', function() {
         console.log('Página de usuarios cargada correctamente');
         
-        // Event listeners para formularios
-        document.getElementById('editUserForm').addEventListener('submit', function(e) {
-            console.log('Enviando formulario de edición para usuario:', currentUserId);
+        // Verificar que todos los elementos necesarios estén presentes
+        const requiredElements = [
+            'editUserModal',
+            'editUserForm',
+            'editUserId',
+            'editNombre',
+            'editApellidos',
+            'editEmail',
+            'editRol',
+            'editActivo',
+            'resetPasswordForm'
+        ];
+        
+        let allElementsPresent = true;
+        requiredElements.forEach(elementId => {
+            const element = document.getElementById(elementId);
+            if (!element) {
+                console.error(`❌ Elemento requerido no encontrado: ${elementId}`);
+                allElementsPresent = false;
+            } else {
+                console.log(`✅ Elemento encontrado: ${elementId}`);
+            }
         });
         
-        document.getElementById('resetPasswordForm').addEventListener('submit', function(e) {
-            console.log('Reseteando contraseña...');
-        });
+        if (allElementsPresent) {
+            console.log('✅ Todos los elementos requeridos están presentes');
+        } else {
+            console.error('❌ Faltan elementos requeridos');
+        }
+        
+        // Event listener para el formulario de resetear contraseña
+        const resetForm = document.getElementById('resetPasswordForm');
+        if (resetForm) {
+            resetForm.addEventListener('submit', function(e) {
+                console.log('Reseteando contraseña...');
+            });
+        }
+        
+        // Verificar que el JavaScript funcione correctamente
+        console.log('✅ JavaScript inicializado correctamente');
     });
     </script>
 </body>

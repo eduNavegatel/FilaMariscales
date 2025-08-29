@@ -1,9 +1,6 @@
 <?php
-use App\Controllers\AuthController;
-use App\Controllers\Pages;
-use App\Controllers\Admin\AdminController;
-use App\Controllers\Admin\EventController;
-use App\Controllers\Admin\UserController;
+// Note: No need for use statements in this simple router setup
+// Controllers are loaded directly by their class names
 
 // Create a new Router instance
 $router = new Router();
@@ -22,11 +19,18 @@ $router->get('descargas', 'Pages@descargas');
 $router->get('tienda', 'Pages@tienda');
 $router->get('patrocinadores', 'Pages@patrocinadores');
 $router->get('hermanamientos', 'Pages@hermanamientos');
-$router->get('socios', 'Pages@socios');
 $router->get('login', 'Pages@login');
 $router->post('login', 'Pages@login');
 $router->get('registro', 'Pages@registro');
 $router->post('registro', 'Pages@registro');
+
+// Socios routes
+$router->group('socios', function($router) {
+    $router->get('', 'SociosController@index');
+    $router->post('login', 'SociosController@login');
+    $router->get('dashboard', 'SociosController@dashboard');
+    $router->get('logout', 'SociosController@logout');
+});
 
 // Auth routes
 $router->group('auth', function($router) {
@@ -49,6 +53,17 @@ $router->group('', function($router) {
     $router->post('profile/change-password', 'UserController@changePassword');
     $router->post('events/{id}/register', 'EventController@register');
     $router->post('events/{id}/cancel', 'EventController@cancelRegistration');
+});
+
+// API routes
+$router->group('api', function($router) {
+    $router->get('events', 'ApiController@getEvents');
+    $router->get('events/{id}', 'ApiController@getEvent');
+    $router->post('events', 'ApiController@createEvent');
+    $router->put('events/{id}', 'ApiController@updateEvent');
+    $router->delete('events/{id}', 'ApiController@deleteEvent');
+    $router->get('stats', 'ApiController@getStats');
+    $router->options('*', 'ApiController@handleOptions');
 });
 
 // Admin routes

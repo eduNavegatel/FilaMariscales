@@ -134,6 +134,22 @@ class Pages extends Controller {
 
     // Página de socios
     public function socios() {
+        // Verificar si el usuario está logueado
+        if (!isLoggedIn()) {
+            // Si no está logueado, redirigir al login
+            setFlashMessage('error', 'Debes iniciar sesión para acceder a la zona de socios');
+            $this->redirect('/login');
+            return;
+        }
+        
+        // Verificar si el usuario es socio o admin
+        $user = $this->userModel->findUserById($_SESSION['user_id']);
+        if (!$user || ($user->rol !== 'socio' && $user->rol !== 'admin')) {
+            setFlashMessage('error', 'No tienes permisos para acceder a la zona de socios');
+            $this->redirect('/');
+            return;
+        }
+        
         $data = [
             'title' => 'Zona de Socios',
             'description' => 'Área exclusiva para socios de la Filá Mariscales'

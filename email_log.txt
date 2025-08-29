@@ -1,0 +1,14 @@
+=== EMAIL SENT ===
+Date: 2025-08-22 13:30:11
+To: fran@fran.es
+Subject: Bienvenido a Filá Mariscales - Tus Credenciales de Acceso
+Status: sent
+==================
+
+=== EMAIL SENT ===
+Date: 2025-08-22 13:30:11
+To: admin@mariscales.com
+Subject: Nuevo Usuario Registrado - Panel de Control
+Status: sent
+==================
+

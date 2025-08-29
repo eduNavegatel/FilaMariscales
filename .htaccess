@@ -3,39 +3,13 @@
 # Habilitar reescritura de URLs
 RewriteEngine On
 
-# Redirigir imágenes de uploads a través del script servidor
-RewriteCond %{REQUEST_URI} ^/uploads/(carousel|gallery|eventos)/.*\.(jpg|jpeg|png|gif|webp)$
-RewriteRule ^uploads/(.*)$ /prueba-php/public/serve-image.php?path=uploads/$1 [L,QSA]
-
-# Permitir acceso directo a archivos estáticos
-RewriteCond %{REQUEST_FILENAME} -f
-RewriteRule ^ - [L]
-
 # Redirigir todo lo demás a public/index.php
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ /prueba-php/public/index.php?url=$1 [L,QSA]
 
 # Configuración de seguridad
-<Files "*.php">
-    # Denegar acceso a archivos PHP fuera de public/
-    RewriteCond %{REQUEST_URI} !^/prueba-php/public/
-    RewriteRule ^ - [F]
-</Files>
-
-# Configuración de caché para imágenes
-<FilesMatch "\.(jpg|jpeg|png|gif|webp)$">
-    Header set Cache-Control "max-age=31536000, public"
-</FilesMatch>
-
-# Configuración de caché para CSS y JS
-<FilesMatch "\.(css|js)$">
-    Header set Cache-Control "max-age=86400, public"
-</FilesMatch>
-
-# Configuración de seguridad adicional
 Options -Indexes
-Options -ExecCGI
 
 # Denegar acceso a archivos sensibles
 <FilesMatch "\.(htaccess|htpasswd|ini|log|sh|sql|conf)$">

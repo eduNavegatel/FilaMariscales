@@ -62,3 +62,49 @@ ErrorDocument 500 /prueba-php/public/index.php?url=error/500
     ExpiresByType image/x-icon "access plus 1 year"
     ExpiresDefault "access plus 2 days"
 </IfModule>
+
+# PWA Headers
+<IfModule mod_headers.c>
+    # Service Worker
+    Header set Service-Worker-Allowed "/"
+    
+    # Security Headers
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "DENY"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    
+    # PWA Headers
+    <Files "manifest.json">
+        Header set Cache-Control "public, max-age=31536000"
+    </Files>
+    <Files "sw.js">
+        Header set Cache-Control "public, max-age=31536000"
+    </Files>
+</IfModule>
+
+# MIME Types for PWA
+<IfModule mod_mime.c>
+    AddType application/manifest+json .json
+    AddType application/x-web-app-manifest+json .webapp
+</IfModule>
+
+# Compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+</IfModule>
+
+# Rewrite rules for clean URLs
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]

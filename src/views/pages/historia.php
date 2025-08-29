@@ -287,10 +287,10 @@
                         Únete a la Filá Mariscales y forma parte de una tradición centenaria. 
                         Descubre el honor, la hermandad y la nobleza de los Caballeros Templarios.
                     </p>
-                    <a href="/prueba-php/public/pages/registro" class="btn btn-warning btn-lg me-3">
+                    <a href="/prueba-php/public/registro" class="btn btn-warning btn-lg me-3">
                         <i class="bi bi-person-plus me-2"></i>Únete a la Filá
                     </a>
-                    <a href="/prueba-php/public/pages/contacto" class="btn btn-outline-light btn-lg">
+                    <a href="/prueba-php/public/contacto" class="btn btn-outline-light btn-lg">
                         <i class="bi bi-envelope me-2"></i>Contáctanos
                     </a>
                 </div>
