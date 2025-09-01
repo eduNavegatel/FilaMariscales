@@ -268,3 +268,4 @@ self.addEventListener('unhandledrejection', (event) => {
 console.log('🛡️ Service Worker cargado correctamente');
 
 
+

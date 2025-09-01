@@ -111,53 +111,11 @@ $total_paginas = count($libro_paginas);
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-12">
-                <div class="flipbook-instructions text-center mb-4">
-                    <h4 class="text-gradient mb-3">
-                        <i class="fas fa-hand-pointer me-2"></i>Instrucciones de Uso
-                    </h4>
-                    <div class="instructions-grid">
-                        <div class="instruction-item">
-                            <i class="fas fa-mouse-pointer"></i>
-                            <span>Haz clic en las páginas para navegar</span>
-                        </div>
-                        <div class="instruction-item">
-                            <i class="fas fa-keyboard"></i>
-                            <span>Usa las flechas del teclado</span>
-                        </div>
-                        <div class="instruction-item">
-                            <i class="fas fa-list"></i>
-                            <span>Usa los botones de capítulos abajo</span>
-                        </div>
-                    </div>
-                </div>
                 
                 <div id="flipbookContainer" class="flipbook-container">
                     <div class="flipbook-loading">
                         Cargando el libro histórico...
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Chapter Navigation -->
-<section class="chapter-nav py-4">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <h4 class="text-center mb-4">
-                    <i class="fas fa-list me-2"></i>Navegación por Capítulos
-                </h4>
-                <div class="chapter-grid">
-                    <?php foreach ($libro_paginas as $index => $pagina): ?>
-                    <button class="chapter-btn <?php echo $index === 0 ? 'active' : ''; ?>" 
-                            data-page="<?php echo $index; ?>">
-                        <div class="chapter-number"><?php echo $index + 1; ?></div>
-                        <div class="chapter-title"><?php echo $pagina['titulo']; ?></div>
-                        <div class="chapter-date"><?php echo $pagina['fecha']; ?></div>
-                    </button>
-                    <?php endforeach; ?>
                 </div>
             </div>
         </div>
@@ -180,99 +138,8 @@ $total_paginas = count($libro_paginas);
     min-width: 120px;
 }
 
-/* Flip Book Instructions */
-.flipbook-instructions {
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 15px;
-    padding: 2rem;
-    border: 2px solid var(--primary);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
-
-.instructions-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.instruction-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem;
-    background: rgba(220, 20, 60, 0.1);
-    border-radius: 8px;
-    font-size: 0.9rem;
-    color: var(--primary);
-}
-
-.instruction-item i {
-    font-size: 1.2rem;
-    color: var(--primary);
-}
-
-/* Chapter Navigation */
-.chapter-nav {
-    background: rgba(248, 249, 250, 0.8);
-    border-top: 2px solid var(--primary);
-}
-
-.chapter-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem;
-}
-
-.chapter-btn {
-    background: rgba(255, 255, 255, 0.9);
-    border: 2px solid var(--primary);
-    border-radius: 10px;
-    padding: 1.5rem;
-    text-align: center;
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.chapter-btn:hover {
-    background: var(--primary);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(220, 20, 60, 0.3);
-}
-
-.chapter-btn.active {
-    background: var(--primary);
-    color: white;
-    box-shadow: 0 5px 15px rgba(220, 20, 60, 0.3);
-}
-
-.chapter-number {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-}
-
-.chapter-title {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
-
-.chapter-date {
-    font-size: 0.9rem;
-    opacity: 0.8;
-}
-
 /* Responsive */
 @media (max-width: 768px) {
-    .instructions-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .chapter-grid {
-        grid-template-columns: 1fr;
-    }
     
     .book-stats {
         flex-direction: column;
