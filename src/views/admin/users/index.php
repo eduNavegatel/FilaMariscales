@@ -391,13 +391,19 @@
     document.getElementById('editUserForm').addEventListener('submit', function(e) {
         console.log('Formulario de edición enviado');
         console.log('Form action:', this.action);
-        console.log('Form data:', new FormData(this));
+        console.log('Usuario ID:', currentUserId);
         
         // Log form values
         const formData = new FormData(this);
         for (let [key, value] of formData.entries()) {
             console.log(key + ': ' + value);
         }
+        
+        // Verificar que el rol se está enviando correctamente
+        const rolValue = document.getElementById('editRol').value;
+        console.log('Rol seleccionado:', rolValue);
+        
+        // No prevenir el envío por defecto, dejar que se envíe normalmente
     });
 
     // Cerrar modales al hacer clic fuera de ellos
@@ -417,11 +423,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         console.log('Página de usuarios cargada correctamente');
         
-        // Event listeners para formularios
-        document.getElementById('editUserForm').addEventListener('submit', function(e) {
-            console.log('Enviando formulario de edición para usuario:', currentUserId);
-        });
-        
+        // Event listener para el formulario de resetear contraseña
         document.getElementById('resetPasswordForm').addEventListener('submit', function(e) {
             console.log('Reseteando contraseña...');
         });

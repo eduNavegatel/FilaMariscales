@@ -255,17 +255,9 @@ class AdminController extends Controller {
             }
             
             // Validate role
-            $validRoles = ['user', 'admin'];
+            $validRoles = ['user', 'socio', 'admin'];
             if (!in_array($userData['rol'], $validRoles)) {
-                // If trying to set 'socio' role, check if database supports it
-                if ($userData['rol'] === 'socio') {
-                    error_log("Attempting to set 'socio' role - checking database support");
-                    // For now, fallback to 'user' if 'socio' is not supported
-                    $userData['rol'] = 'user';
-                    error_log("Fallback to 'user' role due to database limitation");
-                } else {
-                    $userData['errors']['rol'] = 'Rol inválido. Debe ser: ' . implode(', ', $validRoles);
-                }
+                $userData['errors']['rol'] = 'Rol inválido. Debe ser: ' . implode(', ', $validRoles);
             }
             
             // Debug: Log the data being processed

@@ -5,7 +5,7 @@ $user = (object) array_merge([
     'nombre' => '',
     'apellidos' => '',
     'email' => '',
-    'rol' => 'usuario',
+    'rol' => 'user',
     'activo' => 1
 ], (array)($data ?? []));
 
