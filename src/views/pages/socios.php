@@ -1,17 +1,49 @@
 <?php
+// Página de Socios - Filá Mariscales
+// Debug: Verificar que la página se está ejecutando
+error_log("Página de socios iniciando...");
+
 // Conexión a la base de datos
 require_once dirname(dirname(dirname(__DIR__))) . '/src/config/config.php';
 require_once dirname(dirname(dirname(__DIR__))) . '/src/models/Database.php';
 
-$db = new Database();
+try {
+    $db = new Database();
+    
+    // Verificar conexión
+    if (!$db) {
+        throw new Exception("No se pudo conectar a la base de datos");
+    }
+    
+    // Habilitar reporte de errores para depuración
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    
+} catch (Exception $e) {
+    error_log("Error en página de socios: " . $e->getMessage());
+    echo "<div style='background: #f8d7da; color: #721c24; padding: 1rem; margin: 1rem; border: 1px solid #f5c6cb; border-radius: 0.25rem;'>";
+    echo "<strong>Error de conexión:</strong> " . htmlspecialchars($e->getMessage());
+    echo "</div>";
+    return;
+}
 
 // Obtener estadísticas reales
 $stats = [];
 
-// Contar socios activos (usuarios con rol 'socio' y estado 'activo')
-$db->query("SELECT COUNT(*) as count FROM users WHERE rol = 'socio' AND estado = 'activo'");
-$result = $db->single();
-$stats['socios_activos'] = $result ? $result->count : 0;
+try {
+    // Contar socios activos (usuarios con rol 'socio' y activo = 1)
+    $db->query("SELECT COUNT(*) as count FROM users WHERE rol = 'socio' AND activo = 1");
+    $result = $db->single();
+    $stats['socios_activos'] = $result ? $result->count : 0;
+    
+    if ($result === false) {
+        error_log("Error contando socios activos en página de socios");
+        $stats['socios_activos'] = 0;
+    }
+} catch (Exception $e) {
+    error_log("Error en consulta de socios activos: " . $e->getMessage());
+    $stats['socios_activos'] = 0;
+}
 
 // Calcular años de historia (desde 1985)
 $anio_fundacion = 1985;
@@ -25,8 +57,18 @@ $result = $db->single();
 $stats['eventos_anuales'] = $result ? $result->count : 0;
 
 // Obtener datos de ejemplo de socio (primer socio activo)
-$db->query("SELECT * FROM users WHERE rol = 'socio' AND estado = 'activo' ORDER BY fecha_registro ASC LIMIT 1");
-$socio_ejemplo = $db->single();
+try {
+    $db->query("SELECT * FROM users WHERE rol = 'socio' AND activo = 1 ORDER BY fecha_registro ASC LIMIT 1");
+    $socio_ejemplo = $db->single();
+    
+    if ($socio_ejemplo === false) {
+        error_log("No se encontraron socios activos en página de socios");
+        $socio_ejemplo = null;
+    }
+} catch (Exception $e) {
+    error_log("Error obteniendo socio de ejemplo: " . $e->getMessage());
+    $socio_ejemplo = null;
+}
 
 if ($socio_ejemplo) {
     $socio_data = [
@@ -52,8 +94,18 @@ if ($socio_ejemplo) {
 }
 
 // Obtener eventos reales de la base de datos
-$db->query("SELECT * FROM eventos WHERE fecha_inicio >= NOW() AND estado = 'activo' ORDER BY fecha_inicio ASC LIMIT 5");
-$eventos_db = $db->resultSet();
+try {
+    $db->query("SELECT * FROM eventos WHERE fecha_inicio >= NOW() AND estado = 'activo' ORDER BY fecha_inicio ASC LIMIT 5");
+    $eventos_db = $db->resultSet();
+    
+    if ($eventos_db === false) {
+        error_log("Error obteniendo eventos en página de socios");
+        $eventos_db = [];
+    }
+} catch (Exception $e) {
+    error_log("Error en consulta de eventos: " . $e->getMessage());
+    $eventos_db = [];
+}
 
 $eventos_socios = [];
 if ($eventos_db) {
@@ -115,6 +167,19 @@ $documentos_socios = [
     ]
 ];
 ?>
+
+<!-- Debug Info (temporal) -->
+<?php if (isset($_GET['debug'])): ?>
+<div style="background: #e7f3ff; border: 1px solid #b3d9ff; padding: 1rem; margin: 1rem; border-radius: 0.25rem;">
+    <h4>🔍 Información de Depuración</h4>
+    <p><strong>Socios activos:</strong> <?php echo $stats['socios_activos']; ?></p>
+    <p><strong>Años de historia:</strong> <?php echo $stats['anios_historia']; ?></p>
+    <p><strong>Eventos anuales:</strong> <?php echo $stats['eventos_anuales']; ?></p>
+    <p><strong>Socio ejemplo encontrado:</strong> <?php echo $socio_ejemplo ? 'Sí' : 'No'; ?></p>
+    <p><strong>Eventos encontrados:</strong> <?php echo count($eventos_db); ?></p>
+    <p><strong>Timestamp:</strong> <?php echo date('Y-m-d H:i:s'); ?></p>
+</div>
+<?php endif; ?>
 
 <!-- Hero Section -->
 <section class="hero-section py-5">
