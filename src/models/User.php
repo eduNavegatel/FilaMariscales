@@ -159,6 +159,12 @@ class User {
         // Debug logging
         error_log("User::updateUser called with data: " . print_r($data, true));
         
+        // Verificar que el ID esté presente
+        if (empty($data['id'])) {
+            error_log("ERROR: ID de usuario no proporcionado");
+            return false;
+        }
+        
         $query = 'UPDATE ' . $this->table . ' SET nombre = :nombre, apellidos = :apellidos, email = :email, rol = :rol, activo = :activo';
         
         // Add password to query if provided
@@ -170,26 +176,33 @@ class User {
         
         error_log("SQL Query: " . $query);
         
-        $this->db->query($query);
-        
-        // Bind values
-        $this->db->bind(':id', $data['id']);
-        $this->db->bind(':nombre', $data['nombre']);
-        $this->db->bind(':apellidos', $data['apellidos']);
-        $this->db->bind(':email', $data['email']);
-        $this->db->bind(':rol', $data['rol']);
-        $this->db->bind(':activo', $data['activo']);
-
-        if (!empty($data['password'])) {
-            $this->db->bind(':password', $data['password']);
-        }
-
-        // Execute
         try {
+            $this->db->query($query);
+            
+            // Bind values
+            $this->db->bind(':id', $data['id']);
+            $this->db->bind(':nombre', $data['nombre']);
+            $this->db->bind(':apellidos', $data['apellidos']);
+            $this->db->bind(':email', $data['email']);
+            $this->db->bind(':rol', $data['rol']);
+            $this->db->bind(':activo', $data['activo']);
+
+            if (!empty($data['password'])) {
+                $this->db->bind(':password', $data['password']);
+            }
+
+            // Execute
             $result = $this->db->execute();
             error_log("Database execute result: " . ($result ? 'true' : 'false'));
             error_log("Rows affected: " . $this->db->rowCount());
-            return $result;
+            
+            if ($result && $this->db->rowCount() > 0) {
+                error_log("✅ Usuario actualizado exitosamente");
+                return true;
+            } else {
+                error_log("⚠️ No se actualizaron filas. Posiblemente el usuario no existe o no hay cambios");
+                return false;
+            }
         } catch (Exception $e) {
             error_log("Database error in updateUser: " . $e->getMessage());
             return false;

@@ -80,6 +80,51 @@
     </div>
 </div>
 
+<!-- Notificaciones del Sistema -->
+<div class="row mb-4">
+    <div class="col-md-6 mb-3">
+        <div class="card text-white bg-danger h-100">
+            <div class="card-body d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h5 class="card-title mb-1">Notificaciones Pendientes</h5>
+                        <h2 class="mb-0" id="notifications-count">0</h2>
+                        <small class="opacity-75">Requieren verificación</small>
+                    </div>
+                    <i class="fas fa-bell fa-2x opacity-50"></i>
+                </div>
+                <div class="mt-auto">
+                    <button type="button" class="btn btn-sm btn-outline-light" onclick="loadNotifications()">
+                        <i class="fas fa-sync-alt me-1"></i>Actualizar
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-light ms-2" onclick="markAllAsVerified()">
+                        <i class="fas fa-check me-1"></i>Verificar Todas
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-3">
+        <div class="card text-white bg-info h-100">
+            <div class="card-body d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h5 class="card-title mb-1">Emails Enviados</h5>
+                        <h2 class="mb-0" id="emails-sent">0</h2>
+                        <small class="opacity-75">Notificaciones automáticas</small>
+                    </div>
+                    <i class="fas fa-envelope fa-2x opacity-50"></i>
+                </div>
+                <div class="mt-auto">
+                    <a href="#" class="text-white d-block small" onclick="viewEmailLogs()">
+                        <i class="fas fa-eye me-1"></i>Ver logs de emails
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Estadísticas Secundarias -->
 <div class="row mb-4">
     <div class="col-md-3 mb-3">
@@ -147,8 +192,13 @@
 <div class="row">
     <div class="col-md-6 mb-4">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header d-flex justify-content-between align-items-center">
                 <h6 class="mb-0 text-white">Últimos Usuarios Registrados</h6>
+                <div>
+                    <button type="button" class="btn btn-sm btn-outline-light" onclick="loadNotifications()" title="Actualizar notificaciones">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -158,22 +208,35 @@
                                 <th>Nombre</th>
                                 <th>Email</th>
                                 <th>Rol</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="recent-users-table">
                             <?php if (!empty($data['recentUsers'])): ?>
                                 <?php foreach ($data['recentUsers'] as $user): ?>
                                     <tr>
                                         <td><?= htmlspecialchars($user->nombre . ' ' . $user->apellidos) ?></td>
                                         <td><?= htmlspecialchars($user->email) ?></td>
-                                        <td><span class="badge bg-<?= $user->rol === 'admin' ? 'primary' : 'secondary' ?>">
-                                            <?= ucfirst($user->rol) ?>
+                                        <td><span class="badge bg-<?= $user->rol === 'admin' ? 'primary' : ($user->rol === 'socio' ? 'success' : 'secondary') ?>">
+                                            <?= ucfirst($user->rol ?? 'user') ?>
                                         </span></td>
+                                        <td>
+                                            <span class="badge bg-success">Activo</span>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="verificarUsuario(<?= $user->id ?>)" title="Verificar usuario">
+                                                <i class="fas fa-check me-1"></i>Verificar
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-outline-info ms-1" onclick="verPassword(<?= $user->id ?>)" title="Ver contraseña">
+                                                <i class="fas fa-eye me-1"></i>Ver
+                                            </button>
+                                        </td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="3" class="text-center py-3 text-secondary">No hay usuarios registrados</td>
+                                    <td colspan="5" class="text-center py-3 text-secondary">No hay usuarios registrados</td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>
@@ -1041,4 +1104,161 @@ function initializeCalendar() {
     </div>
 </div>
 
+<!-- Modal para Ver Contraseña -->
+<div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="passwordModalLabel">Información de Contraseña</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="passwordModalBody">
+                <!-- Contenido dinámico -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<!-- JavaScript para Notificaciones -->
+<script>
+// Cargar notificaciones al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+    loadNotifications();
+    updateNotificationCount();
+});
+
+// Función para cargar notificaciones
+function loadNotifications() {
+    fetch('<?= URL_ROOT ?>/admin/getNotificacionesRecientes', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({
+            csrf_token: '<?= generateCsrfToken() ?>'
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            updateNotificationCount();
+            console.log('Notificaciones cargadas:', data.notifications);
+        }
+    })
+    .catch(error => {
+        console.error('Error al cargar notificaciones:', error);
+    });
+}
+
+// Función para actualizar el contador de notificaciones
+function updateNotificationCount() {
+    fetch('<?= URL_ROOT ?>/admin/getNotificacionesPendientes', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({
+            csrf_token: '<?= generateCsrfToken() ?>'
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('notifications-count').textContent = data.count;
+            
+            // Cambiar color según la cantidad
+            const countElement = document.getElementById('notifications-count');
+            if (data.count > 0) {
+                countElement.style.color = '#ffc107';
+                countElement.style.fontWeight = 'bold';
+            } else {
+                countElement.style.color = 'white';
+                countElement.style.fontWeight = 'normal';
+            }
+        }
+    })
+    .catch(error => {
+        console.error('Error al actualizar contador:', error);
+    });
+}
+
+// Función para verificar un usuario
+function verificarUsuario(userId) {
+    if (confirm('¿Deseas marcar este usuario como verificado?')) {
+        // Aquí puedes implementar la lógica para verificar el usuario
+        alert('Usuario verificado correctamente');
+    }
+}
+
+// Función para ver contraseña de usuario
+function verPassword(userId) {
+    fetch('<?= URL_ROOT ?>/admin/obtenerPassword/' + userId, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({
+            csrf_token: '<?= generateCsrfToken() ?>'
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const modalBody = document.getElementById('passwordModalBody');
+            modalBody.innerHTML = `
+                <div class="alert alert-info">
+                    <h6>Información del Usuario:</h6>
+                    <p><strong>Nombre:</strong> ${data.user_name}</p>
+                    <p><strong>Email:</strong> ${data.user_email}</p>
+                    <p><strong>Rol:</strong> ${data.user_role}</p>
+                    <hr>
+                    <h6>Credenciales:</h6>
+                    <p><strong>Contraseña:</strong> <code>${data.password}</code></p>
+                    <p><strong>Estado:</strong> ${data.status}</p>
+                </div>
+                <div class="alert alert-warning">
+                    <small>
+                        <i class="fas fa-exclamation-triangle me-1"></i>
+                        Esta es la contraseña que debes proporcionar al usuario.
+                        El usuario debe cambiarla en su primer acceso.
+                    </small>
+                </div>
+            `;
+            
+            const modal = new bootstrap.Modal(document.getElementById('passwordModal'));
+            modal.show();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al obtener la contraseña');
+    });
+}
+
+// Función para marcar todas las notificaciones como verificadas
+function markAllAsVerified() {
+    if (confirm('¿Deseas marcar todas las notificaciones como verificadas?')) {
+        // Aquí puedes implementar la lógica para marcar todas como verificadas
+        alert('Todas las notificaciones han sido verificadas');
+        updateNotificationCount();
+    }
+}
+
+// Función para ver logs de emails
+function viewEmailLogs() {
+    alert('Función para ver logs de emails - En desarrollo');
+}
+
+// Actualizar notificaciones cada 30 segundos
+setInterval(function() {
+    updateNotificationCount();
+}, 30000);
+</script>

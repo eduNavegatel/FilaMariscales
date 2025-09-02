@@ -1,5 +1,17 @@
 // Main JavaScript for Filá Mariscales website
 document.addEventListener('DOMContentLoaded', function() {
+    // Cargar JavaScript moderno
+    loadModernJS();
+    
+    // Cargar JavaScript de PWA
+    loadPWAJS();
+    
+    // Cargar JavaScript del flip book si estamos en la página del libro
+    if (window.location.pathname.includes('/libro')) {
+        loadFlipBookJS();
+    }
+    
+    // Funciones existentes
     initBootstrapComponents();
     initSmoothScrolling();
     initFormValidation();
@@ -8,6 +20,48 @@ document.addEventListener('DOMContentLoaded', function() {
     setActiveNavItem();
     initNavbarScroll();
 });
+
+function loadModernJS() {
+    // Cargar JavaScript moderno de forma asíncrona
+    const script = document.createElement('script');
+    script.src = '/assets/js/responsive-modern.js';
+    script.async = true;
+    script.onload = function() {
+        console.log('🚀 JavaScript moderno cargado correctamente');
+    };
+    script.onerror = function() {
+        console.warn('⚠️ No se pudo cargar el JavaScript moderno');
+    };
+    document.head.appendChild(script);
+}
+
+function loadFlipBookJS() {
+    // Cargar JavaScript del flip book de forma asíncrona
+    const script = document.createElement('script');
+    script.src = '/assets/js/flipbook.js';
+    script.async = true;
+    script.onload = function() {
+        console.log('📖 JavaScript del flip book cargado correctamente');
+    };
+    script.onerror = function() {
+        console.warn('⚠️ No se pudo cargar el JavaScript del flip book');
+    };
+    document.head.appendChild(script);
+}
+
+function loadPWAJS() {
+    // Cargar JavaScript de PWA de forma asíncrona
+    const script = document.createElement('script');
+    script.src = '/assets/js/pwa.js';
+    script.async = true;
+    script.onload = function() {
+        console.log('📱 JavaScript de PWA cargado correctamente');
+    };
+    script.onerror = function() {
+        console.warn('⚠️ No se pudo cargar el JavaScript de PWA');
+    };
+    document.head.appendChild(script);
+}
 
 function initBootstrapComponents() {
     // Tooltips

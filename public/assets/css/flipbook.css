@@ -1,0 +1,269 @@
+/* Flip Book - Estilo Libro Antiguo */
+
+.flipbook-container {
+    width: 900px;
+    height: 650px;
+    margin: 0 auto;
+    position: relative;
+    background: linear-gradient(135deg, #8B4513 0%, #654321 50%, #8B4513 100%);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 
+        0 30px 60px rgba(0, 0, 0, 0.6),
+        0 0 0 4px #654321,
+        0 0 0 8px #8B4513;
+    border: 3px solid #654321;
+}
+
+.flipbook {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    perspective: 2000px;
+}
+
+.flipbook-page {
+    position: absolute;
+    width: 450px;
+    height: 650px;
+    left: 50%;
+    top: 50%;
+    transform-origin: left center;
+    transform: translate(-50%, -50%);
+    background: #F5F5DC;
+    border-radius: 5px;
+    box-shadow: 
+        0 4px 12px rgba(0, 0, 0, 0.3),
+        0 0 0 1px rgba(139, 69, 19, 0.2);
+    cursor: pointer;
+    transition: transform 1s ease;
+    overflow: hidden;
+    border: 1px solid #D2B48C;
+    z-index: 1;
+}
+
+.flipbook-page.flipped {
+    transform: translate(-50%, -50%) rotateY(-180deg);
+    z-index: 0;
+}
+
+.flipbook-page.flipping {
+    z-index: 1000;
+}
+
+.page-front,
+.page-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    background: 
+        linear-gradient(135deg, #F5F5DC 0%, #F0E68C 50%, #F5F5DC 100%),
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 25px,
+            rgba(139, 69, 19, 0.08) 25px,
+            rgba(139, 69, 19, 0.08) 26px
+        );
+    padding: 50px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid #D2B48C;
+}
+
+.page-back {
+    transform: rotateY(180deg);
+    background: 
+        linear-gradient(135deg, #F0E68C 0%, #F5F5DC 50%, #F0E68C 100%),
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 25px,
+            rgba(139, 69, 19, 0.08) 25px,
+            rgba(139, 69, 19, 0.08) 26px
+        );
+}
+
+.page-header {
+    text-align: center;
+    background: linear-gradient(135deg, #8B4513 0%, #654321 50%, #8B4513 100%);
+    color: #F5F5DC;
+    padding: 25px;
+    margin: -50px -50px 40px -50px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border: 2px solid #654321;
+}
+
+.page-number {
+    font-family: 'Cinzel', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: 3px;
+    color: #DAA520;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.page-date {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    font-family: 'Crimson Text', serif;
+}
+
+.page-title {
+    font-family: 'Cinzel', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2F1B14;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    letter-spacing: 1px;
+    line-height: 1.2;
+}
+
+.page-subtitle {
+    font-family: 'Crimson Text', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+    color: #8B4513;
+    text-align: center;
+    margin-bottom: 40px;
+    text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.1);
+    letter-spacing: 0.5px;
+}
+
+.page-content {
+    flex: 1;
+    font-family: 'Crimson Text', serif;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    text-align: justify;
+    color: #2F1B14;
+    text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.05);
+}
+
+.page-content p {
+    margin-bottom: 25px;
+    text-indent: 25px;
+}
+
+.page-image {
+    text-align: center;
+    margin: 30px 0;
+}
+
+.page-image img {
+    max-width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 4px solid #8B4513;
+    box-shadow: 
+        0 8px 20px rgba(0, 0, 0, 0.3),
+        0 0 0 2px rgba(139, 69, 19, 0.2);
+    filter: sepia(0.2) contrast(1.1) brightness(0.95);
+}
+
+.page-footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 25px;
+    border-top: 3px solid #D2B48C;
+    background: linear-gradient(135deg, rgba(139, 69, 19, 0.1) 0%, transparent 50%);
+    border-radius: 8px;
+}
+
+.page-quote {
+    font-style: italic;
+    color: #8B4513;
+    font-size: 1rem;
+    text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.1);
+    font-family: 'Cinzel', serif;
+    line-height: 1.6;
+}
+
+.flipbook-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    font-family: 'Cinzel', serif;
+    font-size: 1.3rem;
+    color: #8B4513;
+}
+
+/* Efectos de sombra */
+.flipbook-page::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, 
+        rgba(0, 0, 0, 0.05) 0%, 
+        rgba(0, 0, 0, 0.02) 50%, 
+        rgba(0, 0, 0, 0) 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Responsive */
+@media (max-width: 1000px) {
+    .flipbook-container {
+        width: 100%;
+        height: 550px;
+        padding: 30px;
+    }
+    
+    .flipbook-page {
+        width: 350px;
+        height: 500px;
+    }
+    
+    .page-front,
+    .page-back {
+        padding: 30px;
+    }
+    
+    .page-title {
+        font-size: 1.6rem;
+    }
+    
+    .page-content {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 700px) {
+    .flipbook-container {
+        height: 450px;
+        padding: 20px;
+    }
+    
+    .flipbook-page {
+        width: 280px;
+        height: 400px;
+    }
+    
+    .page-number {
+        font-size: 2rem;
+    }
+    
+    .page-title {
+        font-size: 1.4rem;
+    }
+    
+    .page-front,
+    .page-back {
+        padding: 20px;
+    }
+}
+
+

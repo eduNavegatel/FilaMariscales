@@ -32,6 +32,12 @@ Vagrantfile
 /public/uploads/
 !/public/uploads/.gitkeep
 
+# Application directories
+/logs/
+/cache/
+/backups/
+/uploads/temp/
+
 # Debug bar
 /debugbar/
 

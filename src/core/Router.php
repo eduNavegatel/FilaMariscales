@@ -109,6 +109,9 @@ class Router {
      * Dispatch the request to the appropriate handler
      */
     public function dispatch() {
+        // Aplicar middleware de seguridad global
+        $this->applyGlobalSecurity();
+        
         $method = $_SERVER['REQUEST_METHOD'];
         
         // Get the URL from the query parameter (set by .htaccess)
@@ -160,6 +163,17 @@ class Router {
     }
     
     /**
+     * Aplica seguridad global a todas las peticiones
+     */
+    private function applyGlobalSecurity() {
+        if (class_exists('SecurityMiddleware')) {
+            $securityMiddleware = new SecurityMiddleware();
+            $securityMiddleware->apply();
+            $securityMiddleware->sanitizeInputs();
+        }
+    }
+    
+    /**
      * Call the route handler
      */
     private function callHandler($handler, $params = []) {
@@ -167,7 +181,12 @@ class Router {
             call_user_func_array($handler, $params);
         } elseif (is_string($handler) && strpos($handler, '@') !== false) {
             list($controller, $method) = explode('@', $handler, 2);
-            $controllerClass = $controller . 'Controller';
+            
+            // Check if controller already ends with 'Controller'
+            $controllerClass = $controller;
+            if (substr($controller, -10) !== 'Controller') {
+                $controllerClass = $controller . 'Controller';
+            }
             
             if (class_exists($controllerClass)) {
                 $controllerInstance = new $controllerClass();
