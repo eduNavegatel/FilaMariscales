@@ -519,6 +519,7 @@ $documentos_socios = [
 
 .btn-login {
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: #FFFFFF;
     border: none;
     border-radius: 10px;
     padding: 0.75rem 1.5rem;
