@@ -19,12 +19,14 @@
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <div>
                         <h5 class="card-title mb-1">Usuarios Registrados</h5>
-                        <h2 class="mb-0"><?= $data['userCount'] ?></h2>
+                        <h2 class="mb-0"><?= $userCount ?></h2>
                         <small class="opacity-75">Total de miembros</small>
                     </div>
                     <i class="fas fa-users fa-2x opacity-50"></i>
                 </div>
-                <a href="<?= URL_ROOT ?>/admin/usuarios" class="text-white mt-auto">Ver usuarios <i class="fas fa-arrow-right ms-1"></i></a>
+                <a href="<?= URL_ROOT ?>/admin/usuarios" class="btn btn-light btn-sm mt-auto">
+                    <i class="fas fa-users me-1"></i>Ver usuarios
+                </a>
             </div>
         </div>
     </div>
@@ -34,12 +36,14 @@
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <div>
                         <h5 class="card-title mb-1">Eventos Activos</h5>
-                        <h2 class="mb-0"><?= $data['eventCount'] ?></h2>
+                        <h2 class="mb-0"><?= $eventCount ?></h2>
                         <small class="opacity-75">En curso y próximos</small>
                     </div>
                     <i class="fas fa-calendar-alt fa-2x opacity-50"></i>
                 </div>
-                <a href="<?= URL_ROOT ?>/admin/eventos" class="text-white mt-auto">Ver eventos <i class="fas fa-arrow-right ms-1"></i></a>
+                <a href="<?= URL_ROOT ?>/admin/eventos" class="btn btn-light btn-sm mt-auto">
+                    <i class="fas fa-calendar-alt me-1"></i>Ver eventos
+                </a>
             </div>
         </div>
     </div>
@@ -49,12 +53,14 @@
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <div>
                         <h5 class="card-title mb-1">Galería</h5>
-                        <h2 class="mb-0"><?= isset($data['galleryCount']) ? $data['galleryCount'] : 0 ?></h2>
+                        <h2 class="mb-0"><?= isset($galleryCount) ? $galleryCount : 0 ?></h2>
                         <small class="opacity-75">Archivos multimedia</small>
                     </div>
                     <i class="fas fa-images fa-2x opacity-50"></i>
                 </div>
-                <a href="<?= URL_ROOT ?>/admin/galeria" class="text-white mt-auto">Gestionar galería <i class="fas fa-arrow-right ms-1"></i></a>
+                <a href="<?= URL_ROOT ?>/admin/galeria" class="btn btn-light btn-sm mt-auto">
+                    <i class="fas fa-images me-1"></i>Gestionar galería
+                </a>
             </div>
         </div>
     </div>
@@ -82,21 +88,7 @@
 
 <!-- Estadísticas Secundarias -->
 <div class="row mb-4">
-    <div class="col-md-3 mb-3">
-        <div class="card text-white bg-secondary h-100">
-            <div class="card-body d-flex flex-column">
-                <div class="d-flex justify-content-between align-items-start mb-3">
-                    <div>
-                        <h5 class="card-title mb-1">Socios Activos</h5>
-                        <h2 class="mb-0"><?= isset($data['sociosCount']) ? $data['sociosCount'] : 0 ?></h2>
-                        <small class="opacity-75">Con cuota al día</small>
-                    </div>
-                    <i class="fas fa-user-check fa-2x opacity-50"></i>
-                </div>
-                <a href="<?= URL_ROOT ?>/admin/socios" class="text-white mt-auto">Gestionar socios <i class="fas fa-arrow-right ms-1"></i></a>
-            </div>
-        </div>
-    </div>
+
     <div class="col-md-3 mb-3">
         <div class="card text-white bg-dark h-100">
             <div class="card-body d-flex flex-column">
@@ -108,7 +100,9 @@
                     </div>
                     <i class="fas fa-newspaper fa-2x opacity-50"></i>
                 </div>
-                <a href="<?= URL_ROOT ?>/admin/noticias" class="text-white mt-auto">Gestionar noticias <i class="fas fa-arrow-right ms-1"></i></a>
+                <a href="<?= URL_ROOT ?>/admin/noticias" class="btn btn-light btn-sm mt-auto">
+                    <i class="fas fa-newspaper me-1"></i>Gestionar noticias
+                </a>
             </div>
         </div>
     </div>
@@ -123,7 +117,9 @@
                     </div>
                     <i class="fas fa-envelope fa-2x opacity-50"></i>
                 </div>
-                <a href="<?= URL_ROOT ?>/admin/mensajes" class="text-white mt-auto">Ver mensajes <i class="fas fa-arrow-right ms-1"></i></a>
+                <a href="<?= URL_ROOT ?>/admin/mensajes" class="btn btn-light btn-sm mt-auto">
+                    <i class="fas fa-envelope me-1"></i>Ver mensajes
+                </a>
             </div>
         </div>
     </div>
@@ -138,7 +134,9 @@
                     </div>
                     <i class="fas fa-exclamation-triangle fa-2x opacity-50"></i>
                 </div>
-                <a href="<?= URL_ROOT ?>/admin/cuotas" class="text-white mt-auto">Gestionar cuotas <i class="fas fa-arrow-right ms-1"></i></a>
+                <a href="<?= URL_ROOT ?>/admin/cuotas" class="btn btn-light btn-sm mt-auto">
+                    <i class="fas fa-exclamation-triangle me-1"></i>Gestionar cuotas
+                </a>
             </div>
         </div>
     </div>
@@ -225,7 +223,7 @@
                 </h6>
             </div>
             <div class="card-body d-flex flex-column">
-                <div class="row flex-grow-1">
+                <div class="row flex-grow-1 admin-tools">
                     <div class="col-6 mb-3">
                         <a href="<?= URL_ROOT ?>/admin/backup" class="btn btn-outline-primary w-100 h-100 d-flex flex-column align-items-center justify-content-center">
                             <i class="fas fa-database fa-2x mb-2"></i>Backup BD

@@ -133,7 +133,7 @@ class User {
 
     // Get recent users for dashboard
     public function getRecentUsers($limit = 5) {
-        $this->db->query('SELECT id, nombre, apellidos, email, fecha_registro FROM ' . $this->table . ' ORDER BY fecha_registro DESC LIMIT :limit');
+        $this->db->query('SELECT id, nombre, apellidos, email, rol, fecha_registro FROM ' . $this->table . ' ORDER BY fecha_registro DESC LIMIT :limit');
         $this->db->bind(':limit', $limit);
         return $this->db->resultSet();
     }
@@ -169,10 +169,19 @@ class User {
         $query .= ' WHERE id = :id';
         
         error_log("SQL Query: " . $query);
+        error_log("Table name: " . $this->table);
+        error_log("Data types:");
+        error_log("  - ID: " . gettype($data['id']) . " = " . $data['id']);
+        error_log("  - Nombre: " . gettype($data['nombre']) . " = " . $data['nombre']);
+        error_log("  - Apellidos: " . gettype($data['apellidos']) . " = " . $data['apellidos']);
+        error_log("  - Email: " . gettype($data['email']) . " = " . $data['email']);
+        error_log("  - Rol: " . gettype($data['rol']) . " = " . $data['rol']);
+        error_log("  - Activo: " . gettype($data['activo']) . " = " . $data['activo']);
         
         $this->db->query($query);
         
         // Bind values
+        error_log("Binding values to query...");
         $this->db->bind(':id', $data['id']);
         $this->db->bind(':nombre', $data['nombre']);
         $this->db->bind(':apellidos', $data['apellidos']);
@@ -181,6 +190,7 @@ class User {
         $this->db->bind(':activo', $data['activo']);
 
         if (!empty($data['password'])) {
+            error_log("Binding password field");
             $this->db->bind(':password', $data['password']);
         }
 

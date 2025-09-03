@@ -253,6 +253,7 @@
             </div>
             <form id="editUserForm" method="POST">
                 <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+                <input type="hidden" id="editUserId" name="user_id" value="">
                 <div class="custom-modal-body">
                     <div class="mb-3">
                         <label for="editNombre" class="form-label">Nombre</label>
@@ -340,6 +341,17 @@
         const formAction = '/prueba-php/public/admin/editarUsuario/' + userId;
         document.getElementById('editUserForm').action = formAction;
         console.log('🔗 Form action set to:', formAction);
+        
+        // Agregar campo oculto con el ID del usuario
+        let userIdField = document.getElementById('editUserId');
+        if (!userIdField) {
+            userIdField = document.createElement('input');
+            userIdField.type = 'hidden';
+            userIdField.id = 'editUserId';
+            userIdField.name = 'user_id';
+            document.getElementById('editUserForm').appendChild(userIdField);
+        }
+        userIdField.value = userId;
         
         // Mostrar el modal
         document.getElementById('editUserModal').style.display = 'block';

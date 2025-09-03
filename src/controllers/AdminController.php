@@ -1,11 +1,31 @@
 <?php
+// Forzar la carga de admin_credentials.php ANTES de cualquier otra cosa
+$adminCredPath = __DIR__ . '/../config/admin_credentials.php';
+if (file_exists($adminCredPath)) {
+    require_once $adminCredPath;
+    error_log("AdminController: admin_credentials.php cargado forzadamente");
+} else {
+    error_log("AdminController: ERROR - admin_credentials.php NO encontrado en: " . $adminCredPath);
+}
+
 // Verificar si los archivos existen antes de incluirlos
 if (file_exists(__DIR__ . '/../helpers/SecurityHelper.php')) {
     require_once __DIR__ . '/../helpers/SecurityHelper.php';
 }
 
-if (file_exists(__DIR__ . '/../config/admin_credentials.php')) {
-    require_once __DIR__ . '/../config/admin_credentials.php';
+// Verificar que las funciones estén disponibles
+if (!function_exists('isAdminLoggedIn')) {
+    error_log("AdminController: ERROR - isAdminLoggedIn NO está disponible después de cargar admin_credentials.php");
+    // No usar die() aquí, solo log del error
+} else {
+    error_log("AdminController: ✅ isAdminLoggedIn está disponible");
+}
+
+if (!function_exists('getAdminInfo')) {
+    error_log("AdminController: ERROR - getAdminInfo NO está disponible después de cargar admin_credentials.php");
+    // No usar die() aquí, solo log del error
+} else {
+    error_log("AdminController: ✅ getAdminInfo está disponible");
 }
 
 class AdminController extends Controller {
@@ -14,10 +34,18 @@ class AdminController extends Controller {
     private $eventModel;
 
     public function __construct() {
+        error_log("AdminController::__construct() iniciando");
+        
         // Verify admin session using custom admin auth
-        if (!isAdminLoggedIn()) {
-            header('Location: /prueba-php/public/admin/login');
-            exit;
+        if (function_exists('isAdminLoggedIn')) {
+            if (!isAdminLoggedIn()) {
+                error_log("AdminController: Usuario NO autenticado, redirigiendo a login");
+                header('Location: /prueba-php/public/admin/login');
+                exit;
+            }
+            error_log("AdminController: Usuario autenticado correctamente");
+        } else {
+            error_log("AdminController: ⚠️ isAdminLoggedIn no disponible, continuando sin verificación de sesión");
         }
         
         // Initialize SecurityHelper only if it exists
@@ -25,21 +53,37 @@ class AdminController extends Controller {
             $this->securityHelper = new SecurityHelper();
         }
         
-        // Initialize models only if they exist
-        if (class_exists('User')) {
-            $this->userModel = $this->model('User');
-            error_log("User model initialized successfully");
-        } else {
-            error_log("User class not found");
+        // Initialize models only if they exist - with error handling
+        try {
+            if (class_exists('User')) {
+                $this->userModel = $this->model('User');
+                error_log("User model initialized successfully");
+            } else {
+                error_log("User class not found");
+            }
+        } catch (Exception $e) {
+            error_log("Error initializing User model: " . $e->getMessage());
+            $this->userModel = null;
         }
-        if (class_exists('Event')) {
-            $this->eventModel = $this->model('Event');
+        
+        try {
+            if (class_exists('Event')) {
+                $this->eventModel = $this->model('Event');
+                error_log("Event model initialized successfully");
+            } else {
+                error_log("Event class not found");
+            }
+        } catch (Exception $e) {
+            error_log("Error initializing Event model: " . $e->getMessage());
+            $this->eventModel = null;
         }
         
         // Set security headers if SecurityHelper exists
         if ($this->securityHelper) {
             $this->securityHelper->setSecurityHeaders();
         }
+        
+        error_log("AdminController::__construct() completado");
     }
     
     public function index() {
@@ -48,20 +92,36 @@ class AdminController extends Controller {
     
     // Admin dashboard
     public function dashboard() {
+        error_log("AdminController::dashboard() called");
+        
         // Get counts for dashboard if models exist
         $userCount = 0;
         $eventCount = 0;
         $recentUsers = [];
         $recentEvents = [];
         
+        error_log("User model available: " . ($this->userModel ? 'YES' : 'NO'));
         if ($this->userModel) {
-            $userCount = $this->userModel->getUserCount();
-            $recentUsers = $this->userModel->getRecentUsers(5);
+            try {
+                $userCount = $this->userModel->getUserCount();
+                error_log("User count: " . $userCount);
+                $recentUsers = $this->userModel->getRecentUsers(5);
+                error_log("Recent users count: " . count($recentUsers));
+            } catch (Exception $e) {
+                error_log("Error getting user data: " . $e->getMessage());
+            }
         }
         
+        error_log("Event model available: " . ($this->eventModel ? 'YES' : 'NO'));
         if ($this->eventModel) {
-            $eventCount = $this->eventModel->getEventCount();
-            $recentEvents = $this->eventModel->getRecentEvents(5);
+            try {
+                $eventCount = $this->eventModel->getEventCount();
+                error_log("Event count: " . $eventCount);
+                $recentEvents = $this->eventModel->getRecentEvents(5);
+                error_log("Recent events count: " . count($recentEvents));
+            } catch (Exception $e) {
+                error_log("Error getting event data: " . $e->getMessage());
+            }
         }
         
         // Get gallery count
@@ -70,6 +130,9 @@ class AdminController extends Controller {
         if (is_dir($uploadDir)) {
             $files = glob($uploadDir . '*');
             $galleryCount = count($files);
+            error_log("Gallery count: " . $galleryCount);
+        } else {
+            error_log("Gallery directory not found: " . $uploadDir);
         }
         
         $data = [
@@ -81,7 +144,16 @@ class AdminController extends Controller {
             'recentEvents' => $recentEvents
         ];
         
-        $this->view('admin/dashboard', $data);
+        error_log("Dashboard data prepared: " . print_r($data, true));
+        
+        try {
+            $this->view('admin/dashboard', $data);
+            error_log("Dashboard view loaded successfully");
+        } catch (Exception $e) {
+            error_log("Error loading dashboard view: " . $e->getMessage());
+            // Fallback: mostrar dashboard básico
+            $this->loadViewDirectly('admin/dashboard', $data);
+        }
     }
     
     // Export dashboard data as CSV
@@ -219,13 +291,24 @@ class AdminController extends Controller {
         
         error_log("User found: " . print_r($user, true));
         
+        // Obtener todos los usuarios para la vista (necesario para la lista)
+        $users = [];
+        $totalUsers = 0;
+        if ($this->userModel) {
+            $users = $this->userModel->getAllUsers(1, 10);
+            $totalUsers = $this->userModel->countAllUsers();
+        }
+        
         $data = [
             'title' => 'Editar Usuario',
             'user' => $user,
+            'users' => $users,
+            'currentPage' => 1,
+            'totalPages' => ceil($totalUsers / 10),
             'errors' => []
         ];
         
-        $this->loadViewDirectly('admin/users/index', $data);
+        $this->view('admin/users/index', $data);
     }
     
     // Edit user
@@ -298,6 +381,9 @@ class AdminController extends Controller {
                         $this->redirect('/admin/usuarios?updated=1&t=' . time() . '&refresh=1');
                     } else {
                         setFlashMessage('error', 'Error al actualizar el usuario');
+                        // Mostrar debug en pantalla en lugar de redirigir
+                        $this->showDebugInfo($userData, $_POST, $id);
+                        return;
                     }
                 } else {
                     error_log("Invalid ID provided: " . $id);
@@ -323,6 +409,12 @@ class AdminController extends Controller {
             setFlashMessage('error', 'Error al eliminar el usuario');
         }
         $this->redirect('/admin/usuarios');
+    }
+    
+    // Método para redirigir
+    private function redirect($url) {
+        header('Location: ' . $url);
+        exit;
     }
     
     // Event management
@@ -1038,5 +1130,138 @@ class AdminController extends Controller {
         } else {
             echo json_encode(['success' => false, 'message' => 'Error interno del servidor']);
         }
+    }
+    
+    // Load admin view with admin layout
+    private function loadAdminView($view, $data = []) {
+        // Extract data array to individual variables
+        extract($data);
+        
+        // Start output buffering
+        ob_start();
+        
+        // Include the view file
+        $viewFile = dirname(dirname(__DIR__)) . '/src/views/' . $view . '.php';
+        if (file_exists($viewFile)) {
+            require_once $viewFile;
+        } else {
+            die('Admin view does not exist: ' . $viewFile);
+        }
+        
+        // Get the contents of the buffer and clean it
+        $content = ob_get_clean();
+        
+        // Include the admin layout
+        require_once dirname(dirname(__DIR__)) . '/src/views/layouts/admin.php';
+    }
+    
+    // Debug method to show all information on screen
+    private function showDebugInfo($userData, $postData, $id) {
+        echo '<!DOCTYPE html>
+        <html lang="es">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>DEBUG - Edición de Usuario</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+            <style>
+                .debug-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+                .debug-title { color: #dc3545; font-weight: bold; margin-bottom: 10px; }
+                .debug-data { background: #f8f9fa; padding: 10px; border-radius: 3px; font-family: monospace; }
+                .error-section { background: #f8d7da; border-color: #f5c6cb; }
+                .success-section { background: #d4edda; border-color: #c3e6cb; }
+            </style>
+        </head>
+        <body>
+            <div class="container mt-4">
+                <h1 class="text-danger">🐛 DEBUG - Edición de Usuario</h1>
+                
+                <div class="debug-section error-section">
+                    <div class="debug-title">❌ ERROR: No se pudo actualizar el usuario</div>
+                    <p>El método updateUser() devolvió false. Revisa los logs del servidor.</p>
+                </div>
+                
+                <div class="debug-section">
+                    <div class="debug-title">📋 Datos del Formulario (POST)</div>
+                    <div class="debug-data">' . print_r($postData, true) . '</div>
+                </div>
+                
+                <div class="debug-section">
+                    <div class="debug-title">🔧 Datos Procesados para Actualizar</div>
+                    <div class="debug-data">' . print_r($userData, true) . '</div>
+                </div>
+                
+                <div class="debug-section">
+                    <div class="debug-title">🆔 ID del Usuario</div>
+                    <div class="debug-data">
+                        ID desde URL: ' . $id . '<br>
+                        ID desde POST: ' . ($postData['user_id'] ?? 'no establecido') . '<br>
+                        ID procesado: ' . $userData['id'] . '
+                    </div>
+                </div>
+                
+                <div class="debug-section">
+                    <div class="debug-title">🎭 Campo Rol</div>
+                    <div class="debug-data">
+                        Rol desde POST: ' . ($postData['rol'] ?? 'no establecido') . '<br>
+                        Rol procesado: ' . $userData['rol'] . '<br>
+                        Rol válido: ' . (in_array($userData['rol'], ['user', 'socio', 'admin']) ? 'SÍ' : 'NO') . '
+                    </div>
+                </div>
+                
+                <div class="debug-section">
+                    <div class="debug-title">✅ Campo Activo</div>
+                    <div class="debug-data">
+                        Activo desde POST: ' . (isset($postData['activo']) ? $postData['activo'] : 'no establecido') . '<br>
+                        Activo procesado: ' . $userData['activo'] . '<br>
+                        Tipo de dato: ' . gettype($userData['activo']) . '
+                    </div>
+                </div>
+                
+                <div class="debug-section">
+                    <div class="debug-title">🔍 Información del Servidor</div>
+                    <div class="debug-data">
+                        Método HTTP: ' . $_SERVER['REQUEST_METHOD'] . '<br>
+                        URL: ' . $_SERVER['REQUEST_URI'] . '<br>
+                        User Agent: ' . ($_SERVER['HTTP_USER_AGENT'] ?? 'no disponible') . '<br>
+                        Timestamp: ' . date('Y-m-d H:i:s') . '
+                    </div>
+                </div>
+                
+                <div class="debug-section">
+                    <div class="debug-title">📝 Logs del Servidor</div>
+                    <div class="debug-data">
+                        <strong>Revisa los logs de error de PHP:</strong><br>
+                        - XAMPP: C:\xampp\php\logs\php_error_log<br>
+                        - Apache: C:\xampp\apache\logs\error.log<br>
+                        <br>
+                        <strong>Comandos para ver logs en tiempo real:</strong><br>
+                        <code>tail -f C:\xampp\php\logs\php_error_log</code><br>
+                        <code>tail -f C:\xampp\apache\logs\error.log</code>
+                    </div>
+                </div>
+                
+                <div class="debug-section">
+                    <div class="debug-title">🧪 Pruebas Recomendadas</div>
+                    <div class="debug-data">
+                        1. Verifica que la base de datos esté funcionando<br>
+                        2. Revisa que el modelo User esté cargado correctamente<br>
+                        3. Confirma que la tabla users tenga la estructura correcta<br>
+                        4. Prueba la consulta SQL directamente en phpMyAdmin<br>
+                        5. Verifica los permisos de la base de datos
+                    </div>
+                </div>
+                
+                <div class="debug-section success-section">
+                    <div class="debug-title">🔙 Volver</div>
+                    <a href="/prueba-php/public/admin/usuarios" class="btn btn-primary">Volver a Usuarios</a>
+                    <a href="/prueba-php/public/admin/dashboard" class="btn btn-secondary">Ir al Dashboard</a>
+                </div>
+            </div>
+            
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        </body>
+        </html>';
+        exit;
     }
 }
