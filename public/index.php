@@ -96,6 +96,14 @@ if (empty($url[0])) {
             
             if (method_exists($adminController, $action)) {
                 call_user_func_array([$adminController, $action], array_slice($url, 2));
+            } elseif ($action === 'crearUsuario') {
+                // Redirigir al formulario directo que funciona
+                header('Location: /prueba-php/public/admin/crear-usuario.php');
+                exit;
+            } elseif ($action === 'nuevoEvento') {
+                // Redirigir al formulario directo que funciona
+                header('Location: /prueba-php/public/admin/nuevo-evento.php');
+                exit;
             } else {
                 $adminController->dashboard();
             }

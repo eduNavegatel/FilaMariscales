@@ -1,4 +1,63 @@
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Filá Mariscales</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Admin CSS -->
+    <link href="/prueba-php/public/assets/css/admin.css" rel="stylesheet">
+    
+    <style>
+        body { 
+            background-color: #f8f9fa; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .card { 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+            border: none;
+            border-radius: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .bg-primary { background: linear-gradient(135deg, #007bff, #0056b3) !important; }
+        .bg-success { background: linear-gradient(135deg, #28a745, #1e7e34) !important; }
+        .bg-info { background: linear-gradient(135deg, #17a2b8, #138496) !important; }
+        .bg-warning { background: linear-gradient(135deg, #ffc107, #e0a800) !important; }
+        .bg-dark { background: linear-gradient(135deg, #343a40, #212529) !important; }
+        .bg-danger { background: linear-gradient(135deg, #dc3545, #c82333) !important; }
+        .bg-secondary { background: linear-gradient(135deg, #6c757d, #545b62) !important; }
+        .navbar-brand { font-weight: bold; }
+        .btn-toolbar .btn { border-radius: 6px; }
+        .border-bottom { border-color: #dee2e6 !important; }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/prueba-php/public/admin/dashboard">
+                <i class="fas fa-shield-alt me-2"></i>Panel de Administración
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/prueba-php/public/admin/dashboard">Dashboard</a>
+                <a class="nav-link" href="/prueba-php/public/admin/usuarios">Usuarios</a>
+                <a class="nav-link" href="/prueba-php/public/admin/eventos">Eventos</a>
+                <a class="nav-link" href="/prueba-php/public/admin/galeria">Galería</a>
+                <a class="nav-link" href="/prueba-php/public/admin/logout">Cerrar Sesión</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Panel de Control</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group me-2">
@@ -1039,4 +1098,64 @@ function initializeCalendar() {
     </div>
 </div>
 
-
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Scripts personalizados del dashboard -->
+    <script>
+        // Función para enviar notificaciones
+        function sendNotification() {
+            const target = document.getElementById('notificationTarget').value;
+            const subject = document.getElementById('notificationSubject').value;
+            const message = document.getElementById('notificationMessage').value;
+            
+            if (!subject || !message) {
+                alert('Por favor, completa todos los campos');
+                return;
+            }
+            
+            // Aquí iría la lógica para enviar la notificación
+            alert('Notificación enviada correctamente');
+            
+            // Limpiar campos
+            document.getElementById('notificationSubject').value = '';
+            document.getElementById('notificationMessage').value = '';
+        }
+        
+        // Función para cargar plantillas
+        function loadTemplate(type) {
+            const templates = {
+                evento: {
+                    subject: 'Nuevo Evento - Filá Mariscales',
+                    message: 'Se ha programado un nuevo evento. Revisa el calendario para más detalles.'
+                },
+                reunion: {
+                    subject: 'Reunión de Directiva',
+                    message: 'Se convoca a todos los miembros de la directiva a la próxima reunión.'
+                },
+                cuota: {
+                    subject: 'Recordatorio de Cuota',
+                    message: 'Recordatorio: La cuota mensual vence pronto. Por favor, realiza el pago correspondiente.'
+                },
+                general: {
+                    subject: 'Información General',
+                    message: 'Información importante para todos los miembros de la Filá Mariscales.'
+                }
+            };
+            
+            if (templates[type]) {
+                document.getElementById('notificationSubject').value = templates[type].subject;
+                document.getElementById('notificationMessage').value = templates[type].message;
+            }
+        }
+        
+        // Inicializar tooltips de Bootstrap
+        document.addEventListener('DOMContentLoaded', function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+</body>
+</html>

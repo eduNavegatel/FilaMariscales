@@ -20,3 +20,4 @@ if (file_exists('src/config/admin_credentials.php')) {
 }
 
 echo "\n=== FIN DEBUG ===\n";
+
