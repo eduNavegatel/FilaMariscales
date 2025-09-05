@@ -1,4 +1,11 @@
 <?php 
+// Función simple para generar CSRF token
+if (!function_exists('generateCsrfToken')) {
+    function generateCsrfToken() {
+        return bin2hex(random_bytes(32));
+    }
+}
+
 // Set default values if not provided
 $user = (object) array_merge([
     'id' => '',
@@ -189,7 +196,7 @@ document.querySelector('form').addEventListener('submit', function(e) {
     const confirmPassword = document.getElementById('confirm_password');
     
     // Only validate password if it's a new user or password is being changed
-    if (password.required || password.value) {
+    if (password && (password.required || password.value)) {
         if (password.value.length < 8) {
             e.preventDefault();
             alert('La contraseña debe tener al menos 8 caracteres');
@@ -197,13 +204,46 @@ document.querySelector('form').addEventListener('submit', function(e) {
             return false;
         }
         
-        if (password.value !== confirmPassword.value) {
+        if (confirmPassword && password.value !== confirmPassword.value) {
             e.preventDefault();
             alert('Las contraseñas no coinciden');
             confirmPassword.focus();
             return false;
         }
     }
+    
+    // Log form data for debugging
+    console.log('Formulario enviado - Rol seleccionado:', document.getElementById('rol').value);
+    console.log('Formulario enviado - Activo:', document.getElementById('activo').checked);
+});
+
+// Add event listener for role changes
+document.getElementById('rol').addEventListener('change', function(e) {
+    console.log('Rol cambiado a:', e.target.value);
+    console.log('Valor anterior:', this.dataset.previousValue || 'N/A');
+    this.dataset.previousValue = e.target.value;
+});
+
+// Add event listener for active status changes
+document.getElementById('activo').addEventListener('change', function(e) {
+    console.log('Estado activo cambiado a:', e.target.checked);
+});
+
+// Initialize previous values
+document.addEventListener('DOMContentLoaded', function() {
+    const rolSelect = document.getElementById('rol');
+    const activoCheckbox = document.getElementById('activo');
+    
+    if (rolSelect) {
+        rolSelect.dataset.previousValue = rolSelect.value;
+        console.log('Rol inicial:', rolSelect.value);
+    }
+    
+    if (activoCheckbox) {
+        console.log('Estado activo inicial:', activoCheckbox.checked);
+    }
+    
+    console.log('Formulario de edición inicializado');
 });
 
 // Delete confirmation

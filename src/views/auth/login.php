@@ -104,7 +104,7 @@ body {
 }
 .btn-login {
     background: linear-gradient(135deg, #8B4513 0%, #654321 100%);
-    color: #D4AF37;
+    color: #FFFFFF;
     border: 2px solid #D4AF37;
     font-family: 'Cinzel', serif;
     font-weight: 600;
@@ -134,7 +134,7 @@ body {
 }
 .btn-login:hover {
     background: linear-gradient(135deg, #654321 0%, #8B4513 100%);
-    color: #FFD700;
+    color: #FFFFFF;
     border-color: #FFD700;
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0,0,0,0.8);

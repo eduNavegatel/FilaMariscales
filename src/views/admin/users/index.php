@@ -8,10 +8,17 @@
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<<<<<<< HEAD
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     
 
+=======
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+>>>>>>> parece-que-es-buena
     
     <style>
         body { background-color: #f8f9fa; }
@@ -131,7 +138,7 @@
         </div>
 
         <!-- Users Table -->
-        <div class="card">
+        <div class="card" data-aos="fade-up">
             <div class="card-header">
                 <h5 class="mb-0 text-white">Lista de Usuarios</h5>
             </div>
@@ -171,6 +178,7 @@
                                                 <span class="badge bg-danger">Inactivo</span>
                                             <?php endif; ?>
                                         </td>
+<<<<<<< HEAD
                                         <td><?= $user->fecha_registro ? date('d/m/Y H:i', strtotime($user->fecha_registro)) : 'N/A' ?></td>
                                         <td>
                                             <button type="button" 
@@ -180,6 +188,9 @@
                                                 <i class="bi bi-eye me-1"></i>Ver
                                             </button>
                                         </td>
+=======
+                                                                                 <td><?= date('d/m/Y H:i', strtotime($user->fecha_registro)) ?></td>
+>>>>>>> parece-que-es-buena
                                         <td>
                                             <div class="btn-group" role="group">
                                                 <!-- Botón Editar -->
@@ -236,6 +247,25 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Mensaje de confirmación -->
+        <?php if (isset($_GET['updated'])): ?>
+        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            <strong>¡Éxito!</strong> El usuario ha sido actualizado correctamente.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <?php endif; ?>
+        
+        <!-- Botón de recarga manual -->
+        <div class="text-center mt-3" data-aos="fade-up" data-aos-delay="200">
+            <button type="button" class="btn btn-outline-secondary" onclick="forceRefresh()">
+                <i class="fas fa-sync-alt me-2"></i>Recargar Lista
+            </button>
+            <button type="button" class="btn btn-outline-primary ms-2" onclick="refreshFromServer()">
+                <i class="fas fa-database me-2"></i>Recargar desde Servidor
+            </button>
+        </div>
     </div>
 
     <!-- Edit User Modal -->
@@ -247,7 +277,11 @@
             </div>
             <form id="editUserForm" method="POST">
                 <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+<<<<<<< HEAD
                 <input type="hidden" name="user_id" id="editUserId">
+=======
+                <input type="hidden" id="editUserId" name="user_id" value="">
+>>>>>>> parece-que-es-buena
                 <div class="custom-modal-body">
                     <div class="mb-3">
                         <label for="editNombre" class="form-label">Nombre</label>
@@ -307,6 +341,8 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     
     <!-- Forzar recarga del cache -->
     <script>
@@ -322,11 +358,12 @@
 
     // Función para abrir modal de edición
     function openEditModal(userId, nombre, apellidos, email, rol, activo) {
-        console.log('Abriendo modal de edición para usuario:', userId);
-        console.log('Datos del usuario:', { userId, nombre, apellidos, email, rol, activo });
+        console.log('🚪 Abriendo modal de edición para usuario:', userId);
+        console.log('📊 Datos del usuario:', { userId, nombre, apellidos, email, rol, activo });
         
         // Guardar el ID del usuario actual
         currentUserId = userId;
+        console.log('💾 ID del usuario guardado:', currentUserId);
         
         // Llenar el formulario
         document.getElementById('editUserId').value = userId;
@@ -335,10 +372,12 @@
         document.getElementById('editEmail').value = email;
         document.getElementById('editRol').value = rol;
         document.getElementById('editActivo').checked = activo;
+        console.log('📝 Formulario llenado con datos del usuario');
         
         // Actualizar la acción del formulario
-        const formAction = '<?= URL_ROOT ?>/admin/editarUsuario/' + userId;
+        const formAction = '/prueba-php/public/admin/editarUsuario/' + userId;
         document.getElementById('editUserForm').action = formAction;
+<<<<<<< HEAD
         console.log('Form action set to:', formAction);
         console.log('User ID set to:', userId);
         
@@ -350,9 +389,24 @@
         } else {
             console.error('ERROR: Campo oculto editUserId no encontrado');
         }
+=======
+        console.log('🔗 Form action set to:', formAction);
+        
+        // Agregar campo oculto con el ID del usuario
+        let userIdField = document.getElementById('editUserId');
+        if (!userIdField) {
+            userIdField = document.createElement('input');
+            userIdField.type = 'hidden';
+            userIdField.id = 'editUserId';
+            userIdField.name = 'user_id';
+            document.getElementById('editUserForm').appendChild(userIdField);
+        }
+        userIdField.value = userId;
+>>>>>>> parece-que-es-buena
         
         // Mostrar el modal
         document.getElementById('editUserModal').style.display = 'block';
+        console.log('👁️ Modal mostrado');
     }
 
     // Función para cerrar modal de edición
@@ -365,7 +419,7 @@
         console.log('Abriendo modal de reset para usuario:', userId);
         
         // Actualizar la acción del formulario
-        document.getElementById('resetPasswordForm').action = '<?= URL_ROOT ?>/admin/resetearPassword/' + userId;
+        document.getElementById('resetPasswordForm').action = '/prueba-php/public/admin/resetearPassword/' + userId;
         
         // Mostrar el modal
         document.getElementById('resetPasswordModal').style.display = 'block';
@@ -384,8 +438,8 @@
             
         if (confirm(message)) {
             const url = action === 'activar' ? 
-                '<?= URL_ROOT ?>/admin/activarUsuario/' + userId :
-                '<?= URL_ROOT ?>/admin/desactivarUsuario/' + userId;
+                '/prueba-php/public/admin/activarUsuario/' + userId :
+                '/prueba-php/public/admin/desactivarUsuario/' + userId;
                 
             // Crear formulario temporal y enviarlo
             const form = document.createElement('form');
@@ -409,7 +463,7 @@
             // Crear formulario temporal y enviarlo
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = '<?= URL_ROOT ?>/admin/eliminarUsuario/' + userId;
+            form.action = '/prueba-php/public/admin/eliminarUsuario/' + userId;
             
             const csrfInput = document.createElement('input');
             csrfInput.type = 'hidden';
@@ -424,6 +478,7 @@
 
     // Event listener para el formulario de edición
     document.getElementById('editUserForm').addEventListener('submit', function(e) {
+<<<<<<< HEAD
         console.log('=== ENVÍO DE FORMULARIO DE EDICIÓN ===');
         console.log('Form action:', this.action);
         console.log('Usuario ID:', currentUserId);
@@ -442,12 +497,22 @@
         // Log form values
         const formData = new FormData(this);
         console.log('=== DATOS DEL FORMULARIO ===');
+=======
+        console.log('🚀 Formulario de edición enviado');
+        console.log('📍 Form action:', this.action);
+        console.log('👤 Usuario ID:', currentUserId);
+        
+        // Log form values
+        const formData = new FormData(this);
+        console.log('📋 Datos del formulario:');
+>>>>>>> parece-que-es-buena
         for (let [key, value] of formData.entries()) {
-            console.log(key + ': ' + value);
+            console.log('  - ' + key + ': ' + value);
         }
         
         // Verificar que el rol se está enviando correctamente
         const rolValue = document.getElementById('editRol').value;
+<<<<<<< HEAD
 <<<<<<< HEAD
         console.log('Rol seleccionado:', rolValue);
 =======
@@ -485,7 +550,15 @@
             submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Guardando...';
         }
 >>>>>>> 189b0fe59043bf8bcf8e86934e0e71c52801160c
+=======
+        console.log('🎭 Rol seleccionado:', rolValue);
+>>>>>>> parece-que-es-buena
         
+        // Verificar que el campo activo se esté enviando
+        const activoValue = document.getElementById('editActivo').checked ? '1' : '0';
+        console.log('✅ Campo activo:', activoValue);
+        
+        console.log('📤 Enviando formulario...');
         // No prevenir el envío por defecto, dejar que se envíe normalmente
     });
 
@@ -500,8 +573,9 @@
         if (event.target === resetModal) {
             closeResetModal();
         }
-    }
+    };
 
+<<<<<<< HEAD
     // Función de prueba JavaScript
     function testJavaScript() {
         console.log('=== PRUEBA DE JAVASCRIPT ===');
@@ -605,15 +679,95 @@ ${data.status}
         });
     }
 
+=======
+    // Función para forzar recarga completa
+    function forceRefresh() {
+        console.log('Forzando recarga completa...');
+        // Agregar timestamp para evitar caché
+        const timestamp = new Date().getTime();
+        const currentUrl = window.location.href.split('?')[0];
+        window.location.href = currentUrl + '?t=' + timestamp + '&force=1';
+    }
+    
+    // Función para recargar desde servidor
+    function refreshFromServer() {
+        console.log('Recargando desde servidor...');
+        // Hacer petición AJAX para obtener datos frescos
+        fetch(window.location.href + '?ajax=1&t=' + new Date().getTime())
+            .then(response => response.text())
+            .then(html => {
+                // Extraer solo la tabla de usuarios
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newTable = doc.querySelector('.table-responsive');
+                const currentTable = document.querySelector('.table-responsive');
+                
+                if (newTable && currentTable) {
+                    currentTable.innerHTML = newTable.innerHTML;
+                    console.log('Tabla actualizada desde servidor');
+                    
+                    // Mostrar mensaje de éxito
+                    showMessage('✅ Lista actualizada desde el servidor', 'success');
+                }
+            })
+            .catch(error => {
+                console.error('Error al recargar:', error);
+                showMessage('❌ Error al recargar desde servidor', 'danger');
+            });
+    }
+    
+    // Función para mostrar mensajes
+    function showMessage(message, type = 'info') {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show mt-3`;
+        alertDiv.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        
+        // Insertar después de la tabla
+        const tableCard = document.querySelector('.card');
+        tableCard.parentNode.insertBefore(alertDiv, tableCard.nextSibling);
+        
+        // Auto-ocultar después de 5 segundos
+        setTimeout(() => {
+            alertDiv.remove();
+        }, 5000);
+    }
+    
+>>>>>>> parece-que-es-buena
     // Inicializar cuando el DOM esté listo
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('Página de usuarios cargada correctamente');
+        console.log('🎉 Página de usuarios cargada correctamente');
+        console.log('🔍 Verificando elementos del formulario...');
+        
+        // Verificar que el formulario existe
+        const editForm = document.getElementById('editUserForm');
+        if (editForm) {
+            console.log('✅ Formulario de edición encontrado');
+            console.log('📍 Form action actual:', editForm.action);
+        } else {
+            console.error('❌ Formulario de edición NO encontrado');
+        }
+        
+        // Inicializar AOS
+        if (typeof AOS !== 'undefined') {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true
+            });
+            console.log('AOS inicializado correctamente');
+        } else {
+            console.warn('AOS no está disponible');
+        }
         
 <<<<<<< HEAD
         // Event listener para el formulario de resetear contraseña
         document.getElementById('resetPasswordForm').addEventListener('submit', function(e) {
             console.log('Reseteando contraseña...');
         });
+<<<<<<< HEAD
 =======
         // Verificar que todos los elementos necesarios estén presentes
         const requiredElements = [
@@ -656,6 +810,21 @@ ${data.status}
         // Verificar que el JavaScript funcione correctamente
         console.log('✅ JavaScript inicializado correctamente');
 >>>>>>> 189b0fe59043bf8bcf8e86934e0e71c52801160c
+=======
+        
+        // Verificar si hay parámetros de actualización en la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('updated')) {
+            showMessage('✅ Usuario actualizado correctamente', 'success');
+        }
+        
+        // Forzar recarga si se solicita
+        if (urlParams.get('force')) {
+            console.log('Recarga forzada solicitada');
+            // Limpiar parámetros de la URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+>>>>>>> parece-que-es-buena
     });
     </script>
 </body>

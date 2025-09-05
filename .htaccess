@@ -1,8 +1,7 @@
-# Configuración para el proyecto Filá Mariscales
-
-# Habilitar reescritura de URLs
+# Configuración mínima para Apache
 RewriteEngine On
 
+<<<<<<< HEAD
 # Redirigir todo lo demás a public/index.php
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
@@ -15,3 +14,9 @@ Options -Indexes
 <FilesMatch "\.(htaccess|htpasswd|ini|log|sh|sql|conf)$">
     Require all denied
 </FilesMatch> 
+=======
+# Permitir acceso a archivos PHP
+<Files "*.php">
+    Require all granted
+</Files> 
+>>>>>>> parece-que-es-buena

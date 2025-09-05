@@ -125,6 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     .btn-login {
         background: linear-gradient(135deg, var(--templar-red) 0%, var(--templar-red-dark) 100%);
+        color: #FFFFFF;
         border: none;
         border-radius: 10px;
         padding: 0.75rem 1.5rem;
@@ -218,7 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input type="password" class="form-control" id="password" name="password" required>
             </div>
             
-            <button type="submit" class="btn btn-login btn-primary">
+            <button type="submit" class="btn btn-login btn-outline-light w-100">
                 <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
             </button>
         </form>

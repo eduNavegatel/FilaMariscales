@@ -1,4 +1,63 @@
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Filá Mariscales</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Admin CSS -->
+    <link href="/prueba-php/public/assets/css/admin.css" rel="stylesheet">
+    
+    <style>
+        body { 
+            background-color: #f8f9fa; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .card { 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+            border: none;
+            border-radius: 8px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .bg-primary { background: linear-gradient(135deg, #007bff, #0056b3) !important; }
+        .bg-success { background: linear-gradient(135deg, #28a745, #1e7e34) !important; }
+        .bg-info { background: linear-gradient(135deg, #17a2b8, #138496) !important; }
+        .bg-warning { background: linear-gradient(135deg, #ffc107, #e0a800) !important; }
+        .bg-dark { background: linear-gradient(135deg, #343a40, #212529) !important; }
+        .bg-danger { background: linear-gradient(135deg, #dc3545, #c82333) !important; }
+        .bg-secondary { background: linear-gradient(135deg, #6c757d, #545b62) !important; }
+        .navbar-brand { font-weight: bold; }
+        .btn-toolbar .btn { border-radius: 6px; }
+        .border-bottom { border-color: #dee2e6 !important; }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/prueba-php/public/admin/dashboard">
+                <i class="fas fa-shield-alt me-2"></i>Panel de Administración
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/prueba-php/public/admin/dashboard">Dashboard</a>
+                <a class="nav-link" href="/prueba-php/public/admin/usuarios">Usuarios</a>
+                <a class="nav-link" href="/prueba-php/public/admin/eventos">Eventos</a>
+                <a class="nav-link" href="/prueba-php/public/admin/galeria">Galería</a>
+                <a class="nav-link" href="/prueba-php/public/admin/logout">Cerrar Sesión</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Panel de Control</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group me-2">
@@ -19,12 +78,14 @@
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <div>
                         <h5 class="card-title mb-1">Usuarios Registrados</h5>
-                        <h2 class="mb-0"><?= $data['userCount'] ?></h2>
+                        <h2 class="mb-0"><?= $userCount ?></h2>
                         <small class="opacity-75">Total de miembros</small>
                     </div>
                     <i class="fas fa-users fa-2x opacity-50"></i>
                 </div>
-                <a href="<?= URL_ROOT ?>/admin/usuarios" class="text-white mt-auto">Ver usuarios <i class="fas fa-arrow-right ms-1"></i></a>
+                <a href="<?= URL_ROOT ?>/admin/usuarios" class="btn btn-light btn-sm mt-auto">
+                    <i class="fas fa-users me-1"></i>Ver usuarios
+                </a>
             </div>
         </div>
     </div>
@@ -34,12 +95,14 @@
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <div>
                         <h5 class="card-title mb-1">Eventos Activos</h5>
-                        <h2 class="mb-0"><?= $data['eventCount'] ?></h2>
+                        <h2 class="mb-0"><?= $eventCount ?></h2>
                         <small class="opacity-75">En curso y próximos</small>
                     </div>
                     <i class="fas fa-calendar-alt fa-2x opacity-50"></i>
                 </div>
-                <a href="<?= URL_ROOT ?>/admin/eventos" class="text-white mt-auto">Ver eventos <i class="fas fa-arrow-right ms-1"></i></a>
+                <a href="<?= URL_ROOT ?>/admin/eventos" class="btn btn-light btn-sm mt-auto">
+                    <i class="fas fa-calendar-alt me-1"></i>Ver eventos
+                </a>
             </div>
         </div>
     </div>
@@ -49,12 +112,14 @@
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <div>
                         <h5 class="card-title mb-1">Galería</h5>
-                        <h2 class="mb-0"><?= isset($data['galleryCount']) ? $data['galleryCount'] : 0 ?></h2>
+                        <h2 class="mb-0"><?= isset($galleryCount) ? $galleryCount : 0 ?></h2>
                         <small class="opacity-75">Archivos multimedia</small>
                     </div>
                     <i class="fas fa-images fa-2x opacity-50"></i>
                 </div>
-                <a href="<?= URL_ROOT ?>/admin/galeria" class="text-white mt-auto">Gestionar galería <i class="fas fa-arrow-right ms-1"></i></a>
+                <a href="<?= URL_ROOT ?>/admin/galeria" class="btn btn-light btn-sm mt-auto">
+                    <i class="fas fa-images me-1"></i>Gestionar galería
+                </a>
             </div>
         </div>
     </div>
@@ -127,21 +192,7 @@
 
 <!-- Estadísticas Secundarias -->
 <div class="row mb-4">
-    <div class="col-md-3 mb-3">
-        <div class="card text-white bg-secondary h-100">
-            <div class="card-body d-flex flex-column">
-                <div class="d-flex justify-content-between align-items-start mb-3">
-                    <div>
-                        <h5 class="card-title mb-1">Socios Activos</h5>
-                        <h2 class="mb-0"><?= isset($data['sociosCount']) ? $data['sociosCount'] : 0 ?></h2>
-                        <small class="opacity-75">Con cuota al día</small>
-                    </div>
-                    <i class="fas fa-user-check fa-2x opacity-50"></i>
-                </div>
-                <a href="<?= URL_ROOT ?>/admin/socios" class="text-white mt-auto">Gestionar socios <i class="fas fa-arrow-right ms-1"></i></a>
-            </div>
-        </div>
-    </div>
+
     <div class="col-md-3 mb-3">
         <div class="card text-white bg-dark h-100">
             <div class="card-body d-flex flex-column">
@@ -153,7 +204,9 @@
                     </div>
                     <i class="fas fa-newspaper fa-2x opacity-50"></i>
                 </div>
-                <a href="<?= URL_ROOT ?>/admin/noticias" class="text-white mt-auto">Gestionar noticias <i class="fas fa-arrow-right ms-1"></i></a>
+                <a href="<?= URL_ROOT ?>/admin/noticias" class="btn btn-light btn-sm mt-auto">
+                    <i class="fas fa-newspaper me-1"></i>Gestionar noticias
+                </a>
             </div>
         </div>
     </div>
@@ -168,7 +221,9 @@
                     </div>
                     <i class="fas fa-envelope fa-2x opacity-50"></i>
                 </div>
-                <a href="<?= URL_ROOT ?>/admin/mensajes" class="text-white mt-auto">Ver mensajes <i class="fas fa-arrow-right ms-1"></i></a>
+                <a href="<?= URL_ROOT ?>/admin/mensajes" class="btn btn-light btn-sm mt-auto">
+                    <i class="fas fa-envelope me-1"></i>Ver mensajes
+                </a>
             </div>
         </div>
     </div>
@@ -183,7 +238,9 @@
                     </div>
                     <i class="fas fa-exclamation-triangle fa-2x opacity-50"></i>
                 </div>
-                <a href="<?= URL_ROOT ?>/admin/cuotas" class="text-white mt-auto">Gestionar cuotas <i class="fas fa-arrow-right ms-1"></i></a>
+                <a href="<?= URL_ROOT ?>/admin/cuotas" class="btn btn-light btn-sm mt-auto">
+                    <i class="fas fa-exclamation-triangle me-1"></i>Gestionar cuotas
+                </a>
             </div>
         </div>
     </div>
@@ -288,7 +345,7 @@
                 </h6>
             </div>
             <div class="card-body d-flex flex-column">
-                <div class="row flex-grow-1">
+                <div class="row flex-grow-1 admin-tools">
                     <div class="col-6 mb-3">
                         <a href="<?= URL_ROOT ?>/admin/backup" class="btn btn-outline-primary w-100 h-100 d-flex flex-column align-items-center justify-content-center">
                             <i class="fas fa-database fa-2x mb-2"></i>Backup BD
@@ -1104,6 +1161,7 @@ function initializeCalendar() {
     </div>
 </div>
 
+<<<<<<< HEAD
 <!-- Modal para Ver Contraseña -->
 <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -1262,3 +1320,66 @@ setInterval(function() {
     updateNotificationCount();
 }, 30000);
 </script>
+=======
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Scripts personalizados del dashboard -->
+    <script>
+        // Función para enviar notificaciones
+        function sendNotification() {
+            const target = document.getElementById('notificationTarget').value;
+            const subject = document.getElementById('notificationSubject').value;
+            const message = document.getElementById('notificationMessage').value;
+            
+            if (!subject || !message) {
+                alert('Por favor, completa todos los campos');
+                return;
+            }
+            
+            // Aquí iría la lógica para enviar la notificación
+            alert('Notificación enviada correctamente');
+            
+            // Limpiar campos
+            document.getElementById('notificationSubject').value = '';
+            document.getElementById('notificationMessage').value = '';
+        }
+        
+        // Función para cargar plantillas
+        function loadTemplate(type) {
+            const templates = {
+                evento: {
+                    subject: 'Nuevo Evento - Filá Mariscales',
+                    message: 'Se ha programado un nuevo evento. Revisa el calendario para más detalles.'
+                },
+                reunion: {
+                    subject: 'Reunión de Directiva',
+                    message: 'Se convoca a todos los miembros de la directiva a la próxima reunión.'
+                },
+                cuota: {
+                    subject: 'Recordatorio de Cuota',
+                    message: 'Recordatorio: La cuota mensual vence pronto. Por favor, realiza el pago correspondiente.'
+                },
+                general: {
+                    subject: 'Información General',
+                    message: 'Información importante para todos los miembros de la Filá Mariscales.'
+                }
+            };
+            
+            if (templates[type]) {
+                document.getElementById('notificationSubject').value = templates[type].subject;
+                document.getElementById('notificationMessage').value = templates[type].message;
+            }
+        }
+        
+        // Inicializar tooltips de Bootstrap
+        document.addEventListener('DOMContentLoaded', function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+</body>
+</html>
+>>>>>>> parece-que-es-buena

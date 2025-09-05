@@ -1,4 +1,5 @@
 <?php
+
 class Event {
     private $db;
     
@@ -10,16 +11,34 @@ class Event {
     public function getAllEvents($page = 1, $perPage = 10) {
         $offset = ($page - 1) * $perPage;
         
+        // Convertir a enteros y validar
+        $page = (int)$page;
+        $perPage = (int)$perPage;
+        $offset = (int)$offset;
+        
+        if ($page <= 0) $page = 1;
+        if ($perPage <= 0) $perPage = 10;
+        if ($offset < 0) $offset = 0;
+        
+        error_log("Event::getAllEvents called with page: {$page}, perPage: {$perPage}, offset: {$offset}");
+        
+        // Usar LIMIT y OFFSET directos para evitar problemas con parámetros
         $this->db->query('SELECT e.*, u.nombre as autor_nombre, u.apellidos as autor_apellidos 
                          FROM eventos e 
                          LEFT JOIN users u ON e.usuario_id = u.id 
                          ORDER BY e.fecha DESC, e.hora DESC 
-                         LIMIT :limit OFFSET :offset');
+                         LIMIT ' . $perPage . ' OFFSET ' . $offset);
         
-        $this->db->bind(':limit', $perPage);
-        $this->db->bind(':offset', $offset);
+        error_log("Using direct LIMIT: {$perPage}, OFFSET: {$offset}");
         
-        return $this->db->resultSet();
+        try {
+            $result = $this->db->resultSet();
+            error_log("getAllEvents result count: " . count($result));
+            return $result;
+        } catch (Exception $e) {
+            error_log("Error in getAllEvents: " . $e->getMessage());
+            return [];
+        }
     }
     
     // Get a single event by ID
@@ -35,13 +54,28 @@ class Event {
     
     // Get recent events
     public function getRecentEvents($limit = 5) {
+        error_log("Event::getRecentEvents called with limit: " . $limit);
+        
+        // Convertir a entero y validar
+        $limit = (int)$limit;
+        if ($limit <= 0) $limit = 5;
+        
+        // Usar LIMIT directo en lugar de parámetro para evitar problemas
         $this->db->query('SELECT * FROM eventos 
                          WHERE fecha >= CURDATE() 
                          ORDER BY fecha ASC, hora ASC 
-                         LIMIT :limit');
-        $this->db->bind(':limit', $limit);
+                         LIMIT ' . $limit);
         
-        return $this->db->resultSet();
+        error_log("Using direct LIMIT: " . $limit);
+        
+        try {
+            $result = $this->db->resultSet();
+            error_log("getRecentEvents result count: " . count($result));
+            return $result;
+        } catch (Exception $e) {
+            error_log("Error in getRecentEvents: " . $e->getMessage());
+            return [];
+        }
     }
     
     // Create a new event
@@ -122,15 +156,32 @@ class Event {
     
     // Get events for a specific month and year (for calendar view)
     public function getEventsByMonth($month, $year) {
+        // Convertir a enteros y validar
+        $month = (int)$month;
+        $year = (int)$year;
+        
+        if ($month < 1 || $month > 12) $month = date('n');
+        if ($year < 1900) $year = date('Y');
+        
+        error_log("Event::getEventsByMonth called with month: {$month}, year: {$year}");
+        
         $this->db->query('SELECT id, titulo, fecha, hora, es_publico 
                          FROM eventos 
                          WHERE MONTH(fecha) = :month AND YEAR(fecha) = :year 
                          ORDER BY fecha, hora');
         
+        error_log("Binding month: {$month}, year: {$year}");
         $this->db->bind(':month', $month);
         $this->db->bind(':year', $year);
         
-        return $this->db->resultSet();
+        try {
+            $result = $this->db->resultSet();
+            error_log("getEventsByMonth result count: " . count($result));
+            return $result;
+        } catch (Exception $e) {
+            error_log("Error in getEventsByMonth: " . $e->getMessage());
+            return [];
+        }
     }
     
     // Search events with filters
