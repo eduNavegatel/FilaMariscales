@@ -368,7 +368,7 @@
         console.log('Abriendo modal de reset para usuario:', userId);
         
         // Actualizar la acción del formulario
-        document.getElementById('resetPasswordForm').action = '<?= URL_ROOT ?>/admin/resetearPassword/' + userId;
+        document.getElementById('resetPasswordForm').action = '/prueba-php/public/admin/resetearPassword/' + userId;
         
         // Mostrar el modal
         document.getElementById('resetPasswordModal').style.display = 'block';
@@ -387,8 +387,8 @@
             
         if (confirm(message)) {
             const url = action === 'activar' ? 
-                '<?= URL_ROOT ?>/admin/activarUsuario/' + userId :
-                '<?= URL_ROOT ?>/admin/desactivarUsuario/' + userId;
+                '/prueba-php/public/admin/activarUsuario/' + userId :
+                '/prueba-php/public/admin/desactivarUsuario/' + userId;
                 
             // Crear formulario temporal y enviarlo
             const form = document.createElement('form');
@@ -412,7 +412,7 @@
             // Crear formulario temporal y enviarlo
             const form = document.createElement('form');
             form.method = 'POST';
-            form.action = '<?= URL_ROOT ?>/admin/eliminarUsuario/' + userId;
+            form.action = '/prueba-php/public/admin/eliminarUsuario/' + userId;
             
             const csrfInput = document.createElement('input');
             csrfInput.type = 'hidden';

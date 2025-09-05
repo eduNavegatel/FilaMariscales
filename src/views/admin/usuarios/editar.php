@@ -1,4 +1,11 @@
 <?php 
+// Función simple para generar CSRF token
+if (!function_exists('generateCsrfToken')) {
+    function generateCsrfToken() {
+        return bin2hex(random_bytes(32));
+    }
+}
+
 // Set default values if not provided
 $user = (object) array_merge([
     'id' => '',

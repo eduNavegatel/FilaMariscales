@@ -12,15 +12,15 @@ require_once 'src/controllers/Controller.php';
 require_once 'src/controllers/Pages.php';
 
 // Load AdminController early to ensure functions are available
-if (file_exists('src/controllers/AdminController-new.php')) {
+if (file_exists('src/controllers/AdminController.php')) {
+    require_once 'src/controllers/AdminController.php';
+    error_log("AdminController principal cargado desde index.php");
+} elseif (file_exists('src/controllers/AdminController-new.php')) {
     require_once 'src/controllers/AdminController-new.php';
-    error_log("AdminController-new cargado desde index.php");
+    error_log("AdminController-new cargado como fallback");
 } elseif (file_exists('src/controllers/AdminController-minimal.php')) {
     require_once 'src/controllers/AdminController-minimal.php';
-    error_log("AdminController-minimal cargado como fallback");
-} elseif (file_exists('src/controllers/AdminController.php')) {
-    require_once 'src/controllers/AdminController.php';
-    error_log("AdminController original cargado como último recurso");
+    error_log("AdminController-minimal cargado como último recurso");
 }
 
 // Parse the URL
