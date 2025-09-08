@@ -106,84 +106,75 @@ $total_paginas = count($libro_paginas);
     </div>
 </section>
 
-<!-- Book Navigation -->
-<section class="book-navigation py-4 bg-light">
+<!-- Flipbook Container -->
+<section class="flipbook-section py-5">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <div class="d-flex justify-content-between align-items-center">
-                    <button id="prevChapter" class="btn btn-outline-primary">
-                        <i class="bi bi-chevron-left me-2"></i>Capítulo Anterior
-                    </button>
-                    <div class="chapter-info">
-                        <span id="currentChapter">1</span> de <?php echo $total_paginas; ?>
-                    </div>
-                    <button id="nextChapter" class="btn btn-outline-primary">
-                        Siguiente Capítulo<i class="bi bi-chevron-right ms-2"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Book Content -->
-<section class="book-content py-5">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <div id="bookContainer" class="book-container">
-                    <?php foreach ($libro_paginas as $index => $pagina): ?>
-                    <div class="book-page <?php echo $index === 0 ? 'active' : ''; ?>" data-page="<?php echo $index + 1; ?>">
-                        <div class="page-header">
-                            <div class="page-number">Capítulo <?php echo $index + 1; ?></div>
-                            <div class="page-date"><?php echo $pagina['fecha']; ?></div>
+            <div class="col-lg-12">
+                <div class="flipbook-container">
+                    <div class="flipbook-controls">
+                        <button id="prevPage" class="btn btn-outline-primary">
+                            <i class="bi bi-chevron-left me-2"></i>Anterior
+                        </button>
+                        <div class="page-info">
+                            <span id="currentPage">1</span> de <?php echo $total_paginas; ?>
                         </div>
-                        
-                        <div class="page-content">
-                            <div class="row">
-                                <div class="col-lg-8">
-                                    <h2 class="page-title mb-4"><?php echo $pagina['titulo']; ?></h2>
-                                    <h4 class="page-subtitle mb-4 text-muted"><?php echo $pagina['subtitulo']; ?></h4>
-                                    
-                                    <div class="page-text">
-                                        <?php foreach ($pagina['contenido'] as $parrafo): ?>
-                                        <p class="mb-4"><?php echo $parrafo; ?></p>
-                                        <?php endforeach; ?>
+                        <button id="nextPage" class="btn btn-outline-primary">
+                            Siguiente<i class="bi bi-chevron-right ms-2"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="flipbook-wrapper">
+                        <div class="flipbook" id="flipbook">
+                            <?php foreach ($libro_paginas as $index => $pagina): ?>
+                            <div class="page" data-page="<?php echo $index + 1; ?>">
+                                <div class="page-content">
+                                    <div class="page-header">
+                                        <div class="page-number">Capítulo <?php echo $index + 1; ?></div>
+                                        <div class="page-date"><?php echo $pagina['fecha']; ?></div>
                                     </div>
-                                </div>
-                                
-                                <div class="col-lg-4">
-                                    <div class="page-image">
-                                        <img src="<?php echo $pagina['imagen']; ?>" 
-                                             alt="<?php echo $pagina['titulo']; ?>" 
-                                             class="img-fluid rounded shadow-lg">
-                                        <div class="image-caption mt-3">
-                                            <small class="text-muted">
-                                                <i class="bi bi-image me-1"></i>
-                                                Ilustración histórica
-                                            </small>
+                                    
+                                    <div class="page-body">
+                                        <div class="row h-100">
+                                            <div class="col-lg-8">
+                                                <h2 class="page-title"><?php echo $pagina['titulo']; ?></h2>
+                                                <h4 class="page-subtitle"><?php echo $pagina['subtitulo']; ?></h4>
+                                                
+                                                <div class="page-text">
+                                                    <?php foreach ($pagina['contenido'] as $parrafo): ?>
+                                                    <p><?php echo $parrafo; ?></p>
+                                                    <?php endforeach; ?>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-lg-4">
+                                                <div class="page-image">
+                                                    <img src="<?php echo $pagina['imagen']; ?>" 
+                                                         alt="<?php echo $pagina['titulo']; ?>" 
+                                                         class="img-fluid">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="page-footer">
+                                        <div class="page-quote">
+                                            <blockquote>
+                                                <p>
+                                                    <i class="bi bi-quote me-2"></i>
+                                                    "La tradición no es adorar las cenizas, sino mantener viva la llama."
+                                                </p>
+                                                <footer>
+                                                    <cite>Filá Mariscales</cite>
+                                                </footer>
+                                            </blockquote>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="page-footer">
-                            <div class="page-quote">
-                                <blockquote class="blockquote">
-                                    <p class="mb-0">
-                                        <i class="bi bi-quote me-2"></i>
-                                        "La tradición no es adorar las cenizas, sino mantener viva la llama."
-                                    </p>
-                                    <footer class="blockquote-footer mt-2">
-                                        <cite>Filá Mariscales</cite>
-                                    </footer>
-                                </blockquote>
-                            </div>
+                            <?php endforeach; ?>
                         </div>
                     </div>
-                    <?php endforeach; ?>
                 </div>
             </div>
         </div>
@@ -198,8 +189,7 @@ $total_paginas = count($libro_paginas);
                 <h4 class="text-center mb-4">Navegación por Capítulos</h4>
                 <div class="chapter-grid">
                     <?php foreach ($libro_paginas as $index => $pagina): ?>
-                    <button class="chapter-btn <?php echo $index === 0 ? 'active' : ''; ?>" 
-                            data-page="<?php echo $index + 1; ?>">
+                    <button class="chapter-btn" data-page="<?php echo $index + 1; ?>">
                         <div class="chapter-number"><?php echo $index + 1; ?></div>
                         <div class="chapter-title"><?php echo $pagina['titulo']; ?></div>
                         <div class="chapter-date"><?php echo $pagina['fecha']; ?></div>
@@ -210,9 +200,9 @@ $total_paginas = count($libro_paginas);
         </div>
     </div>
 </section>
-    
-    <style>
-/* Book Styles */
+
+<style>
+/* Hero Section */
 .hero-section {
     background: linear-gradient(135deg, rgba(220, 20, 60, 0.05) 0%, rgba(255, 255, 255, 0.7) 50%, rgba(220, 20, 60, 0.05) 100%);
     border-bottom: 3px solid var(--primary);
@@ -229,46 +219,78 @@ $total_paginas = count($libro_paginas);
     backdrop-filter: blur(10px);
 }
 
-.book-navigation {
-    background: linear-gradient(135deg, rgba(220, 20, 60, 0.8) 0%, rgba(139, 0, 0, 0.8) 100%);
-    color: white;
-    backdrop-filter: blur(10px);
+/* Flipbook Styles */
+.flipbook-section {
+    background: linear-gradient(135deg, rgba(248, 249, 250, 0.8) 0%, rgba(233, 236, 239, 0.8) 100%);
+    min-height: 80vh;
 }
 
-.book-navigation .btn {
-    border-color: white;
-    color: white;
+.flipbook-container {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.book-navigation .btn:hover {
-    background: white;
+.flipbook-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.page-info {
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
     color: var(--primary);
 }
 
-.chapter-info {
-        font-family: 'Cinzel', serif;
-        font-size: 1.2rem;
-    font-weight: 600;
-    }
-    
-.book-container {
-        position: relative;
-    min-height: 600px;
+.flipbook-wrapper {
+    perspective: 1000px;
+    height: 600px;
+    position: relative;
 }
 
-.book-page {
-    display: none;
-    background: rgba(255, 255, 255, 0.9);
-        border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+.flipbook {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+}
+
+.page {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     border: 3px solid var(--primary);
-    overflow: hidden;
-    animation: fadeIn 0.5s ease-in-out;
-    backdrop-filter: blur(10px);
+    transform-origin: left center;
+    transition: transform 0.8s ease-in-out;
+    backface-visibility: hidden;
+    display: none;
 }
 
-.book-page.active {
+.page.active {
     display: block;
+    transform: rotateY(0deg);
+}
+
+.page.flipping {
+    transform: rotateY(-180deg);
+}
+
+.page-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
 }
 
 .page-header {
@@ -279,7 +301,6 @@ $total_paginas = count($libro_paginas);
     justify-content: space-between;
     align-items: center;
     font-family: 'Cinzel', serif;
-    backdrop-filter: blur(5px);
 }
 
 .page-number {
@@ -290,30 +311,31 @@ $total_paginas = count($libro_paginas);
 .page-date {
     font-size: 1.1rem;
     opacity: 0.9;
-    }
-    
-    .page-content {
-        padding: 3rem;
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px);
-    border-radius: 10px;
-        margin: 1rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    }
-    
+}
+
+.page-body {
+    flex: 1;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.95);
+    overflow-y: auto;
+}
+
 .page-title {
     font-family: 'Cinzel', serif;
-        font-size: 2.5rem;
+    font-size: 2.2rem;
     font-weight: 700;
     color: var(--primary);
     border-bottom: 3px solid var(--accent);
-        padding-bottom: 1rem;
-    }
-    
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
 .page-subtitle {
-        font-family: 'Crimson Text', serif;
+    font-family: 'Crimson Text', serif;
     font-style: italic;
-        font-size: 1.3rem;
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 1.5rem;
 }
 
 .page-text p {
@@ -322,20 +344,28 @@ $total_paginas = count($libro_paginas);
     line-height: 1.8;
     text-align: justify;
     color: #333;
+    margin-bottom: 1rem;
+}
+
+.page-image {
+    height: 100%;
+    display: flex;
+    align-items: center;
 }
 
 .page-image img {
     width: 100%;
     height: 300px;
     object-fit: cover;
+    border-radius: 10px;
     border: 3px solid var(--accent);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .page-footer {
-    background: linear-gradient(135deg, rgba(248, 249, 250, 0.8) 0%, rgba(233, 236, 239, 0.8) 100%);
-    padding: 2rem;
+    background: linear-gradient(135deg, rgba(248, 249, 250, 0.9) 0%, rgba(233, 236, 239, 0.9) 100%);
+    padding: 1.5rem;
     border-top: 2px solid var(--primary);
-    backdrop-filter: blur(10px);
 }
 
 .page-quote {
@@ -346,8 +376,22 @@ $total_paginas = count($libro_paginas);
 .page-quote blockquote {
     border-left: 4px solid var(--primary);
     padding-left: 1rem;
+    margin: 0;
 }
 
+.page-quote p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 0.5rem;
+}
+
+.page-quote cite {
+    font-size: 0.9rem;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* Chapter Navigation */
 .chapter-nav {
     background: rgba(248, 249, 250, 0.8);
     border-top: 2px solid var(--primary);
@@ -386,7 +430,7 @@ $total_paginas = count($libro_paginas);
 
 .chapter-number {
     font-family: 'Cinzel', serif;
-            font-size: 2rem;
+    font-size: 2rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
 }
@@ -403,19 +447,18 @@ $total_paginas = count($libro_paginas);
     opacity: 0.8;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
 /* Responsive */
 @media (max-width: 768px) {
-    .page-content {
-        padding: 2rem 1.5rem;
+    .flipbook-wrapper {
+        height: 500px;
+    }
+    
+    .page-body {
+        padding: 1.5rem;
     }
     
     .page-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
     }
     
     .chapter-grid {
@@ -426,63 +469,77 @@ $total_paginas = count($libro_paginas);
         flex-direction: column;
         gap: 1rem;
     }
+    
+    .flipbook-controls {
+        flex-direction: column;
+        gap: 1rem;
     }
-    </style>
+}
+</style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const bookPages = document.querySelectorAll('.book-page');
+    const pages = document.querySelectorAll('.page');
     const chapterBtns = document.querySelectorAll('.chapter-btn');
-    const prevBtn = document.getElementById('prevChapter');
-    const nextBtn = document.getElementById('nextChapter');
-    const currentChapter = document.getElementById('currentChapter');
+    const prevBtn = document.getElementById('prevPage');
+    const nextBtn = document.getElementById('nextPage');
+    const currentPageSpan = document.getElementById('currentPage');
     
     let currentPage = 1;
-    const totalPages = bookPages.length;
+    const totalPages = pages.length;
+    let isFlipping = false;
     
     function showPage(pageNumber) {
-        // Hide all pages
-        bookPages.forEach(page => {
-            page.classList.remove('active');
-        });
+        if (isFlipping) return;
         
-        // Show current page
-        const targetPage = document.querySelector(`[data-page="${pageNumber}"]`);
-        if (targetPage) {
-            targetPage.classList.add('active');
+        isFlipping = true;
+        
+        // Hide current page with flip animation
+        const currentPageEl = document.querySelector('.page.active');
+        if (currentPageEl) {
+            currentPageEl.classList.add('flipping');
+            currentPageEl.classList.remove('active');
         }
         
-        // Update navigation
-        currentChapter.textContent = pageNumber;
-        
-        // Update chapter buttons
-        chapterBtns.forEach(btn => {
-            btn.classList.remove('active');
-        });
-        
-        const targetBtn = document.querySelector(`.chapter-btn[data-page="${pageNumber}"]`);
-        if (targetBtn) {
-            targetBtn.classList.add('active');
-        }
-        
-        // Update navigation buttons
-        prevBtn.disabled = pageNumber === 1;
-        nextBtn.disabled = pageNumber === totalPages;
-        
-        // Scroll to top
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Show new page after animation
+        setTimeout(() => {
+            const targetPage = document.querySelector(`[data-page="${pageNumber}"]`);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                targetPage.classList.remove('flipping');
+            }
+            
+            // Update navigation
+            currentPageSpan.textContent = pageNumber;
+            
+            // Update chapter buttons
+            chapterBtns.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            const targetBtn = document.querySelector(`.chapter-btn[data-page="${pageNumber}"]`);
+            if (targetBtn) {
+                targetBtn.classList.add('active');
+            }
+            
+            // Update navigation buttons
+            prevBtn.disabled = pageNumber === 1;
+            nextBtn.disabled = pageNumber === totalPages;
+            
+            isFlipping = false;
+        }, 400);
     }
     
     // Event listeners
     prevBtn.addEventListener('click', () => {
-        if (currentPage > 1) {
+        if (currentPage > 1 && !isFlipping) {
             currentPage--;
             showPage(currentPage);
         }
     });
     
     nextBtn.addEventListener('click', () => {
-        if (currentPage < totalPages) {
+        if (currentPage < totalPages && !isFlipping) {
             currentPage++;
             showPage(currentPage);
         }
@@ -491,19 +548,54 @@ document.addEventListener('DOMContentLoaded', function() {
     chapterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const pageNumber = parseInt(btn.dataset.page);
-            currentPage = pageNumber;
-            showPage(pageNumber);
+            if (pageNumber !== currentPage && !isFlipping) {
+                currentPage = pageNumber;
+                showPage(pageNumber);
+            }
         });
     });
     
     // Keyboard navigation
     document.addEventListener('keydown', (e) => {
+        if (isFlipping) return;
+        
         if (e.key === 'ArrowLeft' && currentPage > 1) {
             currentPage--;
             showPage(currentPage);
         } else if (e.key === 'ArrowRight' && currentPage < totalPages) {
             currentPage++;
             showPage(currentPage);
+        }
+    });
+    
+    // Touch/swipe support
+    let startX = 0;
+    let startY = 0;
+    
+    document.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+    });
+    
+    document.addEventListener('touchend', (e) => {
+        if (isFlipping) return;
+        
+        const endX = e.changedTouches[0].clientX;
+        const endY = e.changedTouches[0].clientY;
+        const diffX = startX - endX;
+        const diffY = startY - endY;
+        
+        // Only trigger if horizontal swipe is more significant than vertical
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+            if (diffX > 0 && currentPage < totalPages) {
+                // Swipe left - next page
+                currentPage++;
+                showPage(currentPage);
+            } else if (diffX < 0 && currentPage > 1) {
+                // Swipe right - previous page
+                currentPage--;
+                showPage(currentPage);
+            }
         }
     });
     

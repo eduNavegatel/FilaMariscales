@@ -51,10 +51,15 @@
                                 Envíanos un Mensaje
                             </h4>
                             
-                            <form id="contactForm">
+                            <form id="contactForm" action="https://formsubmit.co/edu300572@gmail.com" method="POST">
                                 <div class="mb-3">
                                     <label for="nombre" class="form-label">Nombre *</label>
-                                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                                    <input type="text" class="form-control" id="nombre" name="name" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="apellidos" class="form-label">Apellidos *</label>
+                                    <input type="text" class="form-control" id="apellidos" name="apellidos" required>
                                 </div>
                                 
                                 <div class="mb-3">
@@ -76,7 +81,7 @@
                                 
                                 <div class="mb-3">
                                     <label for="mensaje" class="form-label">Mensaje *</label>
-                                    <textarea class="form-control" id="mensaje" name="mensaje" rows="5" required 
+                                    <textarea class="form-control" id="mensaje" name="message" rows="5" required 
                                               placeholder="Escribe tu mensaje aquí..."></textarea>
                                 </div>
                                 
@@ -86,6 +91,12 @@
                                         Acepto la <a href="#" class="text-primary">política de privacidad</a> *
                                     </label>
                                 </div>
+                                
+                                <!-- Campos ocultos para FormSubmit -->
+                                <input type="hidden" name="_next" value="http://localhost/prueba-php/public/contacto?enviado=true">
+                                <input type="hidden" name="_subject" value="Nuevo mensaje del formulario de contacto - Filá Mariscales">
+                                <input type="hidden" name="_captcha" value="false">
+                                <input type="hidden" name="_template" value="table">
                                 
                                 <div class="d-grid">
                                     <button type="submit" class="btn btn-primary btn-lg">
@@ -168,19 +179,55 @@
 </style>
 
 <script>
+// Verificar si el formulario fue enviado exitosamente
+if (window.location.search.includes('enviado=true')) {
+    // Mostrar mensaje de éxito
+    const alertDiv = document.createElement('div');
+    alertDiv.className = 'alert alert-success alert-dismissible fade show';
+    alertDiv.innerHTML = `
+        <i class="bi bi-check-circle me-2"></i>
+        <strong>¡Mensaje enviado correctamente!</strong> Te responderemos en breve.
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    // Insertar el mensaje al inicio del formulario
+    const form = document.getElementById('contactForm');
+    form.parentNode.insertBefore(alertDiv, form);
+    
+    // Limpiar la URL
+    window.history.replaceState({}, document.title, window.location.pathname);
+}
+
+// Validación del formulario antes del envío
 document.getElementById('contactForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+    const nombre = document.getElementById('nombre').value.trim();
+    const apellidos = document.getElementById('apellidos').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const asunto = document.getElementById('asunto').value;
+    const mensaje = document.getElementById('mensaje').value.trim();
+    const privacidad = document.getElementById('privacidad').checked;
     
-    // Aquí puedes agregar la lógica para enviar el formulario
-    // Por ahora, solo mostramos un mensaje de confirmación
+    // Validaciones
+    if (!nombre || !apellidos || !email || !asunto || !mensaje || !privacidad) {
+        e.preventDefault();
+        alert('Por favor, completa todos los campos obligatorios y acepta la política de privacidad.');
+        return false;
+    }
     
-    const formData = new FormData(this);
-    const data = Object.fromEntries(formData);
+    // Validar email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        e.preventDefault();
+        alert('Por favor, introduce un email válido.');
+        return false;
+    }
     
-    // Simular envío del formulario
-    alert('¡Mensaje enviado correctamente! Te responderemos en breve.');
+    // Mostrar mensaje de envío
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Enviando...';
+    submitBtn.disabled = true;
     
-    // Limpiar el formulario
-    this.reset();
+    // El formulario se enviará automáticamente a FormSubmit
 });
 </script>
