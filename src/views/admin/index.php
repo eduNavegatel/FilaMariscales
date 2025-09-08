@@ -41,7 +41,7 @@
                         </a>
                     </li>
                     <li class="nav-item mt-3">
-                        <a class="nav-link text-danger" href="<?php echo URL_ROOT; ?>/pages/logout">
+                        <a class="nav-link text-danger" href="<?php echo URL_ROOT; ?>/logout">
                             <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
                         </a>
                     </li>

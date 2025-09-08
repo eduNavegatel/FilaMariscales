@@ -197,7 +197,7 @@ ob_start(); // Start output buffering
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" id="privacyPolicy" required>
                         <label class="form-check-label small text-muted" for="privacyPolicy">
-                            Acepto la <a href="/mariscales1-php/public/pages/privacidad" class="text-decoration-none">política de privacidad</a>
+                            Acepto la <a href="/prueba-php/public/privacidad" class="text-decoration-none">política de privacidad</a>
                         </label>
                     </div>
                 </div>

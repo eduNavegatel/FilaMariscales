@@ -113,10 +113,87 @@ ob_start(); // Start output buffering
                 <h2 class="fw-bold mb-4">¿Quieres contactar con nosotros?</h2>
                 <p class="lead mb-4">Estamos a tu disposición para cualquier consulta o sugerencia</p>
                 <div class="d-flex justify-content-center gap-3">
-                    <a href="/mariscales1-php/public/pages/contacto" class="btn btn-primary btn-lg">Enviar mensaje</a>
-                    <a href="tel:+34900123456" class="btn btn-outline-primary btn-lg">Llamar ahora</a>
+                    <a href="/prueba-php/public/contacto" class="btn btn-primary btn-lg">Enviar mensaje</a>
+                    <button type="button" class="btn btn-outline-primary btn-lg" onclick="mostrarTelefono()">Llamar ahora</button>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<script>
+function mostrarTelefono() {
+    const numero = '+34 900 123 456';
+    
+    // Crear modal personalizado
+    const modal = document.createElement('div');
+    modal.className = 'modal fade show';
+    modal.style.display = 'block';
+    modal.style.backgroundColor = 'rgba(0,0,0,0.5)';
+    modal.innerHTML = `
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">
+                        <i class="bi bi-telephone me-2"></i>
+                        Número de Teléfono
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" onclick="cerrarModal()"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-telephone-fill text-primary" style="font-size: 3rem;"></i>
+                    </div>
+                    <h3 class="text-primary mb-3">${numero}</h3>
+                    <p class="text-muted">Horario de atención: Lunes a Viernes 18:00 - 20:00</p>
+                    <div class="d-flex gap-2 justify-content-center">
+                        <button type="button" class="btn btn-outline-secondary" onclick="copiarNumero('${numero}')">
+                            <i class="bi bi-clipboard me-2"></i>
+                            Copiar
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="cerrarModal()">
+                            <i class="bi bi-x-circle me-2"></i>
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Cerrar modal al hacer clic fuera
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            cerrarModal();
+        }
+    });
+}
+
+function cerrarModal() {
+    const modal = document.querySelector('.modal');
+    if (modal) {
+        modal.remove();
+    }
+}
+
+function copiarNumero(numero) {
+    navigator.clipboard.writeText(numero).then(function() {
+        // Mostrar mensaje de confirmación
+        const btn = event.target.closest('button');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="bi bi-check me-2"></i>Copiado!';
+        btn.classList.remove('btn-outline-secondary');
+        btn.classList.add('btn-success');
+        
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.classList.remove('btn-success');
+            btn.classList.add('btn-outline-secondary');
+        }, 2000);
+    }).catch(function(err) {
+        alert('No se pudo copiar el número: ' + err);
+    });
+}
+</script>

@@ -97,6 +97,8 @@ class AdminController extends Controller {
         // Get counts for dashboard if models exist
         $userCount = 0;
         $eventCount = 0;
+        $newsCount = 0;
+        $messagesCount = 0;
         $recentUsers = [];
         $recentEvents = [];
         
@@ -135,11 +137,41 @@ class AdminController extends Controller {
             error_log("Gallery directory not found: " . $uploadDir);
         }
         
+        // Get news count (for now, we'll use a placeholder or count from a directory)
+        $newsDir = 'uploads/news/';
+        if (is_dir($newsDir)) {
+            $newsFiles = glob($newsDir . '*.{txt,md,html}', GLOB_BRACE);
+            $newsCount = count($newsFiles);
+        } else {
+            // Create news directory if it doesn't exist
+            if (!is_dir($newsDir)) {
+                mkdir($newsDir, 0755, true);
+            }
+            $newsCount = 0;
+        }
+        error_log("News count: " . $newsCount);
+        
+        // Get messages count
+        $messagesDir = 'uploads/messages/';
+        if (is_dir($messagesDir)) {
+            $messageFiles = glob($messagesDir . '*.{txt,json,html}', GLOB_BRACE);
+            $messagesCount = count($messageFiles);
+        } else {
+            // Create messages directory if it doesn't exist
+            if (!is_dir($messagesDir)) {
+                mkdir($messagesDir, 0755, true);
+            }
+            $messagesCount = 0;
+        }
+        error_log("Messages count: " . $messagesCount);
+        
         $data = [
             'title' => 'Panel de Administración',
             'userCount' => $userCount,
             'eventCount' => $eventCount,
             'galleryCount' => $galleryCount,
+            'newsCount' => $newsCount,
+            'messagesCount' => $messagesCount,
             'recentUsers' => $recentUsers,
             'recentEvents' => $recentEvents
         ];
@@ -158,83 +190,145 @@ class AdminController extends Controller {
     
     // Export dashboard data as CSV
     public function exportDashboard() {
-        // Prepare data
-        $userCount = 0;
-        $eventCount = 0;
-        $galleryCount = 0;
-        $recentUsers = [];
-        $recentEvents = [];
+        error_log("AdminController::exportDashboard() iniciando");
         
-        if ($this->userModel) {
-            $userCount = $this->userModel->getUserCount();
-            // Try to fetch up to 50 recent users for export
-            if (method_exists($this->userModel, 'getRecentUsers')) {
-                $recentUsers = $this->userModel->getRecentUsers(50);
+        // Verificar permisos de administrador
+        if (function_exists('isAdminLoggedIn') && !isAdminLoggedIn()) {
+            error_log("ExportDashboard: Usuario no autenticado");
+            http_response_code(403);
+            echo "Acceso denegado. Debe estar autenticado como administrador.";
+            exit;
+        }
+        
+        try {
+            // Prepare data
+            $userCount = 0;
+            $eventCount = 0;
+            $galleryCount = 0;
+            $recentUsers = [];
+            $recentEvents = [];
+            
+            error_log("User model available: " . ($this->userModel ? 'YES' : 'NO'));
+            if ($this->userModel) {
+                try {
+                    $userCount = $this->userModel->getUserCount();
+                    error_log("User count: " . $userCount);
+                    
+                    // Try to fetch up to 50 recent users for export
+                    if (method_exists($this->userModel, 'getRecentUsers')) {
+                        $recentUsers = $this->userModel->getRecentUsers(50);
+                        error_log("Recent users count: " . count($recentUsers));
+                    }
+                } catch (Exception $e) {
+                    error_log("Error getting user data for export: " . $e->getMessage());
+                }
             }
-        }
-        if ($this->eventModel) {
-            $eventCount = $this->eventModel->getEventCount();
-            if (method_exists($this->eventModel, 'getRecentEvents')) {
-                $recentEvents = $this->eventModel->getRecentEvents(50);
+            
+            error_log("Event model available: " . ($this->eventModel ? 'YES' : 'NO'));
+            if ($this->eventModel) {
+                try {
+                    $eventCount = $this->eventModel->getEventCount();
+                    error_log("Event count: " . $eventCount);
+                    
+                    if (method_exists($this->eventModel, 'getRecentEvents')) {
+                        $recentEvents = $this->eventModel->getRecentEvents(50);
+                        error_log("Recent events count: " . count($recentEvents));
+                    }
+                } catch (Exception $e) {
+                    error_log("Error getting event data for export: " . $e->getMessage());
+                }
             }
+            
+            // Gallery count from filesystem
+            $uploadDir = 'uploads/gallery/';
+            if (is_dir($uploadDir)) {
+                $files = glob($uploadDir . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+                $galleryCount = is_array($files) ? count($files) : 0;
+                error_log("Gallery files count: " . $galleryCount);
+            }
+            
+            // Output CSV headers
+            header('Content-Type: text/csv; charset=UTF-8');
+            header('Content-Disposition: attachment; filename="dashboard_export_'.date('Ymd_His').'.csv"');
+            header('Pragma: no-cache');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            
+            $output = fopen('php://output', 'w');
+            if (!$output) {
+                throw new Exception("No se pudo abrir el stream de salida");
+            }
+            
+            // BOM for UTF-8 Excel compatibility
+            fwrite($output, "\xEF\xBB\xBF");
+            
+            // Summary
+            fputcsv($output, ['Resumen del Panel de Administración - Filá Mariscales']);
+            fputcsv($output, ['Fecha de Exportación', date('Y-m-d H:i:s')]);
+            fputcsv($output, []);
+            fputcsv($output, ['Métricas Generales']);
+            fputcsv($output, ['Usuarios Registrados', 'Eventos Programados', 'Archivos en Galería']);
+            fputcsv($output, [$userCount, $eventCount, $galleryCount]);
+            fputcsv($output, []);
+            
+            // Recent users
+            fputcsv($output, ['Últimos Usuarios Registrados']);
+            fputcsv($output, ['ID', 'Nombre', 'Apellidos', 'Email', 'Rol', 'Activo', 'Fecha Registro']);
+            foreach ($recentUsers as $u) {
+                $activo = isset($u->activo) ? ($u->activo ? 'Sí' : 'No') : 'N/A';
+                $fecha = isset($u->fecha_registro) ? $u->fecha_registro : 'N/A';
+                fputcsv($output, [
+                    $u->id ?? '',
+                    $u->nombre ?? '',
+                    $u->apellidos ?? '',
+                    $u->email ?? '',
+                    $u->rol ?? '',
+                    $activo,
+                    $fecha
+                ]);
+            }
+            fputcsv($output, []);
+            
+            // Recent events
+            fputcsv($output, ['Próximos Eventos']);
+            fputcsv($output, ['ID', 'Título', 'Fecha', 'Hora', 'Lugar', 'Público', 'Descripción']);
+            foreach ($recentEvents as $e) {
+                $publico = isset($e->es_publico) ? ($e->es_publico ? 'Sí' : 'No') : 'N/A';
+                $descripcion = isset($e->descripcion) ? substr($e->descripcion, 0, 100) . '...' : '';
+                fputcsv($output, [
+                    $e->id ?? '',
+                    $e->titulo ?? '',
+                    $e->fecha ?? '',
+                    $e->hora ?? '',
+                    $e->lugar ?? ($e->ubicacion ?? ''),
+                    $publico,
+                    $descripcion
+                ]);
+            }
+            fputcsv($output, []);
+            
+            // Footer
+            fputcsv($output, ['---']);
+            fputcsv($output, ['Exportado el: ' . date('Y-m-d H:i:s')]);
+            fputcsv($output, ['Sistema: Panel de Administración Filá Mariscales']);
+            
+            fclose($output);
+            error_log("Export completed successfully");
+            exit;
+            
+        } catch (Exception $e) {
+            error_log("Error in exportDashboard: " . $e->getMessage());
+            
+            // Limpiar cualquier salida previa
+            if (ob_get_level()) {
+                ob_clean();
+            }
+            
+            http_response_code(500);
+            header('Content-Type: text/plain; charset=UTF-8');
+            echo "Error al generar el archivo de exportación: " . $e->getMessage();
+            exit;
         }
-        // Gallery count from filesystem
-        $uploadDir = 'uploads/gallery/';
-        if (is_dir($uploadDir)) {
-            $files = glob($uploadDir . '*');
-            $galleryCount = is_array($files) ? count($files) : 0;
-        }
-        
-        // Output CSV headers
-        header('Content-Type: text/csv; charset=UTF-8');
-        header('Content-Disposition: attachment; filename="dashboard_export_'.date('Ymd_His').'.csv"');
-        header('Pragma: no-cache');
-        header('Expires: 0');
-        
-        $output = fopen('php://output', 'w');
-        // BOM for UTF-8 Excel compatibility
-        fwrite($output, "\xEF\xBB\xBF");
-        
-        // Summary
-        fputcsv($output, ['Resumen del Panel']);
-        fputcsv($output, ['Usuarios', 'Eventos', 'Archivos Galería']);
-        fputcsv($output, [$userCount, $eventCount, $galleryCount]);
-        fputcsv($output, []);
-        
-        // Recent users
-        fputcsv($output, ['Últimos Usuarios']);
-        fputcsv($output, ['ID', 'Nombre', 'Apellidos', 'Email', 'Rol', 'Activo', 'Fecha Registro']);
-        foreach ($recentUsers as $u) {
-            $activo = isset($u->activo) ? ($u->activo ? 'Sí' : 'No') : '';
-            $fecha = isset($u->fecha_registro) ? $u->fecha_registro : '';
-            fputcsv($output, [
-                $u->id ?? '',
-                $u->nombre ?? '',
-                $u->apellidos ?? '',
-                $u->email ?? '',
-                $u->rol ?? '',
-                $activo,
-                $fecha
-            ]);
-        }
-        fputcsv($output, []);
-        
-        // Recent events
-        fputcsv($output, ['Próximos Eventos']);
-        fputcsv($output, ['ID', 'Título', 'Fecha', 'Hora', 'Lugar', 'Público']);
-        foreach ($recentEvents as $e) {
-            fputcsv($output, [
-                $e->id ?? '',
-                $e->titulo ?? '',
-                $e->fecha ?? '',
-                $e->hora ?? '',
-                $e->lugar ?? ($e->ubicacion ?? ''),
-                isset($e->es_publico) ? ($e->es_publico ? 'Sí' : 'No') : ''
-            ]);
-        }
-        
-        fclose($output);
-        exit;
     }
     
     // User management
@@ -1271,5 +1365,104 @@ class AdminController extends Controller {
         </body>
         </html>';
         exit;
+    }
+    
+    // News management
+    public function noticias() {
+        error_log("AdminController::noticias() called");
+        
+        // Get news count and list
+        $newsCount = 0;
+        $newsList = [];
+        $newsDir = 'uploads/news/';
+        
+        if (is_dir($newsDir)) {
+            $newsFiles = glob($newsDir . '*.{txt,md,html}', GLOB_BRACE);
+            $newsCount = count($newsFiles);
+            
+            // Get file info for each news file
+            foreach ($newsFiles as $file) {
+                $newsList[] = [
+                    'filename' => basename($file),
+                    'size' => filesize($file),
+                    'modified' => date('Y-m-d H:i:s', filemtime($file)),
+                    'path' => $file
+                ];
+            }
+            
+            // Sort by modification date (newest first)
+            usort($newsList, function($a, $b) {
+                return strtotime($b['modified']) - strtotime($a['modified']);
+            });
+        } else {
+            // Create news directory if it doesn't exist
+            if (!is_dir($newsDir)) {
+                mkdir($newsDir, 0755, true);
+            }
+        }
+        
+        $data = [
+            'title' => 'Gestión de Noticias',
+            'newsCount' => $newsCount,
+            'newsList' => $newsList
+        ];
+        
+        try {
+            $this->view('admin/noticias', $data);
+        } catch (Exception $e) {
+            error_log("Error loading noticias view: " . $e->getMessage());
+            // Fallback: mostrar página básica
+            $this->loadViewDirectly('admin/noticias', $data);
+        }
+    }
+    
+    // Messages management
+    public function mensajes() {
+        error_log("AdminController::mensajes() called");
+        
+        // Get messages count and list
+        $messagesCount = 0;
+        $messagesList = [];
+        $messagesDir = 'uploads/messages/';
+        
+        if (is_dir($messagesDir)) {
+            $messageFiles = glob($messagesDir . '*.{txt,json,html}', GLOB_BRACE);
+            $messagesCount = count($messageFiles);
+            
+            // Get file info for each message file
+            foreach ($messageFiles as $file) {
+                $messagesList[] = [
+                    'filename' => basename($file),
+                    'size' => filesize($file),
+                    'modified' => date('Y-m-d H:i:s', filemtime($file)),
+                    'path' => $file,
+                    'content' => file_get_contents($file)
+                ];
+            }
+            
+            // Sort by modification date (newest first)
+            usort($messagesList, function($a, $b) {
+                return strtotime($b['modified']) - strtotime($a['modified']);
+            });
+        } else {
+            // Create messages directory if it doesn't exist
+            if (!is_dir($messagesDir)) {
+                mkdir($messagesDir, 0755, true);
+            }
+        }
+        
+        $data = [
+            'title' => 'Gestión de Mensajes',
+            'messagesCount' => $messagesCount,
+            'messagesList' => $messagesList
+        ];
+        
+        try {
+            $this->view('admin/mensajes', $data);
+        } catch (Exception $e) {
+            error_log("Error loading mensajes view: " . $e->getMessage());
+            // Fallback: mostrar página básica
+            $this->loadViewDirectly('admin/mensajes', $data);
+        }
     }
 }

@@ -6,8 +6,10 @@
     <title><?= $data['title'] ?? 'Panel de Administración' ?> - Filá Mariscales</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Font Awesome - Múltiples CDNs como respaldo -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" onerror="this.onerror=null;this.href='https://use.fontawesome.com/releases/v6.0.0/css/all.css';">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css" onerror="this.onerror=null;this.href='https://maxcdn.bootstrapcdn.com/font-awesome/6.0.0/css/font-awesome.min.css';">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/6.0.0/css/font-awesome.min.css">
     <!-- Custom CSS -->
     <link href="<?= URL_ROOT ?>/assets/css/admin.css" rel="stylesheet">
     <?php if (isset($data['styles'])): ?>

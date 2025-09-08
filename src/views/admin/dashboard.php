@@ -7,10 +7,14 @@
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Font Awesome - Múltiples CDNs como respaldo -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" onerror="this.onerror=null;this.href='https://use.fontawesome.com/releases/v6.0.0/css/all.css';">
+    <link href="https://use.fontawesome.com/releases/v6.0.0/css/all.css" rel="stylesheet" onerror="this.onerror=null;this.href='https://maxcdn.bootstrapcdn.com/font-awesome/6.0.0/css/font-awesome.min.css';">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/6.0.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- Admin CSS -->
     <link href="/prueba-php/public/assets/css/admin.css" rel="stylesheet">
+    <!-- Font Awesome Fallback CSS -->
+    <link href="/prueba-php/public/assets/css/fontawesome-fallback.css" rel="stylesheet">
     
     <style>
         body { 
@@ -1155,6 +1159,33 @@ function initializeCalendar() {
             var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                 return new bootstrap.Tooltip(tooltipTriggerEl);
             });
+            
+            // Verificar si Font Awesome se cargó correctamente
+            setTimeout(function() {
+                var testIcon = document.createElement('i');
+                testIcon.className = 'fas fa-test';
+                testIcon.style.position = 'absolute';
+                testIcon.style.left = '-9999px';
+                testIcon.style.visibility = 'hidden';
+                document.body.appendChild(testIcon);
+                
+                var computedStyle = window.getComputedStyle(testIcon);
+                var fontFamily = computedStyle.getPropertyValue('font-family');
+                
+                document.body.removeChild(testIcon);
+                
+                if (!fontFamily.includes('Font Awesome') && !fontFamily.includes('FontAwesome')) {
+                    console.warn('Font Awesome no se cargó correctamente. Intentando cargar desde CDN alternativo...');
+                    
+                    // Crear un nuevo enlace para Font Awesome desde un CDN alternativo
+                    var link = document.createElement('link');
+                    link.rel = 'stylesheet';
+                    link.href = 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css';
+                    document.head.appendChild(link);
+                } else {
+                    console.log('Font Awesome cargado correctamente');
+                }
+            }, 1000);
         });
     </script>
 </body>

@@ -150,6 +150,15 @@ class Pages extends Controller {
         $this->view('pages/tienda', $data);
     }
 
+    // Página de contacto
+    public function contacto() {
+        $data = [
+            'title' => 'Contacto',
+            'description' => 'Ponte en contacto con la Filá Mariscales de Caballeros Templarios de Elche'
+        ];
+        $this->view('pages/contacto', $data);
+    }
+
     // Página de historia
     public function historia() {
         $data = [

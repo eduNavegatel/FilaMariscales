@@ -62,10 +62,10 @@ ob_start(); // Start output buffering
                 <h1 style="font-size: 3.5rem; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); color: white; margin-bottom: 1rem;">Bienvenidos a la Filá Mariscales</h1>
                 <p style="font-size: 1.5rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.8); color: white; margin-bottom: 2rem;">Caballeros Templarios de Elche</p>
                 <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-                    <a href="/prueba-php/public/pages/historia" style="background: linear-gradient(135deg, #FFFFFF 0%, #f0f0f0 100%); color: #8B0000; border: 2px solid #FFFFFF; padding: 12px 30px; border-radius: 25px; font-weight: bold; text-decoration: none; display: inline-block;">
+                    <a href="/prueba-php/public/historia" style="background: linear-gradient(135deg, #FFFFFF 0%, #f0f0f0 100%); color: #8B0000; border: 2px solid #FFFFFF; padding: 12px 30px; border-radius: 25px; font-weight: bold; text-decoration: none; display: inline-block;">
                         <i class="bi bi-shield-fill me-2"></i>Conócenos
                     </a>
-                    <a href="/prueba-php/public/pages/calendario" style="background: linear-gradient(135deg, #FFFFFF 0%, #f0f0f0 100%); color: #8B0000; border: 2px solid #FFFFFF; padding: 12px 30px; border-radius: 25px; font-weight: bold; text-decoration: none; display: inline-block;">
+                    <a href="/prueba-php/public/calendario" style="background: linear-gradient(135deg, #FFFFFF 0%, #f0f0f0 100%); color: #8B0000; border: 2px solid #FFFFFF; padding: 12px 30px; border-radius: 25px; font-weight: bold; text-decoration: none; display: inline-block;">
                         <i class="bi bi-calendar-event me-2"></i>Próximos Eventos
                     </a>
                 </div>

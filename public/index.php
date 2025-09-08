@@ -63,6 +63,8 @@ if (empty($url[0])) {
     $controller->login();
 } elseif ($url[0] === 'registro') {
     $controller->registro();
+} elseif ($url[0] === 'contacto') {
+    $controller->contacto();
 } elseif ($url[0] === 'admin') {
     // Admin routes (simple guard + custom login/logout)
     $action = isset($url[1]) ? $url[1] : (isAdminLoggedIn() ? 'dashboard' : 'login');

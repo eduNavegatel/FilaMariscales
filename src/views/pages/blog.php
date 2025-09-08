@@ -31,7 +31,7 @@ ob_start(); // Start output buffering
                                 <p class="mb-0 small fw-bold">María López</p>
                                 <p class="mb-0 small text-muted">Directora de Comunicación</p>
                             </div>
-                            <a href="/mariscales1-php/public/pages/blog/preparativos-fiestas-2025" class="btn btn-outline-primary ms-auto">Leer más</a>
+                            <a href="/prueba-php/public/blog" class="btn btn-outline-primary ms-auto">Leer más</a>
                         </div>
                     </div>
                 </div>

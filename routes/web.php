@@ -27,6 +27,7 @@ $router->get('login', 'Pages@login');
 $router->post('login', 'Pages@login');
 $router->get('registro', 'Pages@registro');
 $router->post('registro', 'Pages@registro');
+$router->get('contacto', 'Pages@contacto');
 
 // Auth routes
 $router->group('auth', function($router) {
@@ -79,6 +80,12 @@ $router->group('admin', function($router) {
     $router->get('export/dashboard', 'Admin\AdminController@exportDashboard');
     $router->post('eliminarUsuario/{id}', 'Admin\AdminController@eliminarUsuario');
     
+    // News management
+    $router->get('noticias', 'Admin\AdminController@noticias');
+    
+    // Messages management
+    $router->get('mensajes', 'Admin\AdminController@mensajes');
+    
     // Event management
     $router->group('events', function($router) {
         $router->get('', 'Admin\EventController@index');
@@ -90,6 +97,9 @@ $router->group('admin', function($router) {
         $router->get('{id}/registrations', 'Admin\EventController@registrations');
         $router->post('{id}/registrations/export', 'Admin\EventController@exportRegistrations');
     });
+    
+    // Alias para eventos (compatibilidad con enlaces en español)
+    $router->get('eventos', 'Admin\EventController@index');
     
     // Gallery management
     $router->get('galeria', 'Admin\AdminController@galeria');

@@ -233,7 +233,7 @@ ob_start(); // Start output buffering
                 <i class="bi bi-question-circle display-4 text-primary mb-3"></i>
                 <h3>¿Necesitas ayuda?</h3>
                 <p class="lead">Si tienes problemas para descargar o encontrar algún documento, no dudes en contactarnos.</p>
-                <a href="/mariscales1-php/public/pages/contacto" class="btn btn-outline-primary">
+                <a href="/prueba-php/public/contacto" class="btn btn-outline-primary">
                     <i class="bi bi-envelope me-1"></i> Contactar
                 </a>
             </div>
