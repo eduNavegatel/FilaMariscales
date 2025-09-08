@@ -410,6 +410,15 @@ class Pages extends Controller {
         $this->redirect('/admin');
     }
 
+    // Página interactiva
+    public function interactiva() {
+        $data = [
+            'title' => 'Zona Interactiva',
+            'description' => 'Descubre la tradición templaria de forma interactiva'
+        ];
+        $this->view('pages/interactiva', $data);
+    }
+
     // 404 page
     public function notFound() {
         $data = [

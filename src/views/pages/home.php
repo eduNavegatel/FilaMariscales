@@ -3,7 +3,7 @@ ob_start(); // Start output buffering
 ?>
 
 <!-- Hero Section with Carousel -->
-<div class="hero" style="position: relative; min-height: 100vh; display: flex; align-items: center; overflow: hidden;">
+<div class="hero particles" style="position: relative; min-height: 100vh; display: flex; align-items: center; overflow: hidden;">
     
     <!-- Carrusel de Fotos -->
     <div id="heroCarousel" class="carousel slide" style="position: absolute; width: 100%; height: 100%; z-index: 1; background: rgba(0,0,0,0.3);" data-bs-ride="carousel" data-bs-interval="5000">
@@ -13,9 +13,9 @@ ob_start(); // Start output buffering
                 <?php foreach ($carousel_images as $index => $image): ?>
                     <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>" style="height: 100vh;">
                         <div style="width: 100%; height: 100%; background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('<?php echo $image['url']; ?>') center/cover; position: absolute; top: 0; left: 0;"></div>
-                        <div class="carousel-caption d-none d-md-block">
-                            <h2 style="font-size: 3rem; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);"><?php echo htmlspecialchars($image['name']); ?></h2>
-                            <p style="font-size: 1.5rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">Filá Mariscales</p>
+                        <div class="carousel-caption d-none d-md-block scroll-reveal">
+                            <h2 class="animate-fadeInDown text-shimmer" style="font-size: 3rem; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);"><?php echo htmlspecialchars($image['name']); ?></h2>
+                            <p class="animate-fadeInUp" style="font-size: 1.5rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">Filá Mariscales</p>
                         </div>
                     </div>
                 <?php endforeach; ?>

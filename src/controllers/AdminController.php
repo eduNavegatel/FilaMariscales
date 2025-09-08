@@ -1465,4 +1465,50 @@ class AdminController extends Controller {
             $this->loadViewDirectly('admin/mensajes', $data);
         }
     }
+    
+    // View specific message
+    public function viewMessage($filename) {
+        $messagesDir = 'uploads/messages/';
+        $filePath = $messagesDir . $filename;
+        
+        if (file_exists($filePath)) {
+            $content = file_get_contents($filePath);
+            echo $content;
+        } else {
+            http_response_code(404);
+            echo "Archivo no encontrado";
+        }
+    }
+    
+    // Download message
+    public function downloadMessage($filename) {
+        $messagesDir = 'uploads/messages/';
+        $filePath = $messagesDir . $filename;
+        
+        if (file_exists($filePath)) {
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="' . $filename . '"');
+            header('Content-Length: ' . filesize($filePath));
+            readfile($filePath);
+        } else {
+            http_response_code(404);
+            echo "Archivo no encontrado";
+        }
+    }
+    
+    // Delete message
+    public function deleteMessage($filename) {
+        $messagesDir = 'uploads/messages/';
+        $filePath = $messagesDir . $filename;
+        
+        if (file_exists($filePath)) {
+            if (unlink($filePath)) {
+                echo json_encode(['success' => true, 'message' => 'Mensaje eliminado correctamente']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Error al eliminar el archivo']);
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Archivo no encontrado']);
+        }
+    }
 }

@@ -54,25 +54,26 @@ $categorias = [
 ?>
 
 <!-- Hero Section -->
-<section class="hero-section py-5">
+<section class="hero-section py-5 particles">
 <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-10 text-center">
-                <h1 class="display-4 fw-bold text-gradient mb-4">
-                    <i class="bi bi-images me-3"></i>Galería Multimedia
+            <div class="col-lg-10 text-center scroll-reveal">
+                <h1 class="display-4 fw-bold text-gradient mb-4 animate-fadeInDown">
+                    <i class="bi bi-images me-3 animate-float"></i>
+                    <span class="text-shimmer">Galería Multimedia</span>
                 </h1>
-                <p class="lead mb-5">Revive los mejores momentos de la Filá Mariscales de Caballeros Templarios</p>
-                <div class="gallery-stats d-flex justify-content-center gap-4 mb-5">
-                    <div class="stat-item">
-                        <h3 class="text-gradient mb-0"><?php echo count($galeria_items); ?></h3>
+                <p class="lead mb-5 animate-fadeInUp">Revive los mejores momentos de la Filá Mariscales de Caballeros Templarios</p>
+                <div class="gallery-stats d-flex justify-content-center gap-4 mb-5 stagger-animation">
+                    <div class="stat-item card-animated animate-fadeInLeft">
+                        <h3 class="text-gradient mb-0 counter" data-target="<?php echo count($galeria_items); ?>">0</h3>
                         <small class="text-muted">Imágenes</small>
                     </div>
-                    <div class="stat-item">
-                        <h3 class="text-gradient mb-0"><?php echo count($categorias) - 1; ?></h3>
+                    <div class="stat-item card-animated animate-fadeInUp">
+                        <h3 class="text-gradient mb-0 counter" data-target="<?php echo count($categorias) - 1; ?>">0</h3>
                         <small class="text-muted">Categorías</small>
                     </div>
-                    <div class="stat-item">
-                        <h3 class="text-gradient mb-0">2023</h3>
+                    <div class="stat-item card-animated animate-fadeInRight">
+                        <h3 class="text-gradient mb-0">2025</h3>
                         <small class="text-muted">Año Actual</small>
                     </div>
                 </div>
@@ -82,13 +83,13 @@ $categorias = [
 </section>
 
 <!-- Gallery Filters -->
-<section class="gallery-filters py-4">
+<section class="gallery-filters py-4 scroll-reveal">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="filter-buttons d-flex flex-wrap gap-2 justify-content-center">
                     <?php foreach ($categorias as $key => $categoria): ?>
-                    <button class="filter-btn <?php echo $key === 'todos' ? 'active' : ''; ?>" 
+                    <button class="filter-btn btn-animated hover-glow <?php echo $key === 'todos' ? 'active' : ''; ?>" 
                             data-filter="<?php echo $key; ?>">
                         <i class="bi bi-<?php echo $key === 'todos' ? 'grid-fill' : ($key === 'desfiles' ? 'flag-fill' : ($key === 'bandas' ? 'music-note-beamed' : ($key === 'eventos' ? 'calendar-event' : 'cross'))) ?> me-2"></i>
                         <?php echo $categoria; ?>
@@ -103,23 +104,23 @@ $categorias = [
 <!-- Gallery Grid -->
 <section class="gallery-content py-5">
     <div class="container">
-        <div class="row g-4" id="galleryGrid">
-            <?php foreach ($galeria_items as $item): ?>
-            <div class="col-md-6 col-lg-4 gallery-item" data-category="<?php echo $item['categoria']; ?>">
-                <div class="gallery-card">
-                    <div class="gallery-image">
+        <div class="row g-4 stagger-animation" id="galleryGrid">
+            <?php foreach ($galeria_items as $index => $item): ?>
+            <div class="col-md-6 col-lg-4 gallery-item scroll-reveal" data-category="<?php echo $item['categoria']; ?>" style="animation-delay: <?php echo $index * 0.1; ?>s;">
+                <div class="gallery-card card-animated hover-lift">
+                    <div class="gallery-image img-zoom">
                         <img src="<?php echo $item['imagen']; ?>" 
                              alt="<?php echo $item['titulo']; ?>" 
                              class="img-fluid">
                         <div class="gallery-overlay">
                             <div class="overlay-content">
-                                <h5><?php echo $item['titulo']; ?></h5>
-                                <p><?php echo $item['descripcion']; ?></p>
-                                <div class="overlay-actions">
-                                    <button class="btn btn-light btn-sm" onclick="openLightbox('<?php echo $item['imagen']; ?>', '<?php echo $item['titulo']; ?>', '<?php echo $item['descripcion']; ?>')">
+                                <h5 class="animate-fadeInUp"><?php echo $item['titulo']; ?></h5>
+                                <p class="animate-fadeInUp"><?php echo $item['descripcion']; ?></p>
+                                <div class="overlay-actions animate-fadeInUp">
+                                    <button class="btn btn-light btn-sm btn-animated" onclick="openLightbox('<?php echo $item['imagen']; ?>', '<?php echo $item['titulo']; ?>', '<?php echo $item['descripcion']; ?>')">
                                         <i class="bi bi-zoom-in me-1"></i>Ampliar
                                     </button>
-                                    <span class="badge bg-primary ms-2">
+                                    <span class="badge bg-primary ms-2 animate-pulse">
                                         <i class="bi bi-image me-1"></i><?php echo ucfirst($item['tipo']); ?>
                                     </span>
                                 </div>

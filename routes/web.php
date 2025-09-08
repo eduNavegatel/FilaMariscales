@@ -28,6 +28,7 @@ $router->post('login', 'Pages@login');
 $router->get('registro', 'Pages@registro');
 $router->post('registro', 'Pages@registro');
 $router->get('contacto', 'Pages@contacto');
+$router->get('interactiva', 'Pages@interactiva');
 
 // Auth routes
 $router->group('auth', function($router) {

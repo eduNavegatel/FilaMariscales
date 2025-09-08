@@ -65,6 +65,8 @@ if (empty($url[0])) {
     $controller->registro();
 } elseif ($url[0] === 'contacto') {
     $controller->contacto();
+} elseif ($url[0] === 'interactiva') {
+    $controller->interactiva();
 } elseif ($url[0] === 'admin') {
     // Admin routes (simple guard + custom login/logout)
     $action = isset($url[1]) ? $url[1] : (isAdminLoggedIn() ? 'dashboard' : 'login');
@@ -98,6 +100,20 @@ if (empty($url[0])) {
             
             if (method_exists($adminController, $action)) {
                 call_user_func_array([$adminController, $action], array_slice($url, 2));
+            } elseif ($action === 'mensajes' && isset($url[2]) && isset($url[3])) {
+                // Manejar acciones de mensajes: /admin/mensajes/view/filename, /admin/mensajes/download/filename, etc.
+                $subAction = $url[2];
+                $filename = $url[3];
+                
+                if ($subAction === 'view') {
+                    $adminController->viewMessage($filename);
+                } elseif ($subAction === 'download') {
+                    $adminController->downloadMessage($filename);
+                } elseif ($subAction === 'delete') {
+                    $adminController->deleteMessage($filename);
+                } else {
+                    $adminController->mensajes();
+                }
             } elseif ($action === 'crearUsuario') {
                 // Redirigir al formulario directo que funciona
                 header('Location: /prueba-php/public/admin/crear-usuario.php');

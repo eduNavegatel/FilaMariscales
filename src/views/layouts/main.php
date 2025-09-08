@@ -22,6 +22,8 @@ if (!function_exists('isLoggedIn')) {
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/prueba-php/public/assets/css/style.css">
+    <!-- Animations CSS -->
+    <link rel="stylesheet" href="/prueba-php/public/assets/css/animations.css">
 </head>
 <body>
     <!-- Navigation -->
@@ -110,10 +112,15 @@ if (!function_exists('isLoggedIn')) {
                     
                     <!-- Recursos -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle <?php echo (isActive('tienda') || isActive('patrocinadores') || isActive('hermanamientos')) ? 'active' : ''; ?>" href="#" role="button" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle <?php echo (isActive('tienda') || isActive('patrocinadores') || isActive('hermanamientos') || isActive('interactiva')) ? 'active' : ''; ?>" href="#" role="button" data-bs-toggle="dropdown">
                             <i class="bi bi-collection me-1"></i>Recursos
                         </a>
                         <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="/prueba-php/public/interactiva">
+                                    <i class="bi bi-magic me-2"></i>Zona Interactiva
+                                </a>
+                            </li>
                             <li>
                                 <a class="dropdown-item" href="/prueba-php/public/tienda">
                                     <i class="bi bi-shop me-2"></i>Tienda
@@ -304,6 +311,8 @@ if (!function_exists('isLoggedIn')) {
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <!-- Custom JS -->
     <script src="/prueba-php/public/assets/js/main.js"></script>
+    <!-- Animations JS -->
+    <script src="/prueba-php/public/assets/js/animations.js"></script>
     
     <script>
         // Initialize AOS
