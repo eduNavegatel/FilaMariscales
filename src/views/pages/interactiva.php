@@ -879,6 +879,108 @@ let quizQuestions = [
         answers: ["Honor, Lealtad y Tradición", "Poder, Riqueza y Gloria", "Libertad, Igualdad y Fraternidad", "Paz, Amor y Armonía"],
         correct: 0,
         explanation: "Los valores fundamentales de la filá son el Honor, la Lealtad y la Tradición."
+    },
+    {
+        question: "¿En qué mes se celebran principalmente las Fiestas de Moros y Cristianos?",
+        answers: ["Abril", "Mayo", "Junio", "Julio"],
+        correct: 0,
+        explanation: "Las Fiestas de Moros y Cristianos se celebran principalmente en el mes de abril."
+    },
+    {
+        question: "¿Qué tipo de desfile es característico de la filá?",
+        answers: ["Desfile de Entrada", "Desfile de Salida", "Desfile de Gala", "Desfile de Despedida"],
+        correct: 0,
+        explanation: "El Desfile de Entrada es uno de los más característicos y esperados de la filá."
+    },
+    {
+        question: "¿Cuántos miembros activos tiene aproximadamente la filá?",
+        answers: ["150 miembros", "100 miembros", "200 miembros", "250 miembros"],
+        correct: 0,
+        explanation: "La Filá Mariscales cuenta con aproximadamente 150 miembros activos."
+    },
+    {
+        question: "¿Qué instrumento musical es fundamental en las bandas de la filá?",
+        answers: ["Tambor", "Guitarra", "Piano", "Violín"],
+        correct: 0,
+        explanation: "El tambor es un instrumento fundamental en las bandas de música de la filá."
+    },
+    {
+        question: "¿En qué década se expandió significativamente la filá?",
+        answers: ["1990s", "1980s", "2000s", "2010s"],
+        correct: 0,
+        explanation: "En la década de 1990, la filá se expandió significativamente y creó nuevas secciones."
+    },
+    {
+        question: "¿Qué actividad se realiza durante los ensayos generales?",
+        answers: ["Preparación para desfiles", "Reuniones de directiva", "Actividades sociales", "Eventos benéficos"],
+        correct: 0,
+        explanation: "Los ensayos generales se realizan para preparar a todos los miembros para los desfiles."
+    },
+    {
+        question: "¿Cuál es el nombre completo de la filá?",
+        answers: ["Filá Mariscales de Caballeros Templarios", "Filá Mariscales de Elche", "Filá Templarios de Mariscales", "Filá Caballeros de Mariscales"],
+        correct: 0,
+        explanation: "El nombre completo es 'Filá Mariscales de Caballeros Templarios'."
+    },
+    {
+        question: "¿Qué tipo de premios ha obtenido la filá?",
+        answers: ["Premios de desfiles", "Premios musicales", "Premios deportivos", "Premios literarios"],
+        correct: 0,
+        explanation: "La filá ha obtenido numerosos premios en los desfiles de Moros y Cristianos."
+    },
+    {
+        question: "¿En qué año participó por primera vez en las Fiestas de Moros y Cristianos?",
+        answers: ["1980", "1975", "1985", "1990"],
+        correct: 0,
+        explanation: "La filá participó por primera vez en las Fiestas de Moros y Cristianos en 1980."
+    },
+    {
+        question: "¿Qué representa el escudo de la filá?",
+        answers: ["Símbolos templarios", "Símbolos musicales", "Símbolos de Elche", "Símbolos de Valencia"],
+        correct: 0,
+        explanation: "El escudo de la filá contiene símbolos relacionados con la tradición templaria."
+    },
+    {
+        question: "¿Cuántas bandas de música tiene la filá?",
+        answers: ["Varias bandas", "Una sola banda", "Dos bandas", "Tres bandas"],
+        correct: 0,
+        explanation: "La filá cuenta con varias bandas de música, incluyendo la banda principal y la juvenil."
+    },
+    {
+        question: "¿Qué evento se celebra en marzo?",
+        answers: ["Cena Anual de Hermandad", "Ensayos Generales", "Fiestas de Moros y Cristianos", "Celebración de San Jorge"],
+        correct: 0,
+        explanation: "La Cena Anual de Hermandad se celebra tradicionalmente en el mes de marzo."
+    },
+    {
+        question: "¿Qué modernización se incorporó en 2020?",
+        answers: ["Nuevas tecnologías digitales", "Nuevos instrumentos musicales", "Nuevos uniformes", "Nueva sede"],
+        correct: 0,
+        explanation: "En 2020 se incorporaron nuevas tecnologías y se mejoró la presencia digital de la filá."
+    },
+    {
+        question: "¿Cuál es el objetivo principal de la filá?",
+        answers: ["Mantener la tradición templaria", "Ganar premios", "Hacer música", "Organizar eventos"],
+        correct: 0,
+        explanation: "El objetivo principal es mantener y transmitir la tradición templaria a las nuevas generaciones."
+    },
+    {
+        question: "¿Qué tipo de actividades sociales realiza la filá?",
+        answers: ["Eventos de hermandad", "Conciertos públicos", "Competiciones deportivas", "Exposiciones de arte"],
+        correct: 0,
+        explanation: "La filá realiza diversos eventos de hermandad para fortalecer los lazos entre sus miembros."
+    },
+    {
+        question: "¿En qué consiste la celebración de San Jorge?",
+        answers: ["Festividad religiosa y cultural", "Concierto musical", "Desfile especial", "Cena de gala"],
+        correct: 0,
+        explanation: "La celebración de San Jorge es una festividad que combina aspectos religiosos y culturales."
+    },
+    {
+        question: "¿Qué significa 'Filá' en el contexto de las fiestas?",
+        answers: ["Grupo o comparsa", "Banda de música", "Tipo de desfile", "Evento festivo"],
+        correct: 0,
+        explanation: "'Filá' se refiere al grupo o comparsa que participa en las Fiestas de Moros y Cristianos."
     }
 ];
 
