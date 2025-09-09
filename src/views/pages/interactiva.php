@@ -78,13 +78,13 @@
         <div class="row g-4">
             <div class="col-md-6 col-lg-4">
                 <div class="interactive-card card-tilt hover-lift scroll-reveal">
-                    <div class="card-header bg-primary text-white">
+                    <div class="card-header bg-danger text-white">
                         <i class="bi bi-shield-fill fs-1 animate-float"></i>
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">Orígenes Templarios</h5>
                         <p class="card-text">Descubre cómo comenzó nuestra tradición en 1975 y los valores que nos guían.</p>
-                        <button class="btn btn-primary btn-animated" onclick="showModal('templarios')">
+                        <button class="btn btn-danger btn-animated" onclick="showModal('templarios')">
                             <i class="bi bi-eye me-2"></i>Explorar
                         </button>
                     </div>
@@ -93,13 +93,13 @@
             
             <div class="col-md-6 col-lg-4">
                 <div class="interactive-card card-tilt hover-lift scroll-reveal">
-                    <div class="card-header bg-success text-white">
+                    <div class="card-header bg-danger text-white">
                         <i class="bi bi-music-note-beamed fs-1 animate-float"></i>
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">Bandas de Música</h5>
                         <p class="card-text">Conoce nuestras bandas y la música que nos acompaña en cada desfile.</p>
-                        <button class="btn btn-success btn-animated" onclick="showModal('bandas')">
+                        <button class="btn btn-danger btn-animated" onclick="showModal('bandas')">
                             <i class="bi bi-play-circle me-2"></i>Escuchar
                         </button>
                     </div>
@@ -108,13 +108,13 @@
             
             <div class="col-md-6 col-lg-4">
                 <div class="interactive-card card-tilt hover-lift scroll-reveal">
-                    <div class="card-header bg-warning text-white">
+                    <div class="card-header bg-danger text-white">
                         <i class="bi bi-calendar-event fs-1 animate-float"></i>
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">Eventos Anuales</h5>
                         <p class="card-text">Participa en nuestros eventos y actividades durante todo el año.</p>
-                        <button class="btn btn-warning btn-animated" onclick="showModal('eventos')">
+                        <button class="btn btn-danger btn-animated" onclick="showModal('eventos')">
                             <i class="bi bi-calendar-check me-2"></i>Ver Eventos
                         </button>
                     </div>
@@ -190,16 +190,16 @@
             <div class="col-12">
                 <div class="game-selector text-center">
                     <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-outline-primary active" onclick="showGame('quiz')">
+                        <button type="button" class="btn btn-outline-danger active" onclick="showGame('quiz')">
                             <i class="bi bi-question-circle me-2"></i>Quiz
                         </button>
-                        <button type="button" class="btn btn-outline-success" onclick="showGame('memory')">
+                        <button type="button" class="btn btn-outline-danger" onclick="showGame('memory')">
                             <i class="bi bi-card-text me-2"></i>Memoria
                         </button>
-                        <button type="button" class="btn btn-outline-warning" onclick="showGame('sequence')">
+                        <button type="button" class="btn btn-outline-danger" onclick="showGame('sequence')">
                             <i class="bi bi-music-note-beamed me-2"></i>Secuencia
                         </button>
-                        <button type="button" class="btn btn-outline-info" onclick="showGame('puzzle')">
+                        <button type="button" class="btn btn-outline-danger" onclick="showGame('puzzle')">
                             <i class="bi bi-puzzle me-2"></i>Puzzle
                         </button>
                         <button type="button" class="btn btn-outline-danger" onclick="showGame('clicker')">
@@ -237,9 +237,9 @@
                                 <h2 class="text-gradient counter" data-target="0">0</h2>
                                 <p>puntos obtenidos</p>
                             </div>
-                            <button class="btn btn-primary btn-animated" onclick="restartQuiz()">
-                                <i class="bi bi-arrow-clockwise me-2"></i>Jugar de Nuevo
-                            </button>
+                        <button class="btn btn-danger btn-animated" onclick="restartQuiz()">
+                            <i class="bi bi-arrow-clockwise me-2"></i>Jugar de Nuevo
+                        </button>
                         </div>
                     </div>
                 </div>
@@ -264,7 +264,7 @@
                             <!-- Las cartas se generarán dinámicamente -->
                         </div>
                         <div class="text-center mt-4">
-                            <button class="btn btn-primary btn-animated" onclick="startMemoryGame()">
+                            <button class="btn btn-danger btn-animated" onclick="startMemoryGame()">
                                 <i class="bi bi-play-circle me-2"></i>Iniciar Juego
                             </button>
                         </div>
@@ -301,7 +301,7 @@
                             </button>
                         </div>
                         <div class="text-center mt-4">
-                            <button class="btn btn-primary btn-animated" onclick="startSequenceGame()">
+                            <button class="btn btn-danger btn-animated" onclick="startSequenceGame()">
                                 <i class="bi bi-play-circle me-2"></i>Iniciar Secuencia
                             </button>
                         </div>
@@ -327,7 +327,7 @@
                             <!-- El puzzle se generará dinámicamente -->
                         </div>
                         <div class="text-center mt-4">
-                            <button class="btn btn-primary btn-animated" onclick="startPuzzleGame()">
+                            <button class="btn btn-danger btn-animated" onclick="startPuzzleGame()">
                                 <i class="bi bi-shuffle me-2"></i>Mezclar y Jugar
                             </button>
                         </div>
@@ -368,7 +368,7 @@
                             </div>
                         </div>
                         <div class="clicker-main text-center">
-                            <button class="btn btn-primary btn-lg clicker-btn" onclick="clickCoin()">
+                            <button class="btn btn-danger btn-lg clicker-btn" onclick="clickCoin()">
                                 <i class="bi bi-coin"></i>
                             </button>
                         </div>
@@ -376,12 +376,12 @@
                             <h5>Mejoras</h5>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <button class="btn btn-outline-success upgrade-btn" onclick="buyUpgrade('cps')">
+                                    <button class="btn btn-outline-danger upgrade-btn" onclick="buyUpgrade('cps')">
                                         <i class="bi bi-lightning me-2"></i>Velocidad (+1/s) - 10 monedas
                                     </button>
                                 </div>
                                 <div class="col-md-6">
-                                    <button class="btn btn-outline-warning upgrade-btn" onclick="buyUpgrade('multiplier')">
+                                    <button class="btn btn-outline-danger upgrade-btn" onclick="buyUpgrade('multiplier')">
                                         <i class="bi bi-star me-2"></i>Multiplicador x2 - 50 monedas
                                     </button>
                                 </div>
@@ -419,25 +419,33 @@
     border-radius: 15px;
     text-align: center;
     transition: all 0.3s ease;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: 2px solid #dc143c;
+    color: #000000;
 }
 
 .counter-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    box-shadow: 0 15px 35px rgba(220,20,60,0.2);
+    background: linear-gradient(135deg, #dc143c 0%, #8b0000 100%);
+    color: #ffffff;
 }
 
 .interactive-card {
     height: 100%;
-    border: none;
+    border: 2px solid #dc143c;
     border-radius: 15px;
     overflow: hidden;
     transition: all 0.3s ease;
+    background: #ffffff;
 }
 
 .interactive-card .card-header {
     padding: 2rem;
     text-align: center;
     border: none;
+    background: linear-gradient(135deg, #dc143c 0%, #8b0000 100%);
+    color: #ffffff;
 }
 
 .timeline {
@@ -451,9 +459,10 @@
     left: 50%;
     top: 0;
     bottom: 0;
-    width: 2px;
+    width: 3px;
     background: linear-gradient(to bottom, #dc143c, #8b0000);
     transform: translateX(-50%);
+    box-shadow: 0 0 10px rgba(220,20,60,0.5);
 }
 
 .timeline-item {
@@ -474,13 +483,13 @@
 
 .timeline-marker {
     position: absolute;
-    width: 20px;
-    height: 20px;
-    background: #dc143c;
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, #dc143c 0%, #8b0000 100%);
     border-radius: 50%;
     top: 0;
-    border: 4px solid white;
-    box-shadow: 0 0 0 4px #dc143c;
+    border: 4px solid #ffffff;
+    box-shadow: 0 0 0 4px #dc143c, 0 0 15px rgba(220,20,60,0.6);
 }
 
 .timeline-item:nth-child(odd) .timeline-marker {
@@ -494,15 +503,18 @@
 .timeline-content {
     padding: 1.5rem;
     border-radius: 10px;
-    background: white;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background: #ffffff;
+    border: 2px solid #dc143c;
+    box-shadow: 0 5px 15px rgba(220,20,60,0.2);
+    color: #000000;
 }
 
 .quiz-container {
     padding: 2rem;
     border-radius: 15px;
-    background: white;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    background: #ffffff;
+    border: 2px solid #dc143c;
+    box-shadow: 0 10px 30px rgba(220,20,60,0.2);
 }
 
 .answers {
@@ -516,23 +528,30 @@
     padding: 1rem;
     border-radius: 10px;
     transition: all 0.3s ease;
+    border: 2px solid #dc143c;
+    background: #ffffff;
+    color: #000000;
 }
 
 .answer-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 15px rgba(220,20,60,0.3);
+    background: #dc143c;
+    color: #ffffff;
 }
 
 .answer-btn.correct {
-    background: #28a745;
-    color: white;
-    border-color: #28a745;
+    background: #dc143c;
+    color: #ffffff;
+    border-color: #8b0000;
+    box-shadow: 0 0 15px rgba(220,20,60,0.5);
 }
 
 .answer-btn.incorrect {
-    background: #dc3545;
-    color: white;
-    border-color: #dc3545;
+    background: #000000;
+    color: #ffffff;
+    border-color: #000000;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
 }
 
 .score-display {
@@ -546,6 +565,27 @@
     gap: 0.5rem;
 }
 
+.game-selector .btn-outline-danger {
+    border-color: #dc143c;
+    color: #dc143c;
+    background: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.game-selector .btn-outline-danger:hover {
+    background: #dc143c;
+    color: #ffffff;
+    border-color: #8b0000;
+    box-shadow: 0 5px 15px rgba(220,20,60,0.3);
+}
+
+.game-selector .btn-outline-danger.active {
+    background: #dc143c;
+    color: #ffffff;
+    border-color: #8b0000;
+    box-shadow: 0 0 15px rgba(220,20,60,0.5);
+}
+
 .game-container {
     min-height: 400px;
 }
@@ -553,8 +593,9 @@
 .memory-container, .sequence-container, .puzzle-container, .clicker-container {
     padding: 2rem;
     border-radius: 15px;
-    background: white;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    background: #ffffff;
+    border: 2px solid #dc143c;
+    box-shadow: 0 10px 30px rgba(220,20,60,0.2);
 }
 
 .memory-grid {
@@ -568,32 +609,36 @@
 .memory-card {
     aspect-ratio: 1;
     border-radius: 10px;
-    background: #f8f9fa;
-    border: 2px solid #dee2e6;
+    background: #ffffff;
+    border: 2px solid #dc143c;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 2rem;
-    color: #6c757d;
+    color: #000000;
 }
 
 .memory-card:hover {
     transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 5px 15px rgba(220,20,60,0.3);
+    background: #dc143c;
+    color: #ffffff;
 }
 
 .memory-card.flipped {
-    background: #007bff;
-    color: white;
-    border-color: #007bff;
+    background: #dc143c;
+    color: #ffffff;
+    border-color: #8b0000;
+    box-shadow: 0 0 15px rgba(220,20,60,0.5);
 }
 
 .memory-card.matched {
-    background: #28a745;
-    color: white;
-    border-color: #28a745;
+    background: #000000;
+    color: #ffffff;
+    border-color: #000000;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
     animation: pulse 0.5s ease-in-out;
 }
 
@@ -610,16 +655,30 @@
     font-size: 2rem;
     border-radius: 15px;
     transition: all 0.3s ease;
+    border: 2px solid #dc143c;
+    background: #ffffff;
+    color: #000000;
+}
+
+.sequence-btn:hover {
+    background: #dc143c;
+    color: #ffffff;
+    box-shadow: 0 5px 15px rgba(220,20,60,0.3);
 }
 
 .sequence-btn.active {
     transform: scale(1.1);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    background: #dc143c;
+    color: #ffffff;
+    box-shadow: 0 5px 15px rgba(220,20,60,0.5);
 }
 
 .sequence-btn.disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    background: #f8f9fa;
+    color: #6c757d;
+    border-color: #dee2e6;
 }
 
 .puzzle-board {
@@ -628,36 +687,41 @@
     gap: 2px;
     max-width: 300px;
     margin: 0 auto;
-    background: #000;
+    background: #000000;
     padding: 2px;
     border-radius: 10px;
+    border: 2px solid #dc143c;
 }
 
 .puzzle-piece {
     aspect-ratio: 1;
-    background: #f8f9fa;
-    border: none;
+    background: #ffffff;
+    border: 1px solid #dc143c;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.5rem;
-    color: #6c757d;
+    color: #000000;
 }
 
 .puzzle-piece:hover {
-    background: #e9ecef;
+    background: #dc143c;
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(220,20,60,0.5);
 }
 
 .puzzle-piece.empty {
-    background: #000;
+    background: #000000;
     cursor: default;
+    border-color: #000000;
 }
 
 .puzzle-piece.correct {
-    background: #28a745;
-    color: white;
+    background: #dc143c;
+    color: #ffffff;
+    box-shadow: 0 0 15px rgba(220,20,60,0.7);
 }
 
 .clicker-btn {
@@ -666,39 +730,54 @@
     border-radius: 50%;
     font-size: 3rem;
     transition: all 0.2s ease;
-    border: 4px solid #007bff;
+    border: 4px solid #dc143c;
+    background: #ffffff;
+    color: #000000;
 }
 
 .clicker-btn:hover {
     transform: scale(1.1);
-    box-shadow: 0 10px 25px rgba(0,123,255,0.3);
+    background: #dc143c;
+    color: #ffffff;
+    box-shadow: 0 10px 25px rgba(220,20,60,0.4);
 }
 
 .clicker-btn:active {
     transform: scale(0.95);
+    background: #8b0000;
 }
 
 .stat-item {
     padding: 1rem;
     border-radius: 10px;
-    background: #f8f9fa;
+    background: #ffffff;
+    border: 2px solid #dc143c;
     margin-bottom: 1rem;
+    color: #000000;
 }
 
 .upgrade-btn {
     width: 100%;
     margin-bottom: 0.5rem;
     transition: all 0.3s ease;
+    border: 2px solid #dc143c;
+    background: #ffffff;
+    color: #000000;
 }
 
 .upgrade-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background: #dc143c;
+    color: #ffffff;
+    box-shadow: 0 5px 15px rgba(220,20,60,0.3);
 }
 
 .upgrade-btn.disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    background: #f8f9fa;
+    color: #6c757d;
+    border-color: #dee2e6;
 }
 
 @keyframes pulse {
