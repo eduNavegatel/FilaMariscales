@@ -26,7 +26,7 @@ ob_start(); // Start output buffering
                         <div class="col-md-7">
                             <div class="card-body p-4">
                                 <h2 class="fw-bold mb-3">Himno Oficial</h2>
-                                <h5 class="text-primary mb-4">"Marcha de los Mariscales"</h5>
+                                <h5 class="text-danger mb-4">"Marcha de los Mariscales"</h5>
                                 
                                 <div class="lyrics mb-4">
                                     <h6 class="fw-bold">Letra del Himno:</h6>
@@ -74,7 +74,7 @@ ob_start(); // Start output buffering
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-3">
                             <div class="bg-light rounded p-3 me-3">
-                                <i class="bi bi-music-note-beamed display-6 text-primary"></i>
+                                <i class="bi bi-music-note-beamed display-6 text-danger"></i>
                             </div>
                             <div>
                                 <h5 class="card-title mb-0">Marcha de la Amistad</h5>
@@ -101,7 +101,7 @@ ob_start(); // Start output buffering
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-3">
                             <div class="bg-light rounded p-3 me-3">
-                                <i class="bi bi-music-note-beamed display-6 text-primary"></i>
+                                <i class="bi bi-music-note-beamed display-6 text-danger"></i>
                             </div>
                             <div>
                                 <h5 class="card-title mb-0">Himno a Nuestra Señora</h5>
@@ -128,7 +128,7 @@ ob_start(); // Start output buffering
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-3">
                             <div class="bg-light rounded p-3 me-3">
-                                <i class="bi bi-music-note-beamed display-6 text-primary"></i>
+                                <i class="bi bi-music-note-beamed display-6 text-danger"></i>
                             </div>
                             <div>
                                 <h5 class="card-title mb-0">Pasodoble de las Fiestas</h5>

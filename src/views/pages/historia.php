@@ -9,7 +9,7 @@
     <!-- Header de la página -->
     <div class="row mb-5">
         <div class="col-12 text-center">
-            <h1 class="display-4 medieval-text text-primary mb-3">
+            <h1 class="display-4 medieval-text text-danger mb-3">
                 <i class="bi bi-clock-history me-3"></i>Historia de la Filá Mariscales
             </h1>
             <p class="lead text-muted">Descubre la rica tradición y el legado de los Caballeros Templarios de Elche</p>
@@ -22,7 +22,7 @@
         <div class="col-lg-6">
             <div class="card medieval-border h-100">
                 <div class="card-body">
-                    <h2 class="card-title text-primary medieval-text">
+                    <h2 class="card-title text-danger medieval-text">
                         <i class="bi bi-castle me-2"></i>Nuestros Orígenes
                     </h2>
                     <p class="card-text">
@@ -43,7 +43,7 @@
                 <img src="https://via.placeholder.com/600x400/8B4513/FFFFFF?text=Orígenes+Mariscales" 
                      class="card-img-top" alt="Orígenes de la Filá Mariscales">
                 <div class="card-body">
-                    <h3 class="card-title text-primary">Fundación</h3>
+                    <h3 class="card-title text-danger">Fundación</h3>
                     <p class="card-text">
                         Fundada en el año 1985, la Filá Mariscales ha sido testigo de la evolución de las Fiestas de Moros y Cristianos 
                         de Elche, participando activamente en cada celebración y contribuyendo al engrandecimiento de nuestra tradición local.
@@ -56,15 +56,15 @@
     <!-- Sección de Tradiciones -->
     <div class="row mb-5" data-aos="fade-up" data-aos-delay="200">
         <div class="col-12">
-            <h2 class="text-center text-primary medieval-text mb-4">
+            <h2 class="text-center text-danger medieval-text mb-4">
                 <i class="bi bi-shield-fill me-2"></i>Nuestras Tradiciones
             </h2>
         </div>
         <div class="col-md-4 mb-4">
             <div class="card medieval-border h-100 text-center">
                 <div class="card-body">
-                    <i class="bi bi-music-note-beamed display-4 text-primary mb-3"></i>
-                    <h4 class="card-title text-primary">Himno de la Filá</h4>
+                    <i class="bi bi-music-note-beamed display-4 text-danger mb-3"></i>
+                    <h4 class="card-title text-danger">Himno de la Filá</h4>
                     <p class="card-text">
                         Nuestro himno, compuesto especialmente para la filá, evoca la grandeza de los templarios y la nobleza 
                         de nuestros antepasados. Cada nota transporta a nuestros miembros a épocas de honor y valentía.
@@ -75,8 +75,8 @@
         <div class="col-md-4 mb-4">
             <div class="card medieval-border h-100 text-center">
                 <div class="card-body">
-                    <i class="bi bi-award display-4 text-primary mb-3"></i>
-                    <h4 class="card-title text-primary">Insignias y Condecoraciones</h4>
+                    <i class="bi bi-award display-4 text-danger mb-3"></i>
+                    <h4 class="card-title text-danger">Insignias y Condecoraciones</h4>
                     <p class="card-text">
                         Nuestras insignias representan la jerarquía y los logros de cada miembro. Cada condecoración cuenta 
                         una historia de dedicación y servicio a la filá y a la tradición.
@@ -87,8 +87,8 @@
         <div class="col-md-4 mb-4">
             <div class="card medieval-border h-100 text-center">
                 <div class="card-body">
-                    <i class="bi bi-calendar-event display-4 text-primary mb-3"></i>
-                    <h4 class="card-title text-primary">Rituales y Ceremonias</h4>
+                    <i class="bi bi-calendar-event display-4 text-danger mb-3"></i>
+                    <h4 class="card-title text-danger">Rituales y Ceremonias</h4>
                     <p class="card-text">
                         Mantenemos vivas las ceremonias tradicionales que honran a nuestros fundadores y celebran la hermandad 
                         que une a todos los miembros de la filá.
@@ -101,16 +101,16 @@
     <!-- Sección de Logros -->
     <div class="row mb-5" data-aos="fade-up" data-aos-delay="400">
         <div class="col-12">
-            <h2 class="text-center text-primary medieval-text mb-4">
+            <h2 class="text-center text-danger medieval-text mb-4">
                 <i class="bi bi-trophy me-2"></i>Logros y Reconocimientos
             </h2>
         </div>
         <div class="col-lg-8 mx-auto">
             <div class="timeline">
                 <div class="timeline-item">
-                    <div class="timeline-marker bg-primary"></div>
+                    <div class="timeline-marker bg-danger"></div>
                     <div class="timeline-content">
-                        <h5 class="text-primary">1985 - Fundación</h5>
+                        <h5 class="text-danger">1985 - Fundación</h5>
                         <p>Nacimiento oficial de la Filá Mariscales con 25 miembros fundadores.</p>
                     </div>
                 </div>
@@ -143,9 +143,9 @@
                     </div>
                 </div>
                 <div class="timeline-item">
-                    <div class="timeline-marker bg-primary"></div>
+                    <div class="timeline-marker bg-danger"></div>
                     <div class="timeline-content">
-                        <h5 class="text-primary">2020 - Expansión</h5>
+                        <h5 class="text-danger">2020 - Expansión</h5>
                         <p>Alcanzamos los 150 miembros activos y múltiples reconocimientos.</p>
                     </div>
                 </div>
@@ -156,7 +156,7 @@
     <!-- Sección de Miembros Destacados -->
     <div class="row mb-5" data-aos="fade-up" data-aos-delay="600">
         <div class="col-12">
-            <h2 class="text-center text-primary medieval-text mb-4">
+            <h2 class="text-center text-danger medieval-text mb-4">
                 <i class="bi bi-people-fill me-2"></i>Miembros Destacados
             </h2>
         </div>
@@ -165,7 +165,7 @@
                 <div class="card-body">
                     <img src="https://via.placeholder.com/150x150/8B4513/FFFFFF?text=Fundador" 
                          class="rounded-circle mb-3" alt="Fundador">
-                    <h5 class="card-title text-primary">Don Carlos Mariscal</h5>
+                    <h5 class="card-title text-danger">Don Carlos Mariscal</h5>
                     <p class="card-text text-muted">Fundador y Primer Capitán</p>
                     <p class="card-text small">
                         Visionario que estableció los cimientos de nuestra filá y definió los valores que nos guían hasta hoy.
@@ -178,7 +178,7 @@
                 <div class="card-body">
                     <img src="https://via.placeholder.com/150x150/8B4513/FFFFFF?text=Capitán" 
                          class="rounded-circle mb-3" alt="Capitán Actual">
-                    <h5 class="card-title text-primary">Don Antonio García</h5>
+                    <h5 class="card-title text-danger">Don Antonio García</h5>
                     <p class="card-text text-muted">Capitán Actual</p>
                     <p class="card-text small">
                         Líder que mantiene vivo el espíritu templario y guía a la filá hacia nuevos logros.
@@ -191,7 +191,7 @@
                 <div class="card-body">
                     <img src="https://via.placeholder.com/150x150/8B4513/FFFFFF?text=Maestro" 
                          class="rounded-circle mb-3" alt="Maestro de Armas">
-                    <h5 class="card-title text-primary">Don Miguel Rodríguez</h5>
+                    <h5 class="card-title text-danger">Don Miguel Rodríguez</h5>
                     <p class="card-text text-muted">Maestro de Armas</p>
                     <p class="card-text small">
                         Experto en las artes marciales medievales y responsable de la formación de nuevos caballeros.
@@ -204,7 +204,7 @@
                 <div class="card-body">
                     <img src="https://via.placeholder.com/150x150/8B4513/FFFFFF?text=Heraldo" 
                          class="rounded-circle mb-3" alt="Heraldo">
-                    <h5 class="card-title text-primary">Don Francisco López</h5>
+                    <h5 class="card-title text-danger">Don Francisco López</h5>
                     <p class="card-text text-muted">Heraldo de la Filá</p>
                     <p class="card-text small">
                         Guardián de nuestras tradiciones y responsable de comunicar nuestros logros y eventos.
@@ -217,14 +217,14 @@
     <!-- Sección de Valores -->
     <div class="row mb-5" data-aos="fade-up" data-aos-delay="800">
         <div class="col-12">
-            <h2 class="text-center text-primary medieval-text mb-4">
+            <h2 class="text-center text-danger medieval-text mb-4">
                 <i class="bi bi-heart-fill me-2"></i>Nuestros Valores
             </h2>
         </div>
         <div class="col-md-6 mb-4">
             <div class="card medieval-border h-100">
                 <div class="card-body">
-                    <h4 class="card-title text-primary">
+                    <h4 class="card-title text-danger">
                         <i class="bi bi-shield-check me-2"></i>Honor
                     </h4>
                     <p class="card-text">
@@ -237,7 +237,7 @@
         <div class="col-md-6 mb-4">
             <div class="card medieval-border h-100">
                 <div class="card-body">
-                    <h4 class="card-title text-primary">
+                    <h4 class="card-title text-danger">
                         <i class="bi bi-people-fill me-2"></i>Hermandad
                     </h4>
                     <p class="card-text">
@@ -250,7 +250,7 @@
         <div class="col-md-6 mb-4">
             <div class="card medieval-border h-100">
                 <div class="card-body">
-                    <h4 class="card-title text-primary">
+                    <h4 class="card-title text-danger">
                         <i class="bi bi-book me-2"></i>Tradición
                     </h4>
                     <p class="card-text">
@@ -263,7 +263,7 @@
         <div class="col-md-6 mb-4">
             <div class="card medieval-border h-100">
                 <div class="card-body">
-                    <h4 class="card-title text-primary">
+                    <h4 class="card-title text-danger">
                         <i class="bi bi-star-fill me-2"></i>Excelencia
                     </h4>
                     <p class="card-text">
@@ -278,7 +278,7 @@
     <!-- Call to Action -->
     <div class="row" data-aos="fade-up" data-aos-delay="1000">
         <div class="col-12 text-center">
-            <div class="card medieval-border bg-primary text-white">
+            <div class="card medieval-border bg-danger text-white">
                 <div class="card-body">
                     <h3 class="card-title">
                         <i class="bi bi-shield-fill me-2"></i>¿Quieres Ser Parte de Nuestra Historia?

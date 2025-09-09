@@ -137,7 +137,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
         <div class="container-fluid">
             <a class="navbar-brand" href="/prueba-php/public/admin/dashboard">
-                <i class="bi bi-shield-fill me-2 text-primary"></i>
+                <i class="bi bi-shield-fill me-2 text-danger"></i>
                 Panel de Administración
             </a>
             

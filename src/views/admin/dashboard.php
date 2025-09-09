@@ -31,7 +31,7 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.15);
         }
-        .bg-primary { background: linear-gradient(135deg, #007bff, #0056b3) !important; }
+        .bg-danger { background: linear-gradient(135deg, #007bff, #0056b3) !important; }
         .bg-success { background: linear-gradient(135deg, #28a745, #1e7e34) !important; }
         .bg-info { background: linear-gradient(135deg, #17a2b8, #138496) !important; }
         .bg-warning { background: linear-gradient(135deg, #ffc107, #e0a800) !important; }
@@ -77,7 +77,7 @@
 
 <div class="row mb-4">
     <div class="col-md-3 mb-3">
-        <div class="card text-white bg-primary h-100">
+        <div class="card text-white bg-danger h-100">
             <div class="card-body d-flex flex-column">
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <div>
@@ -358,7 +358,7 @@
                                 Hacer backup de la base de datos
                             </label>
                         </div>
-                        <span class="badge bg-primary ms-auto">Semanal</span>
+                        <span class="badge bg-danger ms-auto">Semanal</span>
                     </div>
                 </div>
             </div>
@@ -376,7 +376,7 @@
                 <div class="activity-feed">
                     <div class="d-flex mb-3">
                         <div class="flex-shrink-0">
-                            <div class="avatar-sm bg-light rounded-circle text-primary d-flex align-items-center justify-content-center">
+                            <div class="avatar-sm bg-light rounded-circle text-danger d-flex align-items-center justify-content-center">
                                 <i class="fas fa-user-plus"></i>
                             </div>
                         </div>
@@ -850,7 +850,7 @@ function initializeCalendar() {
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
     <div id="welcomeToast" class="toast" role="alert">
         <div class="toast-header">
-            <i class="fas fa-user-shield me-2 text-primary"></i>
+            <i class="fas fa-user-shield me-2 text-danger"></i>
             <strong class="me-auto">Bienvenido al Panel de Control</strong>
             <small>Ahora</small>
             <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
@@ -1069,7 +1069,7 @@ function initializeCalendar() {
                     <h6>Próximos Eventos</h6>
                     <div class="upcoming-events">
                         <div class="event-item d-flex align-items-center mb-2">
-                            <div class="event-date bg-primary text-white rounded p-2 me-2 text-center" style="min-width: 40px;">
+                            <div class="event-date bg-danger text-white rounded p-2 me-2 text-center" style="min-width: 40px;">
                                 <small>15</small><br><small>Feb</small>
                             </div>
                             <div class="event-info">

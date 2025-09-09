@@ -68,7 +68,7 @@
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                         Usuarios Totales
                                     </div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800">150</div>
@@ -141,7 +141,7 @@
                 <div class="col-lg-8">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Actividad Reciente</h6>
+                            <h6 class="m-0 font-weight-bold text-danger">Actividad Reciente</h6>
                         </div>
                         <div class="card-body">
                             <div class="list-group list-group-flush">
@@ -151,7 +151,7 @@
                                         <br>
                                         <small class="text-muted">Juan Pérez se registró hace 2 horas</small>
                                     </div>
-                                    <span class="badge bg-primary rounded-pill">Nuevo</span>
+                                    <span class="badge bg-danger rounded-pill">Nuevo</span>
                                 </div>
                                 <div class="list-group-item d-flex justify-content-between align-items-center">
                                     <div>
@@ -177,7 +177,7 @@
                 <div class="col-lg-4">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Acciones Rápidas</h6>
+                            <h6 class="m-0 font-weight-bold text-danger">Acciones Rápidas</h6>
                         </div>
                         <div class="card-body">
                             <div class="d-grid gap-2">

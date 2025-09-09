@@ -88,7 +88,7 @@
                                         </td>
                                         <td>
                                             <?php if (!empty($event->ubicacion)): ?>
-                                                <i class="fas fa-map-marker-alt text-primary me-1"></i>
+                                                <i class="fas fa-map-marker-alt text-danger me-1"></i>
                                                 <?= htmlspecialchars($event->ubicacion) ?>
                                             <?php else: ?>
                                                 <span class="text-muted">No especificado</span>

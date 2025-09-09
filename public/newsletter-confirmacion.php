@@ -63,7 +63,7 @@
                             <i class="bi bi-check-circle-fill"></i>
                         </div>
                         
-                        <h2 class="text-primary mb-3">¡Bienvenido a nuestro boletín!</h2>
+                        <h2 class="text-danger mb-3">¡Bienvenido a nuestro boletín!</h2>
                         
                         <p class="lead mb-4">
                             Te has suscrito exitosamente al boletín de noticias de la 

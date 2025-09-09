@@ -134,7 +134,7 @@ function mostrarTelefono() {
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title">
+                    <h5 class="modal-title text-white">
                         <i class="bi bi-telephone me-2"></i>
                         Número de Teléfono
                     </h5>

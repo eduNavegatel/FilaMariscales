@@ -53,7 +53,7 @@ ob_start(); // Start output buffering
                         </div>
                         <p class="text-muted small">Camiseta oficial de la Filá Mariscales temporada 2024-2025</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0 text-primary">25,00 €</h5>
+                            <h5 class="mb-0 text-danger">25,00 €</h5>
                             <button class="btn btn-sm btn-outline-primary">
                                 <i class="bi bi-cart-plus"></i> Añadir
                             </button>
@@ -70,7 +70,7 @@ ob_start(); // Start output buffering
                         <h5 class="card-title">Gorra Bordada</h5>
                         <p class="text-muted small">Gorra con el escudo bordado de la Filá Mariscales</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0 text-primary">15,00 €</h5>
+                            <h5 class="mb-0 text-danger">15,00 €</h5>
                             <button class="btn btn-sm btn-outline-primary">
                                 <i class="bi bi-cart-plus"></i> Añadir
                             </button>
@@ -90,7 +90,7 @@ ob_start(); // Start output buffering
                         <h5 class="card-title">CD Música Oficial</h5>
                         <p class="text-muted small">Recopilación de nuestras mejores marchas y pasodobles</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0 text-primary">12,00 €</h5>
+                            <h5 class="mb-0 text-danger">12,00 €</h5>
                             <button class="btn btn-sm btn-outline-primary">
                                 <i class="bi bi-cart-plus"></i> Añadir
                             </button>
@@ -107,7 +107,7 @@ ob_start(); // Start output buffering
                         <h5 class="card-title">Bandera Oficial</h5>
                         <p class="text-muted small">Bandera oficial de la Filá Mariscales (100x150cm)</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0 text-primary">35,00 €</h5>
+                            <h5 class="mb-0 text-danger">35,00 €</h5>
                             <button class="btn btn-sm btn-outline-primary">
                                 <i class="bi bi-cart-plus"></i> Añadir
                             </button>
@@ -145,7 +145,7 @@ ob_start(); // Start output buffering
                         <h5 class="card-title">Producto <?php echo $i; ?></h5>
                         <p class="text-muted small">Descripción breve del producto <?php echo $i; ?></p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0 text-primary"><?php echo (10 + $i * 2); ?>,00 €</h5>
+                            <h5 class="mb-0 text-danger"><?php echo (10 + $i * 2); ?>,00 €</h5>
                             <button class="btn btn-sm btn-outline-primary">
                                 <i class="bi bi-cart-plus"></i> Añadir
                             </button>

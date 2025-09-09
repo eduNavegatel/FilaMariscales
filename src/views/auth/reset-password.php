@@ -68,7 +68,7 @@ ob_start();
 
                     <div class="text-center mt-4">
                         <p class="mb-0">
-                            <a href="<?php echo URL_ROOT; ?>/auth/login" class="text-primary text-decoration-none fw-semibold">
+                            <a href="<?php echo URL_ROOT; ?>/auth/login" class="text-danger text-decoration-none fw-semibold">
                                 ← Volver al inicio de sesión
                             </a>
                         </p>

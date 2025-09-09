@@ -147,7 +147,7 @@ if (empty($eventosProximos)) {
                                     <?php foreach($eventosPorMes[$index + 1] as $evento): ?>
                                         <div class="list-group-item p-3 event-item" data-category="otros">
                                             <div class="d-flex align-items-start">
-                                                <div class="date-box bg-primary text-white text-center me-3 rounded" style="min-width: 70px;">
+                                                <div class="date-box bg-danger text-white text-center me-3 rounded" style="min-width: 70px;">
                                                     <div class="fw-bold fs-5"><?php echo date('j', strtotime($evento->fecha)); ?></div>
                                                     <div class="text-uppercase"><?php echo strtoupper(date('M', strtotime($evento->fecha))); ?></div>
                                                 </div>
@@ -200,7 +200,7 @@ if (empty($eventosProximos)) {
             <div class="col-lg-4">
                 <!-- Upcoming Events -->
                 <div class="card mb-4">
-                    <div class="card-header bg-primary text-white">
+                    <div class="card-header bg-danger text-white">
                         <h3 class="h5 mb-0">Próximos Eventos</h3>
                     </div>
                     <div class="list-group list-group-flush">
@@ -233,7 +233,7 @@ if (empty($eventosProximos)) {
                 <!-- Subscribe -->
                 <div class="card mb-4">
                     <div class="card-body text-center">
-                        <i class="bi bi-calendar-check display-4 text-primary mb-3"></i>
+                        <i class="bi bi-calendar-check display-4 text-danger mb-3"></i>
                         <h4>¡No te pierdas nada!</h4>
                         <p class="text-muted">Recibe recordatorios de nuestros eventos directamente en tu correo electrónico.</p>
                         <form>
@@ -253,23 +253,23 @@ if (empty($eventosProximos)) {
                     <div class="list-group list-group-flush">
                         <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                             Fiestas
-                            <span class="badge bg-primary rounded-pill">12</span>
+                            <span class="badge bg-danger rounded-pill">12</span>
                         </a>
                         <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                             Cultural
-                            <span class="badge bg-primary rounded-pill">8</span>
+                            <span class="badge bg-danger rounded-pill">8</span>
                         </a>
                         <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                             Deportivo
-                            <span class="badge bg-primary rounded-pill">6</span>
+                            <span class="badge bg-danger rounded-pill">6</span>
                         </a>
                         <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                             Reuniones
-                            <span class="badge bg-primary rounded-pill">24</span>
+                            <span class="badge bg-danger rounded-pill">24</span>
                         </a>
                         <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                             Otros
-                            <span class="badge bg-primary rounded-pill"><?php echo count($events); ?></span>
+                            <span class="badge bg-danger rounded-pill"><?php echo count($events); ?></span>
                         </a>
                     </div>
                 </div>

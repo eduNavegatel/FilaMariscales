@@ -69,7 +69,7 @@ ob_start(); // Start output buffering
                     <div class="card-body">
                         <div class="d-flex align-items-start mb-3">
                             <div class="bg-light p-3 rounded me-3">
-                                <i class="bi bi-file-earmark-word text-primary display-6"></i>
+                                <i class="bi bi-file-earmark-word text-danger display-6"></i>
                             </div>
                             <div>
                                 <h5 class="card-title mb-1">Solicitud de Alta como Socio</h5>
@@ -230,7 +230,7 @@ ob_start(); // Start output buffering
         <!-- Help Section -->
         <div class="card border-0 bg-light">
             <div class="card-body text-center p-5">
-                <i class="bi bi-question-circle display-4 text-primary mb-3"></i>
+                <i class="bi bi-question-circle display-4 text-danger mb-3"></i>
                 <h3>¿Necesitas ayuda?</h3>
                 <p class="lead">Si tienes problemas para descargar o encontrar algún documento, no dudes en contactarnos.</p>
                 <a href="/prueba-php/public/contacto" class="btn btn-outline-primary">

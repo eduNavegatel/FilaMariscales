@@ -27,7 +27,7 @@
     <!-- Estadísticas -->
     <div class="row mb-4">
         <div class="col-md-3">
-            <div class="card bg-primary text-white">
+            <div class="card bg-danger text-white">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
@@ -124,7 +124,7 @@
                                                 <?php
                                                 $filename = $message['filename'];
                                                 if (strpos($filename, 'contacto') !== false) {
-                                                    echo '<span class="badge bg-primary"><i class="bi bi-person-lines-fill me-1"></i>Contacto</span>';
+                                                    echo '<span class="badge bg-danger"><i class="bi bi-person-lines-fill me-1"></i>Contacto</span>';
                                                 } elseif (strpos($filename, 'newsletter') !== false) {
                                                     echo '<span class="badge bg-success"><i class="bi bi-newspaper me-1"></i>Newsletter</span>';
                                                 } elseif (strpos($filename, 'email') !== false) {

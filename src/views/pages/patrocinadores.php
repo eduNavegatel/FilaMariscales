@@ -116,10 +116,10 @@ ob_start(); // Start output buffering
                 <p class="lead">Únete a nuestra lista de empresas colaboradoras y forma parte de nuestra historia.</p>
                 <p>Ofrecemos diferentes modalidades de patrocinio adaptadas a las necesidades de cada empresa, con ventajas como:</p>
                 <ul class="list-unstyled">
-                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i>Presencia en nuestros eventos</li>
-                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i>Logotipo en nuestra web y redes sociales</li>
-                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i>Invitaciones a actos exclusivos</li>
-                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i>Descuentos en publicidad</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-danger me-2"></i>Presencia en nuestros eventos</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-danger me-2"></i>Logotipo en nuestra web y redes sociales</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-danger me-2"></i>Invitaciones a actos exclusivos</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-danger me-2"></i>Descuentos en publicidad</li>
                 </ul>
                 <a href="#contacto" class="btn btn-primary btn-lg mt-3">Solicitar información</a>
             </div>
@@ -151,7 +151,7 @@ ob_start(); // Start output buffering
                             <div class="form-check mb-4">
                                 <input class="form-check-input" type="checkbox" id="privacy" required>
                                 <label class="form-check-label small" for="privacy">
-                                    Acepto la <a href="#" class="text-primary">política de privacidad</a> y el tratamiento de mis datos
+                                    Acepto la <a href="#" class="text-danger">política de privacidad</a> y el tratamiento de mis datos
                                 </label>
                             </div>
                             <button type="submit" class="btn btn-primary w-100">Enviar solicitud</button>
@@ -237,7 +237,7 @@ ob_start(); // Start output buffering
 </section>
 
 <!-- CTA Section -->
-<section class="py-5 bg-primary text-white">
+<section class="py-5 bg-danger text-white">
     <div class="container text-center">
         <h2 class="fw-bold mb-4">¿Listo para unirte a nuestra familia de patrocinadores?</h2>
         <p class="lead mb-4">Descubre cómo tu empresa puede beneficiarse de esta colaboración</p>

@@ -148,7 +148,7 @@ ob_start(); // Start output buffering
                 <h3 class="fw-bold mb-3">Próximos Encuentros</h3>
                 <div class="event-item mb-4">
                     <div class="d-flex">
-                        <div class="date-box bg-primary text-white text-center p-2 me-3 rounded" style="min-width: 70px;">
+                        <div class="date-box bg-danger text-white text-center p-2 me-3 rounded" style="min-width: 70px;">
                             <div class="fw-bold fs-5">15</div>
                             <div class="text-uppercase">SEP</div>
                             <div class="small">2025</div>
@@ -163,7 +163,7 @@ ob_start(); // Start output buffering
                 
                 <div class="event-item">
                     <div class="d-flex">
-                        <div class="date-box bg-primary text-white text-center p-2 me-3 rounded" style="min-width: 70px;">
+                        <div class="date-box bg-danger text-white text-center p-2 me-3 rounded" style="min-width: 70px;">
                             <div class="fw-bold fs-5">28</div>
                             <div class="text-uppercase">OCT</div>
                             <div class="small">2025</div>

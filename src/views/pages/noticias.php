@@ -3,7 +3,7 @@ ob_start(); // Start output buffering
 ?>
 
 <!-- Hero Section -->
-<section class="hero-section position-relative overflow-hidden bg-primary text-white py-8 py-lg-10 mb-6">
+<section class="hero-section position-relative overflow-hidden bg-danger text-white py-8 py-lg-10 mb-6">
     <div class="position-absolute top-0 start-0 w-100 h-100" style="background: url('/mariscales1-php/public/assets/images/pattern-dots-light.svg') repeat; opacity: 0.1;"></div>
     <div class="position-absolute bottom-0 end-0">
         <div class="position-relative" style="width: 300px; height: 300px;">
@@ -40,7 +40,7 @@ ob_start(); // Start output buffering
                     <div class="position-relative overflow-hidden" style="height: 200px;">
                         <img src="/mariscales1-php/public/assets/images/noticia1.jpg" class="card-img-top h-100 w-100" alt="Noticia 1" style="object-fit: cover;">
                         <div class="position-absolute top-0 end-0 m-3">
-                            <span class="badge bg-primary bg-opacity-90 px-3 py-2">Novedad</span>
+                            <span class="badge bg-danger bg-opacity-90 px-3 py-2">Novedad</span>
                         </div>
                         <div class="position-absolute bottom-0 start-0 w-100 p-3 bg-gradient-dark-top">
                             <small class="text-white-50"><i class="bi bi-calendar3 me-1"></i> 31/07/2025</small>
@@ -159,15 +159,15 @@ ob_start(); // Start output buffering
     <div class="position-absolute top-0 start-0 w-100 h-100" style="background: url('/mariscales1-php/public/assets/images/pattern-dots.svg') repeat; opacity: 0.03;"></div>
     <div class="position-absolute bottom-0 end-0">
         <div class="position-relative" style="width: 300px; height: 300px;">
-            <div class="position-absolute bottom-0 end-0 w-100 h-100 bg-primary bg-opacity-10 rounded-circle" style="animation: pulse 8s ease-in-out infinite;"></div>
-            <div class="position-absolute bottom-0 end-0 w-100 h-100 bg-primary bg-opacity-05 rounded-circle" style="animation: pulse 8s ease-in-out 2s infinite;"></div>
+            <div class="position-absolute bottom-0 end-0 w-100 h-100 bg-danger bg-opacity-10 rounded-circle" style="animation: pulse 8s ease-in-out infinite;"></div>
+            <div class="position-absolute bottom-0 end-0 w-100 h-100 bg-danger bg-opacity-05 rounded-circle" style="animation: pulse 8s ease-in-out 2s infinite;"></div>
         </div>
     </div>
     
     <div class="container position-relative">
         <div class="row justify-content-center">
             <div class="col-lg-8 text-center" data-aos="fade-up">
-                <span class="badge bg-primary bg-opacity-10 text-primary px-4 py-2 rounded-pill mb-4 d-inline-flex align-items-center">
+                <span class="badge bg-danger bg-opacity-10 text-danger px-4 py-2 rounded-pill mb-4 d-inline-flex align-items-center">
                     <i class="bi bi-envelope-paper-heart me-2"></i>
                     <span>Mantente informado</span>
                 </span>
@@ -178,7 +178,7 @@ ob_start(); // Start output buffering
                     <div class="col-md-8">
                         <div class="input-group input-group-lg shadow-sm">
                             <span class="input-group-text bg-white border-end-0" id="email-addon">
-                                <i class="bi bi-envelope text-primary"></i>
+                                <i class="bi bi-envelope text-danger"></i>
                             </span>
                             <input type="email" id="emailInput" class="form-control border-start-0 ps-0" placeholder="tucorreo@ejemplo.com" aria-label="Correo electrónico" aria-describedby="email-addon" required>
                         </div>
@@ -276,7 +276,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header bg-success text-white">
-                        <h5 class="modal-title">
+                        <h5 class="modal-title text-white">
                             <i class="bi bi-check-circle me-2"></i>
                             ¡Suscripción Exitosa!
                         </h5>

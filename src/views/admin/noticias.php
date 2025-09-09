@@ -77,7 +77,7 @@
         <!-- Stats Cards -->
         <div class="row mb-4">
             <div class="col-md-3 mb-3">
-                <div class="card text-white bg-primary">
+                <div class="card text-white bg-danger">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
@@ -163,7 +163,7 @@
                                             <tr>
                                                 <td>
                                                     <div class="d-flex align-items-center">
-                                                        <i class="fas fa-file-alt text-primary me-2"></i>
+                                                        <i class="fas fa-file-alt text-danger me-2"></i>
                                                         <strong><?= htmlspecialchars($news['filename']) ?></strong>
                                                     </div>
                                                 </td>

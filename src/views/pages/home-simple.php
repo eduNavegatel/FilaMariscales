@@ -27,7 +27,7 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6" data-aos="fade-right">
-                <span class="text-primary mb-2 d-inline-block fw-semibold">Sobre Nosotros</span>
+                <span class="text-danger mb-2 d-inline-block fw-semibold">Sobre Nosotros</span>
                 <h2 class="fw-bold display-5 mb-4">Nuestra <span class="text-gradient">Historia</span></h2>
                 <p class="lead text-muted mb-4">
                     La Filá Mariscales es una de las filaes más antiguas y tradicionales de los Caballeros Templarios de Elche. 
@@ -37,7 +37,7 @@
                     <div class="col-sm-6">
                         <div class="d-flex align-items-center">
                             <div class="flex-shrink-0">
-                                <i class="bi bi-shield-check text-primary display-6"></i>
+                                <i class="bi bi-shield-check text-danger display-6"></i>
                             </div>
                             <div class="flex-grow-1 ms-3">
                                 <h5 class="fw-semibold mb-1">Tradición</h5>
@@ -48,7 +48,7 @@
                     <div class="col-sm-6">
                         <div class="d-flex align-items-center">
                             <div class="flex-shrink-0">
-                                <i class="bi bi-people text-primary display-6"></i>
+                                <i class="bi bi-people text-danger display-6"></i>
                             </div>
                             <div class="flex-grow-1 ms-3">
                                 <h5 class="fw-semibold mb-1">Comunidad</h5>
@@ -68,14 +68,14 @@
             </div>
             <div class="col-lg-6" data-aos="fade-left">
                 <div class="position-relative">
-                    <div class="bg-primary bg-opacity-10 rounded-3 p-5">
+                    <div class="bg-danger bg-opacity-10 rounded-3 p-5">
                         <div class="row text-center">
                             <div class="col-6">
-                                <div class="display-4 fw-bold text-primary">75+</div>
+                                <div class="display-4 fw-bold text-danger">75+</div>
                                 <p class="text-muted mb-0">Años de Historia</p>
                             </div>
                             <div class="col-6">
-                                <div class="display-4 fw-bold text-primary">1945</div>
+                                <div class="display-4 fw-bold text-danger">1945</div>
                                 <p class="text-muted mb-0">Tradición desde</p>
                             </div>
                         </div>
@@ -90,7 +90,7 @@
 <section id="events" class="py-7 py-lg-9 bg-light">
     <div class="container">
         <div class="text-center mb-6" data-aos="fade-up">
-            <span class="text-primary mb-2 d-inline-block fw-semibold">Nuestros Eventos</span>
+            <span class="text-danger mb-2 d-inline-block fw-semibold">Nuestros Eventos</span>
             <h2 class="fw-bold display-5 mb-3">Próximas <span class="text-gradient">Actividades</span></h2>
             <p class="lead text-muted mx-auto" style="max-width: 600px;">
                 Descubre los próximos eventos y actividades que tenemos preparados para ti. ¡No te pierdas nada!
@@ -145,7 +145,7 @@
 <section class="py-7 py-lg-9">
     <div class="container">
         <div class="text-center mb-6" data-aos="fade-up">
-            <span class="text-primary mb-2 d-inline-block fw-semibold">Nuestra Galería</span>
+            <span class="text-danger mb-2 d-inline-block fw-semibold">Nuestra Galería</span>
             <h2 class="fw-bold display-5 mb-3">Momentos <span class="text-gradient">Inolvidables</span></h2>
             <p class="lead text-muted mx-auto" style="max-width: 600px;">
                 Revive los mejores momentos de nuestra filá a través de estas imágenes que capturan la esencia de nuestra tradición.

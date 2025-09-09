@@ -147,7 +147,7 @@ $messagesCount = count($messagesList);
                                                     <?php
                                                     $filename = $message['filename'];
                                                     if (strpos($filename, 'contacto') !== false) {
-                                                        echo '<span class="badge bg-primary"><i class="bi bi-person-lines-fill me-1"></i>Contacto</span>';
+                                                        echo '<span class="badge bg-danger"><i class="bi bi-person-lines-fill me-1"></i>Contacto</span>';
                                                     } elseif (strpos($filename, 'newsletter') !== false) {
                                                         echo '<span class="badge bg-success"><i class="bi bi-newspaper me-1"></i>Newsletter</span>';
                                                     } elseif (strpos($filename, 'email') !== false) {

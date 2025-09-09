@@ -241,14 +241,14 @@ if (!function_exists('isLoggedIn')) {
                                 <!-- Primera columna: Sede Social y Teléfono -->
                                 <div class="col-6">
                                     <div class="contact-item mb-2">
-                                        <i class="bi bi-geo-alt-fill me-2 text-primary"></i>
+                                        <i class="bi bi-geo-alt-fill me-2 text-danger"></i>
                                         <div>
                                             <strong class="text-white">Sede Social</strong><br>
                                             <span class="text-light">Calle Mayor, 123<br>03201 Elche, Alicante</span>
                                         </div>
                                     </div>
                                     <div class="contact-item mb-2">
-                                        <i class="bi bi-telephone-fill me-2 text-primary"></i>
+                                        <i class="bi bi-telephone-fill me-2 text-danger"></i>
                                         <div>
                                             <strong class="text-white">Teléfono</strong><br>
                                             <a href="tel:+34966123456" class="text-light text-decoration-none">966 123 456</a>
@@ -258,14 +258,14 @@ if (!function_exists('isLoggedIn')) {
                                 <!-- Segunda columna: Email y Horario -->
                                 <div class="col-6">
                                     <div class="contact-item mb-2">
-                                        <i class="bi bi-envelope-fill me-2 text-primary"></i>
+                                        <i class="bi bi-envelope-fill me-2 text-danger"></i>
                                         <div>
                                             <strong class="text-white">Email</strong><br>
                                             <a href="mailto:info@filamariscales.es" class="text-light text-decoration-none">info@filamariscales.es</a>
                                         </div>
                                     </div>
                                     <div class="contact-item">
-                                        <i class="bi bi-clock-fill me-2 text-primary"></i>
+                                        <i class="bi bi-clock-fill me-2 text-danger"></i>
                                         <div>
                                             <strong class="text-white">Horario</strong><br>
                                             <span class="text-light">Lun-Vie: 18:00-22:00<br>Sáb: 10:00-14:00</span>
