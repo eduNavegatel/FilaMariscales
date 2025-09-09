@@ -120,7 +120,7 @@ $categorias = [
                                     <button class="btn btn-light btn-sm btn-animated" onclick="openLightbox('<?php echo $item['imagen']; ?>', '<?php echo $item['titulo']; ?>', '<?php echo $item['descripcion']; ?>')">
                                         <i class="bi bi-zoom-in me-1"></i>Ampliar
                                     </button>
-                                    <span class="badge bg-primary ms-2 animate-pulse">
+                                    <span class="badge bg-danger ms-2 animate-pulse">
                                         <i class="bi bi-image me-1"></i><?php echo ucfirst($item['tipo']); ?>
                                     </span>
                                 </div>

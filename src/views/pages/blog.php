@@ -31,7 +31,7 @@ ob_start(); // Start output buffering
                                 <p class="mb-0 small fw-bold">María López</p>
                                 <p class="mb-0 small text-muted">Directora de Comunicación</p>
                             </div>
-                            <a href="/prueba-php/public/blog" class="btn btn-outline-primary ms-auto">Leer más</a>
+                            <a href="/prueba-php/public/blog" class="btn btn-outline-danger ms-auto">Leer más</a>
                         </div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@ ob_start(); // Start output buffering
                     <div class="position-relative">
                         <img src="/mariscales1-php/public/assets/images/blog/post1.jpg" class="card-img-top" alt="Post 1">
                         <div class="position-absolute bottom-0 end-0 m-3">
-                            <span class="badge bg-primary">Fiestas</span>
+                            <span class="badge bg-danger">Fiestas</span>
                         </div>
                     </div>
                     <div class="card-body">
@@ -56,7 +56,7 @@ ob_start(); // Start output buffering
                         </div>
                         <h5 class="card-title fw-bold">Conoce a nuestra nueva directiva 2025-2027</h5>
                         <p class="card-text text-muted">Presentamos al equipo que dirigirá los destinos de la Filá Mariscales durante los próximos dos años.</p>
-                        <a href="#" class="btn btn-link p-0 text-primary">Leer más <i class="bi bi-arrow-right"></i></a>
+                        <a href="#" class="btn btn-link p-0 text-danger">Leer más <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -77,7 +77,7 @@ ob_start(); // Start output buffering
                         </div>
                         <h5 class="card-title fw-bold">La historia de los trajes tradicionales en los Moros y Cristianos</h5>
                         <p class="card-text text-muted">Un recorrido por la evolución de los trajes tradicionales a lo largo de la historia de nuestras fiestas.</p>
-                        <a href="#" class="btn btn-link p-0 text-primary">Leer más <i class="bi bi-arrow-right"></i></a>
+                        <a href="#" class="btn btn-link p-0 text-danger">Leer más <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -98,7 +98,7 @@ ob_start(); // Start output buffering
                         </div>
                         <h5 class="card-title fw-bold">Éxito rotundo en la Gala Benéfica Anual</h5>
                         <p class="card-text text-muted">Recaudamos más de 5.000€ para causas benéficas en nuestra gala anual. ¡Gracias a todos por vuestra colaboración!</p>
-                        <a href="#" class="btn btn-link p-0 text-primary">Leer más <i class="bi bi-arrow-right"></i></a>
+                        <a href="#" class="btn btn-link p-0 text-danger">Leer más <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -119,7 +119,7 @@ ob_start(); // Start output buffering
                         </div>
                         <h5 class="card-title fw-bold">Los orígenes de la Filá Mariscales: 50 años de historia</h5>
                         <p class="card-text text-muted">Un repaso a los momentos más destacados de nuestra filá desde su fundación en 1975.</p>
-                        <a href="#" class="btn btn-link p-0 text-primary">Leer más <i class="bi bi-arrow-right"></i></a>
+                        <a href="#" class="btn btn-link p-0 text-danger">Leer más <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -140,7 +140,7 @@ ob_start(); // Start output buffering
                         </div>
                         <h5 class="card-title fw-bold">Nuevo diseño de la web de la Filá Mariscales</h5>
                         <p class="card-text text-muted">Presentamos nuestra nueva página web con diseño responsive y mejor experiencia de usuario.</p>
-                        <a href="#" class="btn btn-link p-0 text-primary">Leer más <i class="bi bi-arrow-right"></i></a>
+                        <a href="#" class="btn btn-link p-0 text-danger">Leer más <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -161,7 +161,7 @@ ob_start(); // Start output buffering
                         </div>
                         <h5 class="card-title fw-bold">Guía completa para las próximas fiestas patronales</h5>
                         <p class="card-text text-muted">Todo lo que necesitas saber para disfrutar al máximo de las próximas fiestas de Moros y Cristianos.</p>
-                        <a href="#" class="btn btn-link p-0 text-primary">Leer más <i class="bi bi-arrow-right"></i></a>
+                        <a href="#" class="btn btn-link p-0 text-danger">Leer más <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -198,7 +198,7 @@ ob_start(); // Start output buffering
                                         <input type="email" class="form-control" placeholder="Tu correo electrónico" required>
                                     </div>
                                     <div class="col-12">
-                                        <button type="submit" class="btn btn-primary w-100">Suscribirme</button>
+                                        <button type="submit" class="btn btn-danger w-100">Suscribirme</button>
                                     </div>
                                 </form>
                             </div>
@@ -222,7 +222,7 @@ ob_start(); // Start output buffering
             <div class="col-6 col-md-4 col-lg-2">
                 <a href="#" class="text-decoration-none">
                     <div class="card h-100 border-0 text-center p-4 hover-shadow">
-                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle p-3 mx-auto mb-3" style="width: 80px; height: 80px;">
+                        <div class="bg-danger bg-opacity-25 text-danger rounded-circle p-3 mx-auto mb-3" style="width: 80px; height: 80px;">
                             <i class="bi bi-people fs-3"></i>
                         </div>
                         <h5 class="mb-0">Fiestas</h5>
@@ -234,7 +234,7 @@ ob_start(); // Start output buffering
             <div class="col-6 col-md-4 col-lg-2">
                 <a href="#" class="text-decoration-none">
                     <div class="card h-100 border-0 text-center p-4 hover-shadow">
-                        <div class="bg-success bg-opacity-10 text-success rounded-circle p-3 mx-auto mb-3" style="width: 80px; height: 80px;">
+                        <div class="bg-danger bg-opacity-25 text-danger rounded-circle p-3 mx-auto mb-3" style="width: 80px; height: 80px;">
                             <i class="bi bi-book fs-3"></i>
                         </div>
                         <h5 class="mb-0">Cultura</h5>
@@ -246,7 +246,7 @@ ob_start(); // Start output buffering
             <div class="col-6 col-md-4 col-lg-2">
                 <a href="#" class="text-decoration-none">
                     <div class="card h-100 border-0 text-center p-4 hover-shadow">
-                        <div class="bg-warning bg-opacity-10 text-warning rounded-circle p-3 mx-auto mb-3" style="width: 80px; height: 80px;">
+                        <div class="bg-danger bg-opacity-25 text-danger rounded-circle p-3 mx-auto mb-3" style="width: 80px; height: 80px;">
                             <i class="bi bi-calendar-event fs-3"></i>
                         </div>
                         <h5 class="mb-0">Eventos</h5>
@@ -258,7 +258,7 @@ ob_start(); // Start output buffering
             <div class="col-6 col-md-4 col-lg-2">
                 <a href="#" class="text-decoration-none">
                     <div class="card h-100 border-0 text-center p-4 hover-shadow">
-                        <div class="bg-info bg-opacity-10 text-info rounded-circle p-3 mx-auto mb-3" style="width: 80px; height: 80px;">
+                        <div class="bg-danger bg-opacity-25 text-danger rounded-circle p-3 mx-auto mb-3" style="width: 80px; height: 80px;">
                             <i class="bi bi-hourglass-split fs-3"></i>
                         </div>
                         <h5 class="mb-0">Historia</h5>
@@ -270,7 +270,7 @@ ob_start(); // Start output buffering
             <div class="col-6 col-md-4 col-lg-2">
                 <a href="#" class="text-decoration-none">
                     <div class="card h-100 border-0 text-center p-4 hover-shadow">
-                        <div class="bg-secondary bg-opacity-10 text-secondary rounded-circle p-3 mx-auto mb-3" style="width: 80px; height: 80px;">
+                        <div class="bg-danger bg-opacity-25 text-danger rounded-circle p-3 mx-auto mb-3" style="width: 80px; height: 80px;">
                             <i class="bi bi-newspaper fs-3"></i>
                         </div>
                         <h5 class="mb-0">Actualidad</h5>
@@ -303,16 +303,16 @@ ob_start(); // Start output buffering
         </div>
         
         <div class="d-flex flex-wrap justify-content-center gap-2">
-            <a href="#" class="btn btn-sm btn-outline-primary">#MorosyCristianos</a>
-            <a href="#" class="btn btn-sm btn-outline-primary">#Fiestas2025</a>
-            <a href="#" class="btn btn-sm btn-outline-primary">#Tradición</a>
-            <a href="#" class="btn btn-sm btn-outline-primary">#Cultura</a>
-            <a href="#" class="btn btn-sm btn-outline-primary">#Historia</a>
-            <a href="#" class="btn btn-sm btn-outline-primary">#Desfiles</a>
-            <a href="#" class="btn btn-sm btn-outline-primary">#Música</a>
-            <a href="#" class="btn btn-sm btn-outline-primary">#TrajesTípicos</a>
-            <a href="#" class="btn btn-sm btn-outline-primary">#Comunidad</a>
-            <a href="#" class="btn btn-sm btn-outline-primary">#Eventos</a>
+            <a href="#" class="btn btn-sm btn-outline-danger">#MorosyCristianos</a>
+            <a href="#" class="btn btn-sm btn-outline-danger">#Fiestas2025</a>
+            <a href="#" class="btn btn-sm btn-outline-danger">#Tradición</a>
+            <a href="#" class="btn btn-sm btn-outline-danger">#Cultura</a>
+            <a href="#" class="btn btn-sm btn-outline-danger">#Historia</a>
+            <a href="#" class="btn btn-sm btn-outline-danger">#Desfiles</a>
+            <a href="#" class="btn btn-sm btn-outline-danger">#Música</a>
+            <a href="#" class="btn btn-sm btn-outline-danger">#TrajesTípicos</a>
+            <a href="#" class="btn btn-sm btn-outline-danger">#Comunidad</a>
+            <a href="#" class="btn btn-sm btn-outline-danger">#Eventos</a>
         </div>
     </div>
 </section>

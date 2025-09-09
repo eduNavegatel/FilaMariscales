@@ -26,7 +26,7 @@
             <div class="col-md-3 mb-4">
                 <div class="counter-card card-animated hover-lift">
                     <div class="counter-icon animate-bounce">
-                        <i class="bi bi-calendar-event fs-1 text-primary"></i>
+                        <i class="bi bi-calendar-event fs-1 text-danger"></i>
                     </div>
                     <h3 class="counter text-gradient" data-target="50">0</h3>
                     <p class="text-muted">Años de Tradición</p>
@@ -212,31 +212,31 @@
         
         <!-- Juego de Quiz -->
         <div class="game-container" id="quiz-game">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="quiz-container card-animated scroll-reveal">
-                        <div class="quiz-header">
-                            <h4>¿Cuánto sabes sobre nosotros?</h4>
-                            <div class="progress mb-3">
-                                <div class="progress-bar animate-pulse" role="progressbar" style="width: 0%"></div>
-                            </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="quiz-container card-animated scroll-reveal">
+                    <div class="quiz-header">
+                        <h4>¿Cuánto sabes sobre nosotros?</h4>
+                        <div class="progress mb-3">
+                            <div class="progress-bar animate-pulse" role="progressbar" style="width: 0%"></div>
                         </div>
-                        
-                        <div class="quiz-content">
-                            <div class="question" id="question1">
+                    </div>
+                    
+                    <div class="quiz-content">
+                        <div class="question" id="question1">
                                 <h5>Cargando pregunta...</h5>
-                                <div class="answers">
+                            <div class="answers">
                                     <!-- Las preguntas se cargarán dinámicamente -->
-                                </div>
                             </div>
                         </div>
-                        
-                        <div class="quiz-results" style="display: none;">
-                            <h4 class="text-center">¡Resultados!</h4>
-                            <div class="score-display">
-                                <h2 class="text-gradient counter" data-target="0">0</h2>
-                                <p>puntos obtenidos</p>
-                            </div>
+                    </div>
+                    
+                    <div class="quiz-results" style="display: none;">
+                        <h4 class="text-center">¡Resultados!</h4>
+                        <div class="score-display">
+                            <h2 class="text-gradient counter" data-target="0">0</h2>
+                            <p>puntos obtenidos</p>
+                        </div>
                         <button class="btn btn-danger btn-animated" onclick="restartQuiz()">
                             <i class="bi bi-arrow-clockwise me-2"></i>Jugar de Nuevo
                         </button>
@@ -255,7 +255,7 @@
                             <h4>Juego de Memoria Templaria</h4>
                             <p>Encuentra las parejas de símbolos templarios</p>
                             <div class="memory-stats">
-                                <span class="badge bg-primary me-2">Movimientos: <span id="memory-moves">0</span></span>
+                                <span class="badge bg-danger me-2">Movimientos: <span id="memory-moves">0</span></span>
                                 <span class="badge bg-success me-2">Parejas: <span id="memory-pairs">0</span>/8</span>
                                 <span class="badge bg-warning">Tiempo: <span id="memory-time">00:00</span></span>
                             </div>
@@ -282,12 +282,12 @@
                             <h4>Secuencia Musical Templaria</h4>
                             <p>Reproduce la secuencia de notas musicales</p>
                             <div class="sequence-stats">
-                                <span class="badge bg-primary me-2">Nivel: <span id="sequence-level">1</span></span>
+                                <span class="badge bg-danger me-2">Nivel: <span id="sequence-level">1</span></span>
                                 <span class="badge bg-success me-2">Puntuación: <span id="sequence-score">0</span></span>
                             </div>
                         </div>
                         <div class="sequence-buttons">
-                            <button class="btn btn-outline-primary sequence-btn" data-note="1">
+                            <button class="btn btn-outline-danger sequence-btn" data-note="1">
                                 <i class="bi bi-music-note"></i>
                             </button>
                             <button class="btn btn-outline-success sequence-btn" data-note="2">
@@ -319,7 +319,7 @@
                             <h4>Puzzle del Escudo Templario</h4>
                             <p>Arma el escudo templario moviendo las piezas</p>
                             <div class="puzzle-stats">
-                                <span class="badge bg-primary me-2">Movimientos: <span id="puzzle-moves">0</span></span>
+                                <span class="badge bg-danger me-2">Movimientos: <span id="puzzle-moves">0</span></span>
                                 <span class="badge bg-success me-2">Tiempo: <span id="puzzle-time">00:00</span></span>
                             </div>
                         </div>
@@ -349,7 +349,7 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="stat-item">
-                                        <h3 class="text-primary" id="clicker-coins">0</h3>
+                                        <h3 class="text-danger" id="clicker-coins">0</h3>
                                         <p>Monedas</p>
                                     </div>
                                 </div>
@@ -406,7 +406,7 @@
                 <!-- Contenido dinámico -->
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
@@ -419,9 +419,10 @@
     border-radius: 15px;
     text-align: center;
     transition: all 0.3s ease;
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,249,250,0.8) 100%);
     border: 2px solid #dc143c;
     color: #000000;
+    backdrop-filter: blur(10px);
 }
 
 .counter-card:hover {
@@ -437,7 +438,8 @@
     border-radius: 15px;
     overflow: hidden;
     transition: all 0.3s ease;
-    background: #ffffff;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(10px);
 }
 
 .interactive-card .card-header {
@@ -503,18 +505,20 @@
 .timeline-content {
     padding: 1.5rem;
     border-radius: 10px;
-    background: #ffffff;
+    background: rgba(255,255,255,0.9);
     border: 2px solid #dc143c;
     box-shadow: 0 5px 15px rgba(220,20,60,0.2);
     color: #000000;
+    backdrop-filter: blur(10px);
 }
 
 .quiz-container {
     padding: 2rem;
     border-radius: 15px;
-    background: #ffffff;
+    background: rgba(255,255,255,0.9);
     border: 2px solid #dc143c;
     box-shadow: 0 10px 30px rgba(220,20,60,0.2);
+    backdrop-filter: blur(10px);
 }
 
 .answers {
@@ -529,8 +533,9 @@
     border-radius: 10px;
     transition: all 0.3s ease;
     border: 2px solid #dc143c;
-    background: #ffffff;
+    background: rgba(255,255,255,0.9);
     color: #000000;
+    backdrop-filter: blur(5px);
 }
 
 .answer-btn:hover {
@@ -593,9 +598,10 @@
 .memory-container, .sequence-container, .puzzle-container, .clicker-container {
     padding: 2rem;
     border-radius: 15px;
-    background: #ffffff;
+    background: rgba(255,255,255,0.9);
     border: 2px solid #dc143c;
     box-shadow: 0 10px 30px rgba(220,20,60,0.2);
+    backdrop-filter: blur(10px);
 }
 
 .memory-grid {
@@ -609,7 +615,7 @@
 .memory-card {
     aspect-ratio: 1;
     border-radius: 10px;
-    background: #ffffff;
+    background: rgba(255,255,255,0.9);
     border: 2px solid #dc143c;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -618,6 +624,7 @@
     justify-content: center;
     font-size: 2rem;
     color: #000000;
+    backdrop-filter: blur(5px);
 }
 
 .memory-card:hover {
@@ -656,8 +663,9 @@
     border-radius: 15px;
     transition: all 0.3s ease;
     border: 2px solid #dc143c;
-    background: #ffffff;
+    background: rgba(255,255,255,0.9);
     color: #000000;
+    backdrop-filter: blur(5px);
 }
 
 .sequence-btn:hover {
@@ -695,7 +703,7 @@
 
 .puzzle-piece {
     aspect-ratio: 1;
-    background: #ffffff;
+    background: rgba(255,255,255,0.9);
     border: 1px solid #dc143c;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -704,6 +712,7 @@
     justify-content: center;
     font-size: 1.5rem;
     color: #000000;
+    backdrop-filter: blur(5px);
 }
 
 .puzzle-piece:hover {
@@ -750,10 +759,11 @@
 .stat-item {
     padding: 1rem;
     border-radius: 10px;
-    background: #ffffff;
+    background: rgba(255,255,255,0.9);
     border: 2px solid #dc143c;
     margin-bottom: 1rem;
     color: #000000;
+    backdrop-filter: blur(5px);
 }
 
 .upgrade-btn {
@@ -761,8 +771,9 @@
     margin-bottom: 0.5rem;
     transition: all 0.3s ease;
     border: 2px solid #dc143c;
-    background: #ffffff;
+    background: rgba(255,255,255,0.9);
     color: #000000;
+    backdrop-filter: blur(5px);
 }
 
 .upgrade-btn:hover {
@@ -857,7 +868,7 @@ function showModal(type) {
             title.textContent = 'Bandas de Música';
             content.innerHTML = `
                 <div class="text-center">
-                    <i class="bi bi-music-note-beamed fs-1 text-primary mb-3"></i>
+                    <i class="bi bi-music-note-beamed fs-1 text-danger mb-3"></i>
                     <h6>Nuestras Bandas</h6>
                     <p>Contamos con varias bandas de música que nos acompañan en todos nuestros desfiles y eventos.</p>
                     <div class="row">
@@ -1094,7 +1105,7 @@ function checkAnswer(button) {
         if (currentQuestion < quizQuestions.length - 1) {
             nextQuestion();
         } else {
-            showResults();
+        showResults();
         }
     }, 2000);
 }
@@ -1120,7 +1131,7 @@ function loadQuestion(questionIndex) {
     
     question.answers.forEach((answer, index) => {
         const button = document.createElement('button');
-        button.className = 'btn btn-outline-primary answer-btn';
+        button.className = 'btn btn-outline-danger answer-btn';
         button.textContent = answer;
         button.setAttribute('data-correct', index === question.correct ? 'true' : 'false');
         button.onclick = () => checkAnswer(button);

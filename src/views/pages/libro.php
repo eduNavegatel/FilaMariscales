@@ -113,13 +113,13 @@ $total_paginas = count($libro_paginas);
             <div class="col-lg-12">
                 <div class="flipbook-container">
                     <div class="flipbook-controls">
-                        <button id="prevPage" class="btn btn-outline-primary">
+                        <button id="prevPage" class="btn btn-outline-danger">
                             <i class="bi bi-chevron-left me-2"></i>Anterior
                         </button>
                         <div class="page-info">
                             <span id="currentPage">1</span> de <?php echo $total_paginas; ?>
                         </div>
-                        <button id="nextPage" class="btn btn-outline-primary">
+                        <button id="nextPage" class="btn btn-outline-danger">
                             Siguiente<i class="bi bi-chevron-right ms-2"></i>
                         </button>
                     </div>

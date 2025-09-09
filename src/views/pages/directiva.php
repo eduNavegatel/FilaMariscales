@@ -33,7 +33,7 @@ ob_start(); // Start output buffering
                                 <div class="d-flex justify-content-between align-items-start">
                                     <div>
                                         <h4 class="card-title fw-bold mb-1">Juan Pérez</h4>
-                                        <h5 class="text-primary mb-3">Presidente</h5>
+                                        <h5 class="text-danger mb-3">Presidente</h5>
                                     </div>
                                     <div class="social-icons">
                                         <a href="#" class="text-dark me-2"><i class="bi bi-envelope-fill"></i></a>
@@ -55,7 +55,7 @@ ob_start(); // Start output buffering
                     <div class="card-body text-center">
                         <img src="/mariscales1-php/public/assets/images/vicepresidente.jpg" class="rounded-circle mb-3" width="150" alt="Vicepresidente">
                         <h4 class="card-title fw-bold mb-1">María López</h4>
-                        <h5 class="text-primary mb-3">Vicepresidenta</h5>
+                        <h5 class="text-danger mb-3">Vicepresidenta</h5>
                         <p class="card-text">Apoyando la gestión y coordinando los diferentes departamentos para el correcto funcionamiento de la filá.</p>
                     </div>
                 </div>
@@ -65,7 +65,7 @@ ob_start(); // Start output buffering
                     <div class="card-body text-center">
                         <img src="/mariscales1-php/public/assets/images/secretario.jpg" class="rounded-circle mb-3" width="150" alt="Secretario">
                         <h4 class="card-title fw-bold mb-1">Carlos Martínez</h4>
-                        <h5 class="text-primary mb-3">Secretario</h5>
+                        <h5 class="text-danger mb-3">Secretario</h5>
                         <p class="card-text">Encargado de la documentación, actas y comunicación oficial de la filá.</p>
                     </div>
                 </div>
@@ -113,8 +113,8 @@ ob_start(); // Start output buffering
                 <h2 class="fw-bold mb-4">¿Quieres contactar con nosotros?</h2>
                 <p class="lead mb-4">Estamos a tu disposición para cualquier consulta o sugerencia</p>
                 <div class="d-flex justify-content-center gap-3">
-                    <a href="/prueba-php/public/contacto" class="btn btn-primary btn-lg">Enviar mensaje</a>
-                    <button type="button" class="btn btn-outline-primary btn-lg" onclick="mostrarTelefono()">Llamar ahora</button>
+                    <a href="/prueba-php/public/contacto" class="btn btn-danger btn-lg">Enviar mensaje</a>
+                    <button type="button" class="btn btn-outline-danger btn-lg" onclick="mostrarTelefono()">Llamar ahora</button>
                 </div>
             </div>
         </div>
@@ -133,7 +133,7 @@ function mostrarTelefono() {
     modal.innerHTML = `
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
+                <div class="modal-header bg-danger text-white">
                     <h5 class="modal-title">
                         <i class="bi bi-telephone me-2"></i>
                         Número de Teléfono
@@ -142,9 +142,9 @@ function mostrarTelefono() {
                 </div>
                 <div class="modal-body text-center">
                     <div class="mb-3">
-                        <i class="bi bi-telephone-fill text-primary" style="font-size: 3rem;"></i>
+                        <i class="bi bi-telephone-fill text-danger" style="font-size: 3rem;"></i>
                     </div>
-                    <h3 class="text-primary mb-3">${numero}</h3>
+                    <h3 class="text-danger mb-3">${numero}</h3>
                     <p class="text-muted">Horario de atención: Lunes a Viernes 18:00 - 20:00</p>
                     <div class="d-flex gap-2 justify-content-center">
                         <button type="button" class="btn btn-outline-secondary" onclick="copiarNumero('${numero}')">

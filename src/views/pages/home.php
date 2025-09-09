@@ -148,8 +148,10 @@ ob_start(); // Start output buffering
         <div class="row g-4">
             <?php foreach ($gallery as $item): ?>
             <div class="col-lg-4 col-md-6">
-                <div class="position-relative hover-scale">
-                    <img src="<?php echo $item['thumb']; ?>" class="img-fluid rounded-3" alt="<?php echo $item['alt']; ?>">
+                <div class="gallery-item position-relative hover-scale">
+                    <div class="gallery-image-container">
+                        <img src="<?php echo $item['thumb']; ?>" class="gallery-image" alt="<?php echo $item['alt']; ?>">
+                    </div>
                     <div class="gallery-overlay position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-0 transition-all rounded-3 d-flex align-items-center justify-content-center">
                         <div class="text-white text-center">
                             <h5><?php echo $item['caption']; ?></h5>
@@ -168,5 +170,49 @@ ob_start(); // Start output buffering
 <?php
 ob_end_flush(); // End output buffering
 ?>
+
+<style>
+/* Estilos para la galería de fotos uniforme */
+.gallery-item {
+    height: 100%;
+}
+
+.gallery-image-container {
+    width: 100%;
+    height: 300px; /* Altura fija para todas las imágenes */
+    overflow: hidden;
+    border-radius: 15px;
+    position: relative;
+}
+
+.gallery-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Mantiene la proporción y cubre todo el contenedor */
+    object-position: center; /* Centra la imagen */
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover .gallery-image {
+    transform: scale(1.05);
+}
+
+.gallery-overlay {
+    border-radius: 15px;
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+    .gallery-image-container {
+        height: 250px;
+    }
+}
+
+@media (max-width: 576px) {
+    .gallery-image-container {
+        height: 200px;
+    }
+}
+</style>
 
 

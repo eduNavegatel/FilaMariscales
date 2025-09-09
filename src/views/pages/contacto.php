@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-lg-8 mx-auto">
             <div class="card shadow">
-                <div class="card-header bg-primary text-white">
+                <div class="card-header bg-danger text-white">
                     <h2 class="mb-0 text-white">
                         <i class="bi bi-envelope me-2"></i>
                         Contacto
@@ -15,7 +15,7 @@
                     
                     <div class="row">
                         <div class="col-md-6">
-                            <h4 class="text-primary mb-3">
+                            <h4 class="text-danger mb-3">
                                 <i class="bi bi-geo-alt me-2"></i>
                                 Información de Contacto
                             </h4>
@@ -46,7 +46,7 @@
                         </div>
                         
                         <div class="col-md-6">
-                            <h4 class="text-primary mb-3">
+                            <h4 class="text-danger mb-3">
                                 <i class="bi bi-send me-2"></i>
                                 Envíanos un Mensaje
                             </h4>
@@ -88,7 +88,7 @@
                                 <div class="mb-3 form-check">
                                     <input type="checkbox" class="form-check-input" id="privacidad" name="privacidad" required>
                                     <label class="form-check-label" for="privacidad">
-                                        Acepto la <a href="#" class="text-primary">política de privacidad</a> *
+                                        Acepto la <a href="#" class="text-danger">política de privacidad</a> *
                                     </label>
                                 </div>
                                 
@@ -99,7 +99,7 @@
                                 <input type="hidden" name="_template" value="table">
                                 
                                 <div class="d-grid">
-                                    <button type="submit" class="btn btn-primary btn-lg">
+                                    <button type="submit" class="btn btn-danger btn-lg">
                                         <i class="bi bi-send me-2"></i>
                                         Enviar Mensaje
                                     </button>
@@ -113,7 +113,7 @@
                     <div class="row text-center">
                         <div class="col-md-4">
                             <div class="contact-card p-3">
-                                <i class="bi bi-people fa-3x text-primary mb-3"></i>
+                                <i class="bi bi-people fa-3x text-danger mb-3"></i>
                                 <h5>Únete a Nosotros</h5>
                                 <p class="text-muted">¿Interesado en formar parte de nuestra filá? Contacta con nosotros para más información.</p>
                             </div>
@@ -121,7 +121,7 @@
                         
                         <div class="col-md-4">
                             <div class="contact-card p-3">
-                                <i class="bi bi-calendar-event fa-3x text-primary mb-3"></i>
+                                <i class="bi bi-calendar-event fa-3x text-danger mb-3"></i>
                                 <h5>Eventos</h5>
                                 <p class="text-muted">Consulta sobre nuestros próximos eventos y actividades programadas.</p>
                             </div>
@@ -129,7 +129,7 @@
                         
                         <div class="col-md-4">
                             <div class="contact-card p-3">
-                                <i class="bi bi-handshake fa-3x text-primary mb-3"></i>
+                                <i class="bi bi-handshake fa-3x text-danger mb-3"></i>
                                 <h5>Colaboraciones</h5>
                                 <p class="text-muted">¿Tienes una propuesta de colaboración? Estamos abiertos a nuevas ideas.</p>
                             </div>
@@ -165,16 +165,16 @@
     box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
 }
 
-.btn-primary {
-    background: linear-gradient(45deg, #007bff, #0056b3);
+.btn-danger {
+    background: linear-gradient(45deg, #dc143c, #8b0000);
     border: none;
     transition: all 0.3s ease;
 }
 
-.btn-primary:hover {
-    background: linear-gradient(45deg, #0056b3, #004085);
+.btn-danger:hover {
+    background: linear-gradient(45deg, #8b0000, #660000);
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0,123,255,0.3);
+    box-shadow: 0 4px 15px rgba(220,20,60,0.3);
 }
 </style>
 

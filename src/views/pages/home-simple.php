@@ -160,7 +160,9 @@
                 ?>
                 <div class="col-md-4 col-6" data-aos="fade-up" data-aos-delay="<?php echo ($index % 3) * 100; ?>">
                     <div class="gallery-item position-relative overflow-hidden rounded-3 shadow-sm hover-scale">
-                        <img src="<?php echo $image['thumb']; ?>" alt="<?php echo htmlspecialchars($image['alt']); ?>" class="img-fluid w-100">
+                        <div class="gallery-image-container">
+                            <img src="<?php echo $image['thumb']; ?>" alt="<?php echo htmlspecialchars($image['alt']); ?>" class="gallery-image">
+                        </div>
                         <div class="gallery-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-50 opacity-0 transition-all">
                             <div class="text-white text-center p-3">
                                 <i class="bi bi-zoom-in display-6 mb-2"></i>
@@ -178,7 +180,7 @@
         </div>
         
         <div class="text-center mt-6" data-aos="fade-up" data-aos-delay="100">
-            <a href="/prueba-php/public/galeria" class="btn btn-outline-primary btn-lg px-5 py-3 hover-lift">
+            <a href="/prueba-php/public/galeria" class="btn btn-outline-danger btn-lg px-5 py-3 hover-lift">
                 <span class="d-flex align-items-center">
                     <span>Ver galería completa</span>
                     <i class="bi bi-images ms-2"></i>
@@ -186,4 +188,48 @@
             </a>
         </div>
     </div>
-</section> 
+</section>
+
+<style>
+/* Estilos para la galería de fotos uniforme */
+.gallery-item {
+    height: 100%;
+}
+
+.gallery-image-container {
+    width: 100%;
+    height: 300px; /* Altura fija para todas las imágenes */
+    overflow: hidden;
+    border-radius: 15px;
+    position: relative;
+}
+
+.gallery-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Mantiene la proporción y cubre todo el contenedor */
+    object-position: center; /* Centra la imagen */
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover .gallery-image {
+    transform: scale(1.05);
+}
+
+.gallery-overlay {
+    border-radius: 15px;
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+    .gallery-image-container {
+        height: 250px;
+    }
+}
+
+@media (max-width: 576px) {
+    .gallery-image-container {
+        height: 200px;
+    }
+}
+</style>
