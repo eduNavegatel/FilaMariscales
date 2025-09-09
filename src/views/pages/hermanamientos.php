@@ -239,7 +239,9 @@ ob_start(); // Start output buffering
                     <div class="carousel-inner">
                         <?php for($i = 1; $i <= 6; $i++): ?>
                         <div class="carousel-item <?php echo $i === 1 ? 'active' : ''; ?>">
-                            <img src="/mariscales1-php/public/assets/images/hermanamientos/galeria<?php echo $i; ?>.jpg" class="d-block w-100" alt="Galeria <?php echo $i; ?>">
+                            <div class="modal-carousel-image-container">
+                                <img src="/mariscales1-php/public/assets/images/hermanamientos/galeria<?php echo $i; ?>.jpg" class="modal-carousel-image" alt="Galeria <?php echo $i; ?>">
+                            </div>
                         </div>
                         <?php endfor; ?>
                     </div>
@@ -256,3 +258,39 @@ ob_start(); // Start output buffering
         </div>
     </div>
 </div>
+
+<style>
+/* Estilos para el carrusel del modal */
+.modal-carousel-image-container {
+    width: 100%;
+    height: 500px; /* Altura fija para el modal */
+    overflow: hidden;
+    border-radius: 10px;
+    position: relative;
+}
+
+.modal-carousel-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+}
+
+.modal-carousel-image-container:hover .modal-carousel-image {
+    transform: scale(1.05);
+}
+
+/* Responsive para el modal */
+@media (max-width: 768px) {
+    .modal-carousel-image-container {
+        height: 400px;
+    }
+}
+
+@media (max-width: 576px) {
+    .modal-carousel-image-container {
+        height: 300px;
+    }
+}
+</style>

@@ -12,7 +12,7 @@ ob_start(); // Start output buffering
             <?php if (!empty($carousel_images)): ?>
                 <?php foreach ($carousel_images as $index => $image): ?>
                     <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>" style="height: 100vh;">
-                        <div style="width: 100%; height: 100%; background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('<?php echo $image['url']; ?>') center/cover; position: absolute; top: 0; left: 0;"></div>
+                        <div class="carousel-image-container" style="width: 100%; height: 100%; background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('<?php echo $image['url']; ?>') center/cover; position: absolute; top: 0; left: 0;"></div>
                         <div class="carousel-caption d-none d-md-block scroll-reveal">
                             <h2 class="animate-fadeInDown text-shimmer" style="font-size: 3rem; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);"><?php echo htmlspecialchars($image['name']); ?></h2>
                             <p class="animate-fadeInUp" style="font-size: 1.5rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">Filá Mariscales</p>
@@ -22,7 +22,7 @@ ob_start(); // Start output buffering
             <?php else: ?>
                 <!-- Fallback si no hay imágenes -->
                 <div class="carousel-item active" style="height: 100vh;">
-                    <div style="width: 100%; height: 100%; background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') center/cover; position: absolute; top: 0; left: 0;"></div>
+                    <div class="carousel-image-container" style="width: 100%; height: 100%; background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') center/cover; position: absolute; top: 0; left: 0;"></div>
                     <div class="carousel-caption d-none d-md-block">
                         <h2 style="font-size: 3rem; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Caballeros Templarios</h2>
                         <p style="font-size: 1.5rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">Tradición y Honor</p>
@@ -211,6 +211,57 @@ ob_end_flush(); // End output buffering
 @media (max-width: 576px) {
     .gallery-image-container {
         height: 200px;
+    }
+}
+
+/* Estilos para el carrusel uniforme */
+.carousel-image-container {
+    width: 100%;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: all 0.5s ease;
+}
+
+.carousel-item {
+    height: 100vh;
+    position: relative;
+}
+
+.carousel-item.active .carousel-image-container {
+    transform: scale(1);
+}
+
+.carousel-item:not(.active) .carousel-image-container {
+    transform: scale(1.05);
+}
+
+/* Responsive para el carrusel */
+@media (max-width: 768px) {
+    .carousel-image-container {
+        height: 100vh;
+    }
+    
+    .carousel-caption h2 {
+        font-size: 2rem !important;
+    }
+    
+    .carousel-caption p {
+        font-size: 1.2rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .carousel-caption h2 {
+        font-size: 1.5rem !important;
+    }
+    
+    .carousel-caption p {
+        font-size: 1rem !important;
     }
 }
 </style>
