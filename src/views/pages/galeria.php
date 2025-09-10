@@ -54,7 +54,7 @@ $categorias = [
 ?>
 
 <!-- Hero Section -->
-<section class="hero-section py-5 particles">
+<section class="hero-section py-5 particles" style="background: linear-gradient(135deg, rgba(220, 20, 60, 0.05) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(220, 20, 60, 0.05) 100%); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);">
 <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10 text-center scroll-reveal">
@@ -160,8 +160,8 @@ $categorias = [
 <style>
 /* Gallery Styles */
 .hero-section {
-    background: linear-gradient(135deg, rgba(220, 20, 60, 0.05) 0%, rgba(255, 255, 255, 0.7) 50%, rgba(220, 20, 60, 0.05) 100%);
-    backdrop-filter: blur(5px);
+    background: linear-gradient(135deg, rgba(220, 20, 60, 0.05) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(220, 20, 60, 0.05) 100%);
+    backdrop-filter: blur(4px);
 }
 
 .gallery-stats .stat-item {

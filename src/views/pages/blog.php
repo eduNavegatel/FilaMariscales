@@ -3,7 +3,7 @@ ob_start(); // Start output buffering
 ?>
 
 <!-- Hero Section -->
-<section class="hero-section bg-secondary text-white text-center py-5 mb-5">
+<section class="hero-section text-white text-center py-5 mb-5" style="background: rgba(0, 0, 0, 0.1); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);">
     <div class="container">
         <h1 class="display-4 fw-bold mb-3">Blog</h1>
         <p class="lead">Noticias, artículos y novedades de la Filá Mariscales</p>
@@ -211,7 +211,7 @@ ob_start(); // Start output buffering
 </section>
 
 <!-- Categories Section -->
-<section class="py-5 bg-light">
+<section class="py-5" style="background: rgba(0, 0, 0, 0.1); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);">
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="fw-bold">Explora por categorías</h2>

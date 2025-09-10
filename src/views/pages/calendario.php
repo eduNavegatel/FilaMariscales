@@ -62,7 +62,7 @@ if (empty($eventosProximos)) {
 ?>
 
 <!-- Hero Section -->
-<section class="hero-section text-white text-center py-8 mb-8" style="background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), url('/mariscales1-php/public/assets/images/backgrounds/knight-templar-background.jpg') center/cover; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);">
+<section class="hero-section text-white text-center py-8 mb-8" style="background: linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05)), url('/mariscales1-php/public/assets/images/backgrounds/knight-templar-background.jpg') center/cover; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);">
     <div class="container">
         <h1 class="display-4 fw-bold mb-3">Calendario Anual</h1>
         <p class="lead">Eventos y actividades programadas de la Filá Mariscales</p>

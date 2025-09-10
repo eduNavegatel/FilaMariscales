@@ -79,7 +79,7 @@ $total_paginas = count($libro_paginas);
 ?>
 
 <!-- Hero Section -->
-<section class="hero-section py-5">
+<section class="hero-section py-5" style="background: rgba(0, 0, 0, 0.1); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10 text-center">

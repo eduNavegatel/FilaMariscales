@@ -3,7 +3,7 @@ ob_start(); // Start output buffering
 ?>
 
 <!-- Hero Section -->
-<section class="hero-section position-relative overflow-hidden bg-danger text-white py-8 py-lg-10 mb-6">
+<section class="hero-section position-relative overflow-hidden text-white py-8 py-lg-10 mb-6" style="background: rgba(220, 20, 60, 0.1); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);">
     <div class="position-absolute top-0 start-0 w-100 h-100" style="background: url('/mariscales1-php/public/assets/images/pattern-dots-light.svg') repeat; opacity: 0.1;"></div>
     <div class="position-absolute bottom-0 end-0">
         <div class="position-relative" style="width: 300px; height: 300px;">
