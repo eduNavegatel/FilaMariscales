@@ -111,6 +111,11 @@ $router->group('admin', function($router) {
     $router->post('actualizarDescripcionGaleria', 'Admin\AdminController@actualizarDescripcionGaleria');
     $router->post('actualizarDescripcionCarousel', 'Admin\AdminController@actualizarDescripcionCarousel');
     
+    // Store management
+    $router->get('productos', 'Admin\AdminController@productos');
+    $router->get('nuevo-producto', 'Admin\AdminController@nuevoProducto');
+    $router->post('nuevo-producto', 'Admin\AdminController@nuevoProducto');
+    
     // Settings
     $router->group('settings', function($router) {
         $router->get('', 'Admin\SettingsController@index');

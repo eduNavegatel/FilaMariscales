@@ -96,8 +96,7 @@
             color: var(--gold);
             margin-bottom: 1rem;
         }
-    </style>
-</head>
+    </style></head>
 <body>
     <div class="error-container">
         <div class="knight-icon">⚔️</div>
@@ -112,3 +111,4 @@
     </div>
 </body>
 </html>
+

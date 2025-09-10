@@ -1,31 +1,18 @@
 <?php
+// Cargar la clase base Controller primero
+require_once __DIR__ . '/Controller.php';
+
 // Forzar la carga de admin_credentials.php ANTES de cualquier otra cosa
 $adminCredPath = __DIR__ . '/../config/admin_credentials.php';
 if (file_exists($adminCredPath)) {
     require_once $adminCredPath;
-    error_log("AdminController: admin_credentials.php cargado forzadamente");
 } else {
-    error_log("AdminController: ERROR - admin_credentials.php NO encontrado en: " . $adminCredPath);
+    // No usar error_log aquí para evitar output prematuro
 }
 
 // Verificar si los archivos existen antes de incluirlos
 if (file_exists(__DIR__ . '/../helpers/SecurityHelper.php')) {
     require_once __DIR__ . '/../helpers/SecurityHelper.php';
-}
-
-// Verificar que las funciones estén disponibles
-if (!function_exists('isAdminLoggedIn')) {
-    error_log("AdminController: ERROR - isAdminLoggedIn NO está disponible después de cargar admin_credentials.php");
-    // No usar die() aquí, solo log del error
-} else {
-    error_log("AdminController: ✅ isAdminLoggedIn está disponible");
-}
-
-if (!function_exists('getAdminInfo')) {
-    error_log("AdminController: ERROR - getAdminInfo NO está disponible después de cargar admin_credentials.php");
-    // No usar die() aquí, solo log del error
-} else {
-    error_log("AdminController: ✅ getAdminInfo está disponible");
 }
 
 class AdminController extends Controller {
@@ -34,18 +21,13 @@ class AdminController extends Controller {
     private $eventModel;
 
     public function __construct() {
-        error_log("AdminController::__construct() iniciando");
         
         // Verify admin session using custom admin auth
         if (function_exists('isAdminLoggedIn')) {
             if (!isAdminLoggedIn()) {
-                error_log("AdminController: Usuario NO autenticado, redirigiendo a login");
                 header('Location: /prueba-php/public/admin/login');
                 exit;
             }
-            error_log("AdminController: Usuario autenticado correctamente");
-        } else {
-            error_log("AdminController: ⚠️ isAdminLoggedIn no disponible, continuando sin verificación de sesión");
         }
         
         // Initialize SecurityHelper only if it exists
@@ -57,24 +39,16 @@ class AdminController extends Controller {
         try {
             if (class_exists('User')) {
                 $this->userModel = $this->model('User');
-                error_log("User model initialized successfully");
-            } else {
-                error_log("User class not found");
             }
         } catch (Exception $e) {
-            error_log("Error initializing User model: " . $e->getMessage());
             $this->userModel = null;
         }
         
         try {
             if (class_exists('Event')) {
                 $this->eventModel = $this->model('Event');
-                error_log("Event model initialized successfully");
-            } else {
-                error_log("Event class not found");
             }
         } catch (Exception $e) {
-            error_log("Error initializing Event model: " . $e->getMessage());
             $this->eventModel = null;
         }
         
@@ -83,7 +57,6 @@ class AdminController extends Controller {
             $this->securityHelper->setSecurityHeaders();
         }
         
-        error_log("AdminController::__construct() completado");
     }
     
     public function index() {
@@ -92,83 +65,79 @@ class AdminController extends Controller {
     
     // Admin dashboard
     public function dashboard() {
-        error_log("AdminController::dashboard() called");
+        // Limpiar completamente cualquier output previo
+        while (ob_get_level()) {
+            ob_end_clean();
+        }
         
-        // Get counts for dashboard if models exist
+        // Obtener estadísticas básicas
         $userCount = 0;
         $eventCount = 0;
+        $productCount = 0;
+        $galleryCount = 0;
         $newsCount = 0;
         $messagesCount = 0;
         $recentUsers = [];
         $recentEvents = [];
         
-        error_log("User model available: " . ($this->userModel ? 'YES' : 'NO'));
+        // Obtener estadísticas de usuarios
         if ($this->userModel) {
             try {
                 $userCount = $this->userModel->getUserCount();
-                error_log("User count: " . $userCount);
                 $recentUsers = $this->userModel->getRecentUsers(5);
-                error_log("Recent users count: " . count($recentUsers));
             } catch (Exception $e) {
-                error_log("Error getting user data: " . $e->getMessage());
+                $userCount = 0;
+                $recentUsers = [];
             }
         }
         
-        error_log("Event model available: " . ($this->eventModel ? 'YES' : 'NO'));
+        // Obtener estadísticas de eventos
         if ($this->eventModel) {
             try {
                 $eventCount = $this->eventModel->getEventCount();
-                error_log("Event count: " . $eventCount);
                 $recentEvents = $this->eventModel->getRecentEvents(5);
-                error_log("Recent events count: " . count($recentEvents));
             } catch (Exception $e) {
-                error_log("Error getting event data: " . $e->getMessage());
+                $eventCount = 0;
+                $recentEvents = [];
             }
         }
         
-        // Get gallery count
-        $galleryCount = 0;
+        // Obtener estadísticas de productos
+        try {
+            if (class_exists('Product')) {
+                $productModel = $this->model('Product');
+                $productCount = $productModel->countProducts();
+            }
+        } catch (Exception $e) {
+            $productCount = 0;
+        }
+        
+        // Obtener estadísticas de galería
         $uploadDir = 'uploads/gallery/';
         if (is_dir($uploadDir)) {
             $files = glob($uploadDir . '*');
             $galleryCount = count($files);
-            error_log("Gallery count: " . $galleryCount);
-        } else {
-            error_log("Gallery directory not found: " . $uploadDir);
         }
         
-        // Get news count (for now, we'll use a placeholder or count from a directory)
+        // Obtener estadísticas de noticias
         $newsDir = 'uploads/news/';
         if (is_dir($newsDir)) {
             $newsFiles = glob($newsDir . '*.{txt,md,html}', GLOB_BRACE);
             $newsCount = count($newsFiles);
-        } else {
-            // Create news directory if it doesn't exist
-            if (!is_dir($newsDir)) {
-                mkdir($newsDir, 0755, true);
-            }
-            $newsCount = 0;
         }
-        error_log("News count: " . $newsCount);
         
-        // Get messages count
+        // Obtener estadísticas de mensajes
         $messagesDir = 'uploads/messages/';
         if (is_dir($messagesDir)) {
             $messageFiles = glob($messagesDir . '*.{txt,json,html}', GLOB_BRACE);
             $messagesCount = count($messageFiles);
-        } else {
-            // Create messages directory if it doesn't exist
-            if (!is_dir($messagesDir)) {
-                mkdir($messagesDir, 0755, true);
-            }
-            $messagesCount = 0;
         }
-        error_log("Messages count: " . $messagesCount);
         
         $data = [
             'title' => 'Panel de Administración',
             'userCount' => $userCount,
             'eventCount' => $eventCount,
+            'productCount' => $productCount,
             'galleryCount' => $galleryCount,
             'newsCount' => $newsCount,
             'messagesCount' => $messagesCount,
@@ -176,16 +145,8 @@ class AdminController extends Controller {
             'recentEvents' => $recentEvents
         ];
         
-        error_log("Dashboard data prepared: " . print_r($data, true));
-        
-        try {
-            $this->view('admin/dashboard', $data);
-            error_log("Dashboard view loaded successfully");
-        } catch (Exception $e) {
-            error_log("Error loading dashboard view: " . $e->getMessage());
-            // Fallback: mostrar dashboard básico
-            $this->loadViewDirectly('admin/dashboard', $data);
-        }
+        // Cargar vista directamente
+        $this->loadViewDirectly('admin/dashboard', $data);
     }
     
     // Export dashboard data as CSV
@@ -570,6 +531,30 @@ class AdminController extends Controller {
             require_once $viewFile;
         } else {
             die('View does not exist: ' . $viewFile);
+        }
+    }
+    
+    // Método para cargar vistas con layout completo
+    private function loadViewWithLayout($view, $data = []) {
+        // Extract data array to individual variables
+        extract($data);
+        
+        // Capturar el contenido de la vista
+        ob_start();
+        $viewFile = dirname(dirname(__DIR__)) . '/src/views/' . $view . '.php';
+        if (file_exists($viewFile)) {
+            require_once $viewFile;
+        } else {
+            die('View does not exist: ' . $viewFile);
+        }
+        $content = ob_get_clean();
+        
+        // Cargar el layout con el contenido
+        $layoutFile = dirname(dirname(__DIR__)) . '/src/views/admin/tienda/layout.php';
+        if (file_exists($layoutFile)) {
+            require_once $layoutFile;
+        } else {
+            echo $content; // Fallback si no existe el layout
         }
     }
     
@@ -1511,4 +1496,82 @@ class AdminController extends Controller {
             echo json_encode(['success' => false, 'message' => 'Archivo no encontrado']);
         }
     }
+
+    // ==================== GESTIÓN DE TIENDA ====================
+    
+    // Gestión de Productos
+    public function productos() {
+        // Limpiar cualquier output previo
+        if (ob_get_level()) {
+            ob_clean();
+        }
+        
+        try {
+            $products = [];
+            
+            // Intentar cargar el modelo Product
+            if (class_exists('Product')) {
+                $productModel = $this->model('Product');
+                $products = $productModel->getAllProducts();
+            }
+            
+            $data = [
+                'title' => 'Gestión de Productos',
+                'products' => $products
+            ];
+            
+            $this->loadViewDirectly('admin/tienda/productos', $data);
+        } catch (Exception $e) {
+            echo "<h1>Error en Gestión de Productos</h1>";
+            echo "<p>Error: " . htmlspecialchars($e->getMessage()) . "</p>";
+            echo "<p>Archivo: " . $e->getFile() . "</p>";
+            echo "<p>Línea: " . $e->getLine() . "</p>";
+            echo "<p><a href='/prueba-php/public/admin/dashboard'>Volver al Dashboard</a></p>";
+        }
+    }
+    
+    // Crear nuevo producto
+    public function nuevoProducto() {
+        // Limpiar cualquier output previo
+        while (ob_get_level()) {
+            ob_end_clean();
+        }
+        
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            try {
+                if (class_exists('Product')) {
+                    $productModel = $this->model('Product');
+                    
+                    $data = [
+                        'nombre' => $_POST['nombre'],
+                        'descripcion' => $_POST['descripcion'],
+                        'precio' => $_POST['precio'],
+                        'stock' => $_POST['stock'],
+                        'categoria_id' => $_POST['categoria_id'] ?: null,
+                        'activo' => isset($_POST['activo']) ? 1 : 0
+                    ];
+                    
+                    if ($productModel->createProduct($data)) {
+                        setFlashMessage('success', 'Producto creado correctamente');
+                        header('Location: /prueba-php/public/admin/productos');
+                        exit;
+                    } else {
+                        setFlashMessage('error', 'Error al crear el producto');
+                    }
+                } else {
+                    setFlashMessage('error', 'Modelo Product no disponible');
+                }
+            } catch (Exception $e) {
+                setFlashMessage('error', 'Error: ' . $e->getMessage());
+            }
+        }
+        
+        $data = [
+            'title' => 'Nuevo Producto'
+        ];
+        
+        // Cargar vista directamente
+        $this->loadViewDirectly('admin/tienda/nuevo-producto', $data);
+    }
 }
+

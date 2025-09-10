@@ -151,6 +151,25 @@
 
 <!-- Estadísticas Secundarias -->
 <div class="row mb-4">
+    <div class="col-md-3 mb-3">
+        <div class="card text-white h-100" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+            <div class="card-body d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h5 class="card-title mb-1">🛒 Tienda Online</h5>
+                        <h2 class="mb-0"><?= $productCount ?? 0 ?></h2>
+                        <small class="opacity-75">Productos</small>
+                    </div>
+                    <i class="fas fa-shopping-cart fa-2x opacity-50"></i>
+                </div>
+                <div class="mt-auto">
+                    <a href="/prueba-php/public/admin/productos" class="btn btn-light btn-sm">
+                        <i class="fas fa-shopping-cart me-1"></i>Gestionar Tienda
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="col-md-3 mb-3">
         <div class="card text-white bg-dark h-100">

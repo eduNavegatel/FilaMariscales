@@ -1,4 +1,13 @@
 <?php
+// Habilitar mostrar errores
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Limpiar cualquier buffer de salida existente
+while (ob_get_level()) {
+    ob_end_clean();
+}
+
 // Set the current directory
 chdir(dirname(__DIR__));
 
@@ -14,10 +23,13 @@ require_once 'src/controllers/Pages.php';
 // Load AdminController early to ensure functions are available
 if (file_exists('src/controllers/AdminController.php')) {
     require_once 'src/controllers/AdminController.php';
+    error_log("AdminController principal cargado desde index.php");
 } elseif (file_exists('src/controllers/AdminController-new.php')) {
     require_once 'src/controllers/AdminController-new.php';
+    error_log("AdminController-new cargado como fallback");
 } elseif (file_exists('src/controllers/AdminController-minimal.php')) {
     require_once 'src/controllers/AdminController-minimal.php';
+    error_log("AdminController-minimal cargado como último recurso");
 }
 
 // Parse the URL
@@ -119,16 +131,11 @@ if (empty($url[0])) {
                 // Redirigir al formulario directo que funciona
                 header('Location: /prueba-php/public/admin/nuevo-evento.php');
                 exit;
-            } elseif ($action === 'nuevo-producto') {
-                // Manejar la ruta nuevo-producto
-                $adminController->nuevoProducto();
-            } elseif ($action === 'productos') {
-                // Manejar la ruta productos
-                $adminController->productos();
             } else {
                 $adminController->dashboard();
             }
         } catch (Exception $e) {
+            error_log("Error en AdminController: " . $e->getMessage());
             echo "Error interno del servidor. Revisa los logs para más detalles.";
         }
     } else {

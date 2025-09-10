@@ -24,7 +24,6 @@ class Database {
             $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
         } catch(PDOException $e) {
             $this->error = $e->getMessage();
-            error_log($this->error);
         }
     }
 
@@ -35,7 +34,6 @@ class Database {
 
     // Bind values
     public function bind($param, $value, $type = null) {
-        error_log("Database::bind() - Parameter: {$param}, Value: " . print_r($value, true) . ", Type: " . ($type ?? 'auto'));
         
         if (is_null($type)) {
             switch (true) {
@@ -53,30 +51,19 @@ class Database {
             }
         }
         
-        error_log("Database::bind() - Final type: " . $type);
         $this->stmt->bindValue($param, $value, $type);
     }
 
     // Execute the prepared statement
     public function execute() {
         try {
-            error_log("Database::execute() called");
-            error_log("SQL Statement: " . $this->stmt->queryString);
-            error_log("Bound parameters: " . print_r($this->stmt->debugDumpParams(), true));
             
             $result = $this->stmt->execute();
             
-            if (!$result) {
-                error_log("Database execute failed: " . print_r($this->stmt->errorInfo(), true));
-            } else {
-                error_log("Database execute successful");
-                error_log("Rows affected: " . $this->stmt->rowCount());
-            }
+            // Execute completed
             
             return $result;
         } catch (PDOException $e) {
-            error_log("Database execute exception: " . $e->getMessage());
-            error_log("Exception trace: " . $e->getTraceAsString());
             return false;
         }
     }
