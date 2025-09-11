@@ -32,6 +32,89 @@
         .badge {
             font-size: 0.75em;
         }
+        
+        /* Estilos para botones de acciones */
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            align-items: center;
+        }
+        
+        .action-btn {
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            text-decoration: none;
+            min-width: auto;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        
+        .action-btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-edit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-edit:hover {
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+            color: white;
+        }
+        
+        .btn-delete {
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            color: white;
+        }
+        
+        .btn-delete:hover {
+            background: linear-gradient(135deg, #ff2b5c 0%, #ff3b1b 100%);
+            color: white;
+        }
+        
+        /* Responsive para botones */
+        @media (max-width: 1200px) {
+            .action-btn span {
+                display: none;
+            }
+            
+            .action-btn {
+                padding: 8px;
+                min-width: 36px;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .action-buttons {
+                flex-direction: column;
+                gap: 2px;
+            }
+            
+            .action-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 8px 12px;
+                font-size: 0.85rem;
+            }
+            
+            .action-btn span {
+                display: inline;
+            }
+        }
     </style>
 </head>
 <body>
@@ -124,27 +207,31 @@
                                 <tbody>
                                     <?php foreach ($products as $product): ?>
                                         <tr>
-                                            <td><?= $product['id'] ?></td>
-                                            <td><?= htmlspecialchars($product['nombre']) ?></td>
-                                            <td>€<?= number_format($product['precio'], 2) ?></td>
+                                            <td><?= $product->id ?></td>
+                                            <td><?= htmlspecialchars($product->nombre) ?></td>
+                                            <td>€<?= number_format($product->precio, 2) ?></td>
                                             <td>
-                                                <span class="badge bg-<?= $product['stock'] > 10 ? 'success' : ($product['stock'] > 0 ? 'warning' : 'danger') ?>">
-                                                    <?= $product['stock'] ?>
+                                                <span class="badge bg-<?= $product->stock > 10 ? 'success' : ($product->stock > 0 ? 'warning' : 'danger') ?>">
+                                                    <?= $product->stock ?>
                                                 </span>
                                             </td>
-                                            <td><?= htmlspecialchars($product['categoria_nombre'] ?? 'Sin categoría') ?></td>
+                                            <td><?= htmlspecialchars($product->categoria_nombre ?? 'Sin categoría') ?></td>
                                             <td>
-                                                <span class="badge bg-<?= $product['activo'] ? 'success' : 'secondary' ?>">
-                                                    <?= $product['activo'] ? 'Activo' : 'Inactivo' ?>
+                                                <span class="badge bg-<?= $product->activo ? 'success' : 'secondary' ?>">
+                                                    <?= $product->activo ? 'Activo' : 'Inactivo' ?>
                                                 </span>
                                             </td>
                                             <td>
-                                                <a href="/prueba-php/public/admin/editar-producto/<?= $product['id'] ?>" class="btn btn-sm btn-outline-primary">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <button class="btn btn-sm btn-outline-danger" onclick="eliminarProducto(<?= $product['id'] ?>)">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
+                                                <div class="action-buttons">
+                                                    <a href="/prueba-php/public/admin/editar-producto/<?= $product->id ?>" class="action-btn btn-edit" title="Editar producto">
+                                                        <i class="fas fa-edit"></i>
+                                                        <span>Editar</span>
+                                                    </a>
+                                                    <button class="action-btn btn-delete" onclick="eliminarProducto(<?= $product->id ?>)" title="Eliminar producto">
+                                                        <i class="fas fa-trash"></i>
+                                                        <span>Eliminar</span>
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>

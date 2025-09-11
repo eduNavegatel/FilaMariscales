@@ -100,7 +100,7 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-body">
-                            <form method="POST" action="/prueba-php/public/admin/nuevo-producto">
+                            <form method="POST" action="/prueba-php/public/admin/nuevo-producto" onsubmit="return guardarProducto()">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
@@ -185,5 +185,42 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+    function guardarProducto() {
+        // Mostrar mensaje de carga
+        const boton = document.querySelector('button[type="submit"]');
+        const textoOriginal = boton.innerHTML;
+        boton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+        boton.disabled = true;
+        
+        // Enviar formulario
+        const form = document.querySelector('form');
+        const formData = new FormData(form);
+        
+        fetch('/prueba-php/public/admin/nuevo-producto', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                // Redireccionar a la página de productos
+                window.location.href = '/prueba-php/public/admin/productos';
+            } else {
+                alert('Error al guardar el producto');
+                boton.innerHTML = textoOriginal;
+                boton.disabled = false;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al guardar el producto');
+            boton.innerHTML = textoOriginal;
+            boton.disabled = false;
+        });
+        
+        return false; // Prevenir envío normal del formulario
+    }
+    </script>
 </body>
 </html>

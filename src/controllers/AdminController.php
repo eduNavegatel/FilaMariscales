@@ -1556,76 +1556,61 @@ class AdminController extends Controller {
     
     // Gestión de Productos
     public function productos() {
-        // Limpiar cualquier output previo
-        if (ob_get_level()) {
-            ob_clean();
-        }
+        $products = [];
         
         try {
-            $products = [];
+            // Conexión simple a la base de datos
+            $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             
-            // Intentar cargar el modelo Product
-            if (class_exists('Product')) {
-                $productModel = $this->model('Product');
-                $products = $productModel->getAllProducts();
-            }
+            $stmt = $pdo->query('SELECT p.*, c.nombre as categoria_nombre 
+                                FROM productos p 
+                                LEFT JOIN categorias c ON p.categoria_id = c.id 
+                                ORDER BY p.id DESC');
+            $products = $stmt->fetchAll(PDO::FETCH_OBJ);
             
-            $data = [
-                'title' => 'Gestión de Productos',
-                'products' => $products
-            ];
-            
-            $this->loadViewDirectly('admin/tienda/productos', $data);
         } catch (Exception $e) {
-            echo "<h1>Error en Gestión de Productos</h1>";
-            echo "<p>Error: " . htmlspecialchars($e->getMessage()) . "</p>";
-            echo "<p>Archivo: " . $e->getFile() . "</p>";
-            echo "<p>Línea: " . $e->getLine() . "</p>";
-            echo "<p><a href='/prueba-php/public/admin/dashboard'>Volver al Dashboard</a></p>";
+            // Si hay error, usar datos de ejemplo
+            $products = [
+                (object)['id' => 1, 'nombre' => 'Error de conexión', 'precio' => 0.00, 'stock' => 0, 'categoria_nombre' => 'Error', 'activo' => 0]
+            ];
         }
+        
+        $data = [
+            'title' => 'Gestión de Productos',
+            'products' => $products
+        ];
+        
+        $this->loadViewDirectly('admin/tienda/productos', $data);
     }
     
     // Crear nuevo producto
     public function nuevoProducto() {
-        // Limpiar cualquier output previo
-        while (ob_get_level()) {
-            ob_end_clean();
-        }
-        
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            try {
-                if (class_exists('Product')) {
-                    $productModel = $this->model('Product');
-                    
-                    $data = [
-                        'nombre' => $_POST['nombre'],
-                        'descripcion' => $_POST['descripcion'],
-                        'precio' => $_POST['precio'],
-                        'stock' => $_POST['stock'],
-                        'categoria_id' => $_POST['categoria_id'] ?: null,
-                        'activo' => isset($_POST['activo']) ? 1 : 0
-                    ];
-                    
-                    if ($productModel->createProduct($data)) {
-                        setFlashMessage('success', 'Producto creado correctamente');
-                        header('Location: /prueba-php/public/admin/productos');
-                        exit;
-                    } else {
-                        setFlashMessage('error', 'Error al crear el producto');
-                    }
-                } else {
-                    setFlashMessage('error', 'Modelo Product no disponible');
-                }
-            } catch (Exception $e) {
-                setFlashMessage('error', 'Error: ' . $e->getMessage());
-            }
+            // Crear producto de forma simple
+            $nombre = $_POST['nombre'] ?? '';
+            $descripcion = $_POST['descripcion'] ?? '';
+            $precio = $_POST['precio'] ?? 0;
+            $stock = $_POST['stock'] ?? 0;
+            $categoria_id = $_POST['categoria_id'] ?? null;
+            $activo = isset($_POST['activo']) ? 1 : 0;
+            
+            // Insertar directamente
+            $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
+            $sql = "INSERT INTO productos (nombre, descripcion, precio, stock, categoria_id, activo, fecha_creacion) 
+                    VALUES ('$nombre', '$descripcion', $precio, $stock, " . ($categoria_id ? $categoria_id : 'NULL') . ", $activo, NOW())";
+            $pdo->exec($sql);
+            
+            // Devolver respuesta simple para JavaScript
+            http_response_code(200);
+            echo "OK";
+            exit;
         }
         
         $data = [
             'title' => 'Nuevo Producto'
         ];
         
-        // Cargar vista directamente
         $this->loadViewDirectly('admin/tienda/nuevo-producto', $data);
     }
 }
