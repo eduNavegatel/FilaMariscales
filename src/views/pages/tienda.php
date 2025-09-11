@@ -67,8 +67,8 @@
             <div class="row" id="products-container">
                 <?php foreach ($products as $product): ?>
                     <div class="col-md-6 col-lg-4 col-xl-3 mb-4 product-item" data-category="<?= trim($product->categoria ?? 'General') ?>">
-                        <div class="card h-100 border-0 shadow-sm product-card">
-                            <div class="position-relative">
+                <div class="card h-100 border-0 shadow-sm product-card">
+                    <div class="position-relative">
                                 <?php if (!empty($product->imagen)): ?>
                                     <img src="/prueba-php/public/uploads/products/<?= htmlspecialchars($product->imagen) ?>" 
                                          class="card-img-top" 
@@ -92,7 +92,7 @@
                                 <?php else: ?>
                                     <div class="badge bg-success position-absolute top-0 end-0 m-2">
                                         Disponible
-                                    </div>
+                    </div>
                                 <?php endif; ?>
                             </div>
                             
@@ -100,8 +100,8 @@
                                 <div class="mb-2">
                                     <h5 class="card-title mb-1"><?= htmlspecialchars($product->nombre) ?></h5>
                                     <small class="text-muted"><?= htmlspecialchars($product->categoria ?? 'General') ?></small>
-                                </div>
-                                
+            </div>
+            
                                 <p class="card-text text-muted small flex-grow-1">
                                     <?= htmlspecialchars(substr($product->descripcion ?? 'Sin descripción', 0, 100)) ?>
                                     <?php if (strlen($product->descripcion ?? '') > 100): ?>...<?php endif; ?>
@@ -115,7 +115,7 @@
                                                 <?= number_format($product->precio_original, 2) ?>€
                                             </small>
                                         <?php endif; ?>
-                                    </div>
+                        </div>
                                     <div class="text-warning">
                                         <?php 
                                         $rating = $product->rating ?? 5;
@@ -123,9 +123,9 @@
                                         ?>
                                             <i class="bi bi-star<?= $i <= $rating ? '-fill' : '' ?>"></i>
                                         <?php endfor; ?>
-                                    </div>
-                                </div>
-                                
+                </div>
+            </div>
+            
                                 <div class="d-flex gap-2">
                                     <?php if ($product->stock > 0): ?>
                                         <button class="btn btn-primary flex-grow-1" onclick="addToCart(<?= $product->id ?>)">
@@ -139,21 +139,24 @@
                                     <button class="btn btn-outline-primary" onclick="viewProduct(<?= $product->id ?>)">
                                         <i class="bi bi-eye"></i>
                                     </button>
+                                    <button class="btn btn-outline-danger" onclick="addToWishlist(<?= $product->id ?>)" title="Añadir a favoritos">
+                                        <i class="bi bi-heart"></i>
+                                    </button>
                                 </div>
                                 
                                 <div class="mt-2">
                                     <small class="text-muted">
                                         <i class="bi bi-box me-1"></i>Stock: <?= $product->stock ?>
                                     </small>
-                                </div>
-                            </div>
+                </div>
+            </div>
                         </div>
                     </div>
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
             <!-- Sin Productos -->
-            <div class="row">
+        <div class="row">
                 <div class="col-12 text-center py-5">
                     <div class="mb-4">
                         <i class="bi bi-shop text-muted" style="font-size: 4rem;"></i>
@@ -235,7 +238,7 @@ function filterProducts(category) {
             message.innerHTML = `
                 <div class="mb-4">
                     <i class="bi bi-search text-muted" style="font-size: 4rem;"></i>
-                </div>
+    </div>
                 <h3 class="text-muted mb-3">No hay productos en esta categoría</h3>
                 <p class="text-muted mb-4">Pronto tendremos productos de ${category} disponibles.</p>
                 <button class="btn btn-primary" onclick="filterProducts('all')">
@@ -249,11 +252,6 @@ function filterProducts(category) {
     }
 }
 
-// Añadir al carrito
-function addToCart(productId) {
-    // Aquí se implementaría la lógica del carrito
-    alert('Producto añadido al carrito (ID: ' + productId + ')');
-}
 
 // Ver producto
 function viewProduct(productId) {
@@ -272,11 +270,204 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('Categorías disponibles:', Array.from(categories));
 });
+
+// ==================== FUNCIONES DEL CARRITO ====================
+
+// Añadir producto al carrito
+function addToCart(productId) {
+    const formData = new FormData();
+    formData.append('product_id', productId);
+    formData.append('quantity', 1);
+    
+    // Mostrar indicador de carga
+    const button = event.target.closest('button');
+    const originalText = button.innerHTML;
+    button.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Añadiendo...';
+    button.disabled = true;
+    
+    fetch('/prueba-php/public/cart/add', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Mostrar mensaje de éxito
+            showCartMessage('success', data.message);
+            
+            // Actualizar contador del carrito en la navegación
+            if (typeof updateCartCounter === 'function') {
+                updateCartCounter(data.cart_count);
+            }
+            
+            // Actualizar botón temporalmente
+            button.innerHTML = '<i class="bi bi-check-circle me-1"></i>Añadido';
+            button.classList.remove('btn-primary');
+            button.classList.add('btn-success');
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.classList.remove('btn-success');
+                button.classList.add('btn-primary');
+                button.disabled = false;
+            }, 2000);
+            
+        } else {
+            showCartMessage('error', data.message);
+            button.innerHTML = originalText;
+            button.disabled = false;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showCartMessage('error', 'Error al añadir al carrito');
+        button.innerHTML = originalText;
+        button.disabled = false;
+    });
+}
+
+// Ver producto (placeholder)
+function viewProduct(productId) {
+    alert('Funcionalidad de vista de producto en desarrollo. ID: ' + productId);
+}
+
+// Añadir a wishlist
+function addToWishlist(productId) {
+    const formData = new FormData();
+    formData.append('product_id', productId);
+    
+    const button = event.target.closest('button');
+    const originalText = button.innerHTML;
+    button.innerHTML = '<i class="bi bi-hourglass-split"></i>';
+    button.disabled = true;
+    
+    fetch('/prueba-php/public/order/add-wishlist', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showCartMessage('success', data.message);
+            button.innerHTML = '<i class="bi bi-heart-fill"></i>';
+            button.classList.remove('btn-outline-danger');
+            button.classList.add('btn-danger');
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.classList.remove('btn-danger');
+                button.classList.add('btn-outline-danger');
+                button.disabled = false;
+            }, 2000);
+        } else {
+            showCartMessage('error', data.message);
+            button.innerHTML = originalText;
+            button.disabled = false;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showCartMessage('error', 'Error al añadir a favoritos');
+        button.innerHTML = originalText;
+        button.disabled = false;
+    });
+}
+
+// Mostrar mensaje del carrito
+function showCartMessage(type, message) {
+    // Crear o actualizar mensaje
+    let messageDiv = document.getElementById('cart-message');
+    if (!messageDiv) {
+        messageDiv = document.createElement('div');
+        messageDiv.id = 'cart-message';
+        messageDiv.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            max-width: 300px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            animation: slideIn 0.3s ease-out;
+        `;
+        document.body.appendChild(messageDiv);
+    }
+    
+    // Configurar mensaje según tipo
+    if (type === 'success') {
+        messageDiv.className = 'alert alert-success';
+        messageDiv.innerHTML = `
+            <div class="d-flex align-items-center">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <span>${message}</span>
+                    </div>
+        `;
+    } else {
+        messageDiv.className = 'alert alert-danger';
+        messageDiv.innerHTML = `
+            <div class="d-flex align-items-center">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <span>${message}</span>
+            </div>
+        `;
+    }
+    
+    // Auto-ocultar después de 3 segundos
+    setTimeout(() => {
+        if (messageDiv) {
+            messageDiv.style.animation = 'slideOut 0.3s ease-in';
+            setTimeout(() => {
+                if (messageDiv && messageDiv.parentNode) {
+                    messageDiv.parentNode.removeChild(messageDiv);
+                }
+            }, 300);
+        }
+    }, 3000);
+}
+
+
+// Cargar contador del carrito al iniciar la página
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/prueba-php/public/cart/info')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && typeof updateCartCounter === 'function') {
+                updateCartCounter(data.cart_count);
+            }
+        })
+        .catch(error => {
+            console.error('Error al cargar información del carrito:', error);
+        });
+});
 </script>
 
 <style>
 .product-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Animaciones para mensajes del carrito */
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
 }
 
 .product-card:hover {

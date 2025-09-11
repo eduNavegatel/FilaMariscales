@@ -10,6 +10,8 @@ require_once 'src/config/admin_credentials.php';
 // Load controllers
 require_once 'src/controllers/Controller.php';
 require_once 'src/controllers/Pages.php';
+require_once 'src/controllers/CartController.php';
+require_once 'src/controllers/OrderController.php';
 
 // Load AdminController early to ensure functions are available
 if (file_exists('src/controllers/AdminController.php')) {
@@ -23,8 +25,10 @@ if (file_exists('src/controllers/AdminController.php')) {
 // Parse the URL
 $url = isset($_GET['url']) ? explode('/', filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL)) : [''];
 
-// Create controller instance
+// Create controller instances
 $controller = new Pages();
+$cartController = new CartController();
+$orderController = new OrderController();
 
 // Route the request
 if (empty($url[0])) {
@@ -72,6 +76,44 @@ if (empty($url[0])) {
     $controller->changePassword();
 } elseif ($url[0] === 'upload-avatar') {
     $controller->uploadAvatar();
+} elseif ($url[0] === 'cart') {
+    // Cart routes
+    $action = isset($url[1]) ? $url[1] : 'show';
+    
+    if ($action === 'add') {
+        $cartController->addToCart();
+    } elseif ($action === 'update') {
+        $cartController->updateCart();
+    } elseif ($action === 'remove') {
+        $cartController->removeFromCart();
+    } elseif ($action === 'clear') {
+        $cartController->clearCart();
+    } elseif ($action === 'info') {
+        $cartController->getCartInfo();
+    } else {
+        $cartController->showCart();
+    }
+} elseif ($url[0] === 'order') {
+    // Order routes
+    $action = isset($url[1]) ? $url[1] : 'checkout';
+    
+    if ($action === 'checkout') {
+        $orderController->checkout();
+    } elseif ($action === 'process') {
+        $orderController->processOrder();
+    } elseif ($action === 'validate-coupon') {
+        $orderController->validateCoupon();
+    } elseif ($action === 'add-wishlist') {
+        $orderController->addToWishlist();
+    } elseif ($action === 'remove-wishlist') {
+        $orderController->removeFromWishlist();
+    } elseif ($action === 'clear-wishlist') {
+        $orderController->clearWishlist();
+    } elseif ($action === 'wishlist') {
+        $orderController->getWishlist();
+    } else {
+        $orderController->checkout();
+    }
 } elseif ($url[0] === 'admin') {
     // Admin routes (simple guard + custom login/logout)
     $action = isset($url[1]) ? $url[1] : (isAdminLoggedIn() ? 'dashboard' : 'login');

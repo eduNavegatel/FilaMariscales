@@ -148,6 +148,31 @@ if (!function_exists('isLoggedIn')) {
                 </ul>
                 
                 <ul class="navbar-nav">
+                    <!-- Carrito (solo mostrar si hay productos) -->
+                    <?php 
+                    $cart_count = 0;
+                    if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
+                        foreach ($_SESSION['cart'] as $item) {
+                            $cart_count += $item['quantity'];
+                        }
+                    }
+                    ?>
+                    <?php if ($cart_count > 0): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/prueba-php/public/cart">
+                                <i class="bi bi-cart3 me-1"></i>Carrito
+                                <span class="badge bg-danger ms-1 cart-counter"><?= $cart_count ?></span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                    
+                    <!-- Favoritos -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/prueba-php/public/order/wishlist">
+                            <i class="bi bi-heart me-1"></i>Favoritos
+                        </a>
+                    </li>
+                    
                     <?php if (isLoggedIn()): ?>
                         <?php if (isAdmin()): ?>
                             <li class="nav-item">
@@ -480,6 +505,70 @@ if (!function_exists('isLoggedIn')) {
                 form.submit();
             }
         }
+
+        // Función para actualizar el contador del carrito en la navegación
+        function updateCartCounter(count) {
+            const cartLink = document.querySelector('.navbar-nav .nav-link[href*="cart"]');
+            const cartCounter = document.querySelector('.cart-counter');
+            
+            if (count > 0) {
+                // Mostrar enlace del carrito si no existe
+                if (!cartLink) {
+                    const navbarNav = document.querySelector('.navbar-nav');
+                    const cartItem = document.createElement('li');
+                    cartItem.className = 'nav-item';
+                    cartItem.innerHTML = `
+                        <a class="nav-link" href="/prueba-php/public/cart">
+                            <i class="bi bi-cart3 me-1"></i>Carrito
+                            <span class="badge bg-danger ms-1 cart-counter">${count}</span>
+                        </a>
+                    `;
+                    
+                    // Insertar antes del enlace de favoritos
+                    const favoritosLink = document.querySelector('.navbar-nav .nav-link[href*="wishlist"]');
+                    if (favoritosLink) {
+                        favoritosLink.closest('li').before(cartItem);
+                    } else {
+                        navbarNav.appendChild(cartItem);
+                    }
+                } else {
+                    // Actualizar contador existente
+                    if (cartCounter) {
+                        cartCounter.textContent = count;
+                    } else {
+                        // Añadir contador si no existe
+                        const badge = document.createElement('span');
+                        badge.className = 'badge bg-danger ms-1 cart-counter';
+                        badge.textContent = count;
+                        cartLink.appendChild(badge);
+                    }
+                }
+            } else {
+                // Ocultar enlace del carrito si no hay productos
+                if (cartLink) {
+                    cartLink.closest('li').remove();
+                }
+            }
+        }
+
+        // Función para obtener información del carrito
+        function getCartInfo() {
+            fetch('/prueba-php/public/cart/info')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        updateCartCounter(data.cart_count);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al obtener información del carrito:', error);
+                });
+        }
+
+        // Actualizar contador del carrito al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            getCartInfo();
+        });
     </script>
 </body>
 </html>

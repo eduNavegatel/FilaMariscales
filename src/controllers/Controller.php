@@ -28,6 +28,29 @@ class Controller {
         // Include the layout
         require_once dirname(dirname(__DIR__)) . '/src/views/layouts/main.php';
     }
+    
+    // Load view (alias for view method)
+    public function loadView($view, $data = []) {
+        // Extract data array to individual variables
+        extract($data);
+        
+        // Start output buffering
+        ob_start();
+        
+        // Include the view file
+        $viewFile = dirname(dirname(__DIR__)) . '/src/views/' . $view . '.php';
+        if (file_exists($viewFile)) {
+            require_once $viewFile;
+        } else {
+            die('View does not exist: ' . $viewFile);
+        }
+        
+        // Get the contents of the buffer and clean it
+        $content = ob_get_clean();
+        
+        // Include the layout
+        require_once dirname(dirname(__DIR__)) . '/src/views/layouts/main.php';
+    }
 
     // Redirect to a specific URL
     protected function redirect($url) {
