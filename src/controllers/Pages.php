@@ -138,7 +138,250 @@ class Pages extends Controller {
             'title' => 'Zona de Socios',
             'description' => 'Área exclusiva para socios de la Filá Mariscales'
         ];
+        
+        // Verificar si el usuario está logueado
+        if (isLoggedIn()) {
+            // Obtener datos del usuario logueado
+            $user = $this->userModel->getUserById($_SESSION['user_id']);
+            
+            if ($user) {
+                // Preparar datos del socio
+                $socio_data = [
+                    'nombre' => $user->nombre,
+                    'apellidos' => $user->apellidos,
+                    'email' => $user->email,
+                    'numero_socio' => 'SOC-' . str_pad($user->id, 4, '0', STR_PAD_LEFT),
+                    'categoria' => ucfirst($user->rol),
+                    'fecha_ingreso' => date('d/m/Y', strtotime($user->fecha_registro)),
+                    'cuota_al_dia' => $user->activo == 1,
+                    'ultima_cuota' => date('m/Y'),
+                    'proximo_evento' => 'Reunión mensual - ' . date('d/m/Y', strtotime('+1 month')),
+                    'ultimo_acceso' => $user->ultimo_acceso ? date('d/m/Y H:i', strtotime($user->ultimo_acceso)) : 'Primera vez'
+                ];
+                
+                $data['socio_data'] = $socio_data;
+                $data['user'] = $user;
+            }
+        }
+        
         $this->view('pages/socios', $data);
+    }
+
+    // Página de perfil
+    public function profile() {
+        // Verificar si el usuario está logueado
+        if (!isLoggedIn()) {
+            $this->redirect('/socios');
+        }
+        
+        // Obtener datos del usuario logueado
+        $user = $this->userModel->getUserById($_SESSION['user_id']);
+        
+        if (!$user) {
+            $this->redirect('/socios');
+        }
+        
+        $data = [
+            'title' => 'Mi Perfil',
+            'description' => 'Gestiona tu información personal',
+            'user' => $user
+        ];
+        $this->view('pages/profile', $data);
+    }
+
+    // Actualizar perfil del usuario
+    public function updateProfile() {
+        if (!isLoggedIn()) {
+            $this->redirect('/socios');
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $user_id = $_SESSION['user_id'];
+            $nombre = trim($_POST['nombre'] ?? '');
+            $apellidos = trim($_POST['apellidos'] ?? '');
+            $email = trim($_POST['email'] ?? '');
+            $telefono = trim($_POST['telefono'] ?? '');
+            $direccion = trim($_POST['direccion'] ?? '');
+
+            // Validaciones básicas
+            if (empty($nombre) || empty($apellidos) || empty($email)) {
+                setFlashMessage('Todos los campos obligatorios deben ser completados.', 'error');
+                $this->redirect('/profile');
+                return;
+            }
+
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                setFlashMessage('El email no tiene un formato válido.', 'error');
+                $this->redirect('/profile');
+                return;
+            }
+
+            try {
+                $db = new Database();
+                $stmt = $db->query("UPDATE usuarios SET nombre = ?, apellidos = ?, email = ?, telefono = ?, direccion = ?, updated_at = NOW() WHERE id = ?");
+                $stmt->bindParam(1, $nombre);
+                $stmt->bindParam(2, $apellidos);
+                $stmt->bindParam(3, $email);
+                $stmt->bindParam(4, $telefono);
+                $stmt->bindParam(5, $direccion);
+                $stmt->bindParam(6, $user_id);
+                
+                if ($stmt->execute()) {
+                    // Actualizar la sesión
+                    $_SESSION['user_name'] = $nombre . ' ' . $apellidos;
+                    $_SESSION['user_email'] = $email;
+                    
+                    setFlashMessage('Perfil actualizado correctamente.', 'success');
+                } else {
+                    setFlashMessage('Error al actualizar el perfil.', 'error');
+                }
+            } catch (Exception $e) {
+                setFlashMessage('Error interno del servidor.', 'error');
+            }
+        }
+        
+        $this->redirect('/profile');
+    }
+
+    // Cambiar contraseña del usuario
+    public function changePassword() {
+        if (!isLoggedIn()) {
+            $this->redirect('/socios');
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $user_id = $_SESSION['user_id'];
+            $current_password = $_POST['current_password'] ?? '';
+            $new_password = $_POST['new_password'] ?? '';
+            $confirm_password = $_POST['confirm_password'] ?? '';
+
+            // Validaciones
+            if (empty($current_password) || empty($new_password) || empty($confirm_password)) {
+                setFlashMessage('Todos los campos son obligatorios.', 'error');
+                $this->redirect('/profile');
+                return;
+            }
+
+            if ($new_password !== $confirm_password) {
+                setFlashMessage('Las contraseñas nuevas no coinciden.', 'error');
+                $this->redirect('/profile');
+                return;
+            }
+
+            if (strlen($new_password) < 6) {
+                setFlashMessage('La nueva contraseña debe tener al menos 6 caracteres.', 'error');
+                $this->redirect('/profile');
+                return;
+            }
+
+            try {
+                $db = new Database();
+                $stmt = $db->query("SELECT password FROM usuarios WHERE id = ?");
+                $stmt->bindParam(1, $user_id);
+                $stmt->execute();
+                $user = $stmt->fetch(PDO::FETCH_OBJ);
+
+                if (!$user || !password_verify($current_password, $user->password)) {
+                    setFlashMessage('La contraseña actual es incorrecta.', 'error');
+                    $this->redirect('/profile');
+                    return;
+                }
+
+                // Actualizar contraseña
+                $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+                $stmt = $db->query("UPDATE usuarios SET password = ?, password_plain = ?, updated_at = NOW() WHERE id = ?");
+                $stmt->bindParam(1, $hashed_password);
+                $stmt->bindParam(2, $new_password);
+                $stmt->bindParam(3, $user_id);
+                
+                if ($stmt->execute()) {
+                    setFlashMessage('Contraseña cambiada correctamente.', 'success');
+                } else {
+                    setFlashMessage('Error al cambiar la contraseña.', 'error');
+                }
+            } catch (Exception $e) {
+                setFlashMessage('Error interno del servidor.', 'error');
+            }
+        }
+        
+        $this->redirect('/profile');
+    }
+
+    // Subir avatar del usuario
+    public function uploadAvatar() {
+        // Configurar headers para JSON
+        header('Content-Type: application/json');
+        
+        if (!isLoggedIn()) {
+            http_response_code(401);
+            echo json_encode(['success' => false, 'message' => 'No autorizado']);
+            return;
+        }
+
+        if (!isset($_FILES['avatar']) || $_FILES['avatar']['error'] !== UPLOAD_ERR_OK) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Error al subir el archivo: ' . ($_FILES['avatar']['error'] ?? 'Archivo no encontrado')]);
+            return;
+        }
+
+        $file = $_FILES['avatar'];
+        $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+        $max_size = 2 * 1024 * 1024; // 2MB
+
+        if (!in_array($file['type'], $allowed_types)) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Tipo de archivo no permitido. Solo se permiten JPG, PNG y GIF']);
+            return;
+        }
+
+        if ($file['size'] > $max_size) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'El archivo es demasiado grande. Máximo 2MB']);
+            return;
+        }
+
+        try {
+            $user_id = $_SESSION['user_id'];
+            $upload_dir = 'public/uploads/avatars/';
+            
+            // Crear directorio si no existe
+            if (!is_dir($upload_dir)) {
+                if (!mkdir($upload_dir, 0755, true)) {
+                    throw new Exception('No se pudo crear el directorio de uploads');
+                }
+            }
+
+            // Verificar permisos de escritura
+            if (!is_writable($upload_dir)) {
+                throw new Exception('El directorio no tiene permisos de escritura');
+            }
+
+            $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+            $filename = 'avatar_' . $user_id . '_' . time() . '.' . $extension;
+            $filepath = $upload_dir . $filename;
+
+            if (move_uploaded_file($file['tmp_name'], $filepath)) {
+                // Actualizar en la base de datos usando PDO directo
+                try {
+                    $pdo = new PDO('mysql:host=localhost;dbname=mariscales_db', 'root', '');
+                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    
+                    $stmt = $pdo->prepare("UPDATE usuarios SET avatar = ?, updated_at = NOW() WHERE id = ?");
+                    $stmt->execute([$filename, $user_id]);
+                    
+                    echo json_encode(['success' => true, 'message' => 'Avatar actualizado correctamente', 'filename' => $filename]);
+                } catch (PDOException $e) {
+                    // Si falla la BD, al menos el archivo se subió
+                    echo json_encode(['success' => true, 'message' => 'Avatar subido correctamente (error al actualizar BD)', 'filename' => $filename]);
+                }
+            } else {
+                http_response_code(500);
+                echo json_encode(['success' => false, 'message' => 'Error al guardar el archivo en el servidor']);
+            }
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+        }
     }
 
     // Página de tienda
@@ -172,7 +415,7 @@ class Pages extends Controller {
     public function login() {
         // If already logged in, redirect to dashboard
         if (isLoggedIn()) {
-            $this->redirect('/zona-privada');
+            $this->redirect('/socios');
         }
 
         $data = [
@@ -252,7 +495,7 @@ class Pages extends Controller {
     public function registro() {
         // If already logged in, redirect to dashboard
         if (isLoggedIn()) {
-            $this->redirect('/zona-privada');
+            $this->redirect('/socios');
         }
 
         $data = [
@@ -379,18 +622,23 @@ class Pages extends Controller {
         if ($user->rol === 'admin') {
             $this->redirect('/admin');
         } else {
-            $this->redirect('/zona-privada');
+            $this->redirect('/socios');
         }
     }
 
     // Logout
     public function logout() {
+        // Limpiar todas las variables de sesión
         unset($_SESSION['user_id']);
         unset($_SESSION['user_email']);
         unset($_SESSION['user_name']);
         unset($_SESSION['user_role']);
+        
+        // Destruir la sesión
         session_destroy();
-        $this->redirect('/');
+        
+        // Redirigir a la página de socios (que tiene el formulario de login)
+        $this->redirect('/socios');
     }
 
     // Private area

@@ -1613,5 +1613,89 @@ class AdminController extends Controller {
         
         $this->loadViewDirectly('admin/tienda/nuevo-producto', $data);
     }
+    
+    // Editar producto
+    public function editarProducto($id) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Actualizar producto
+            $nombre = $_POST['nombre'] ?? '';
+            $descripcion = $_POST['descripcion'] ?? '';
+            $precio = $_POST['precio'] ?? 0;
+            $stock = $_POST['stock'] ?? 0;
+            $categoria_id = $_POST['categoria_id'] ?? null;
+            $activo = isset($_POST['activo']) ? 1 : 0;
+            
+            try {
+                $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                
+                $sql = "UPDATE productos SET 
+                        nombre = '$nombre', 
+                        descripcion = '$descripcion', 
+                        precio = $precio, 
+                        stock = $stock, 
+                        categoria_id = " . ($categoria_id ? $categoria_id : 'NULL') . ", 
+                        activo = $activo,
+                        fecha_actualizacion = NOW()
+                        WHERE id = $id";
+                $pdo->exec($sql);
+                
+                // Devolver respuesta para JavaScript
+                http_response_code(200);
+                echo "OK";
+                exit;
+            } catch (Exception $e) {
+                http_response_code(500);
+                echo "Error: " . $e->getMessage();
+                exit;
+            }
+        }
+        
+        // Obtener datos del producto
+        try {
+            $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
+            $stmt = $pdo->prepare("SELECT * FROM productos WHERE id = ?");
+            $stmt->execute([$id]);
+            $product = $stmt->fetch(PDO::FETCH_OBJ);
+            
+            if (!$product) {
+                header('Location: /prueba-php/public/admin/productos');
+                exit;
+            }
+            
+        } catch (Exception $e) {
+            header('Location: /prueba-php/public/admin/productos');
+            exit;
+        }
+        
+        $data = [
+            'title' => 'Editar Producto',
+            'product' => $product
+        ];
+        
+        $this->loadViewDirectly('admin/tienda/editar-producto', $data);
+    }
+    
+    // Eliminar producto
+    public function eliminarProducto($id) {
+        try {
+            $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
+            $sql = "DELETE FROM productos WHERE id = $id";
+            $pdo->exec($sql);
+            
+            // Devolver respuesta para JavaScript
+            http_response_code(200);
+            echo "OK";
+            exit;
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo "Error: " . $e->getMessage();
+            exit;
+        }
+    }
 }
 

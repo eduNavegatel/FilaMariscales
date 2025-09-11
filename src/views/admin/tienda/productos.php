@@ -227,7 +227,7 @@
                                                         <i class="fas fa-edit"></i>
                                                         <span>Editar</span>
                                                     </a>
-                                                    <button class="action-btn btn-delete" onclick="eliminarProducto(<?= $product->id ?>)" title="Eliminar producto">
+                                                    <button class="action-btn btn-delete" onclick="eliminarProducto(<?= $product->id ?>, '<?= htmlspecialchars($product->nombre) ?>')" title="Eliminar producto">
                                                         <i class="fas fa-trash"></i>
                                                         <span>Eliminar</span>
                                                     </button>
@@ -255,10 +255,37 @@
 </div>
 
 <script>
-function eliminarProducto(id) {
-    if (confirm('¿Estás seguro de que quieres eliminar este producto?')) {
-        // Aquí iría la lógica para eliminar el producto
-        alert('Función de eliminar pendiente de implementar');
+function eliminarProducto(id, nombre) {
+    if (confirm(`¿Estás seguro de que quieres eliminar el producto "${nombre}"?`)) {
+        // Mostrar indicador de carga
+        const boton = event.target.closest('button');
+        const textoOriginal = boton.innerHTML;
+        boton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        boton.disabled = true;
+        
+        // Enviar petición de eliminación
+        fetch(`/prueba-php/public/admin/eliminar-producto/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                // Recargar la página para mostrar la lista actualizada
+                window.location.reload();
+            } else {
+                alert('Error al eliminar el producto');
+                boton.innerHTML = textoOriginal;
+                boton.disabled = false;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al eliminar el producto');
+            boton.innerHTML = textoOriginal;
+            boton.disabled = false;
+        });
     }
 }
 </script>

@@ -161,14 +161,11 @@ if (!function_exists('isLoggedIn')) {
                                 <i class="bi bi-person-circle me-1"></i><?php echo $_SESSION['user_name']; ?>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="/prueba-php/public/profile">
+                                <li><a class="dropdown-item" href="profile">
                                     <i class="bi bi-person me-2"></i>Mi Perfil
                                 </a></li>
-                                <li><a class="dropdown-item" href="/prueba-php/public/dashboard">
-                                    <i class="bi bi-speedometer2 me-2"></i>Dashboard
-                                </a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="/prueba-php/public/auth/logout">
+                                <li><a class="dropdown-item" href="/prueba-php/public/logout.php">
                                     <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
                                 </a></li>
                             </ul>
@@ -315,6 +312,68 @@ if (!function_exists('isLoggedIn')) {
     <script src="/prueba-php/public/assets/js/animations.js"></script>
     
     <script>
+        // Bootstrap-compatible dropdown functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Initializing dropdowns...');
+            
+            // Try Bootstrap first, fallback to custom if needed
+            if (typeof bootstrap !== 'undefined' && bootstrap.Dropdown) {
+                console.log('Using Bootstrap dropdowns');
+                try {
+                    // Initialize Bootstrap dropdowns
+                    var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
+                    var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+                        return new bootstrap.Dropdown(dropdownToggleEl);
+                    });
+                    console.log('Bootstrap dropdowns initialized:', dropdownList.length);
+                } catch (error) {
+                    console.error('Bootstrap dropdown error:', error);
+                    initializeCustomDropdowns();
+                }
+            } else {
+                console.log('Bootstrap not available, using custom dropdowns');
+                initializeCustomDropdowns();
+            }
+            
+            function initializeCustomDropdowns() {
+                console.log('Initializing custom dropdowns...');
+                
+                document.querySelectorAll('.dropdown-toggle').forEach(function(toggle) {
+                    toggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        console.log('Custom dropdown clicked');
+                        
+                        var dropdown = this.closest('.dropdown');
+                        var menu = dropdown.querySelector('.dropdown-menu');
+                        
+                        if (menu) {
+                            // Close all other dropdowns
+                            document.querySelectorAll('.dropdown-menu.show').forEach(function(otherMenu) {
+                                if (otherMenu !== menu) {
+                                    otherMenu.classList.remove('show');
+                                }
+                            });
+                            
+                            // Toggle current dropdown
+                            menu.classList.toggle('show');
+                            console.log('Custom dropdown toggled, show:', menu.classList.contains('show'));
+                        }
+                    });
+                });
+                
+                // Close dropdowns when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!e.target.closest('.dropdown')) {
+                        document.querySelectorAll('.dropdown-menu.show').forEach(function(menu) {
+                            menu.classList.remove('show');
+                        });
+                    }
+                });
+            }
+        });
+
         // Initialize AOS
         AOS.init({
             duration: 800,
@@ -398,6 +457,29 @@ if (!function_exists('isLoggedIn')) {
                 observer.observe(element);
             });
         });
+
+        // Logout function
+        function logout() {
+            if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+                // Crear un formulario para enviar el logout
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/prueba-php/public/logout';
+                
+                // Agregar token CSRF si existe
+                var csrfToken = document.querySelector('meta[name="csrf-token"]');
+                if (csrfToken) {
+                    var csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = 'csrf_token';
+                    csrfInput.value = csrfToken.getAttribute('content');
+                    form.appendChild(csrfInput);
+                }
+                
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
     </script>
 </body>
 </html>

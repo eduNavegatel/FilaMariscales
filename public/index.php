@@ -64,6 +64,14 @@ if (empty($url[0])) {
     $controller->contacto();
 } elseif ($url[0] === 'interactiva') {
     $controller->interactiva();
+} elseif ($url[0] === 'profile') {
+    $controller->profile();
+} elseif ($url[0] === 'update-profile') {
+    $controller->updateProfile();
+} elseif ($url[0] === 'change-password') {
+    $controller->changePassword();
+} elseif ($url[0] === 'upload-avatar') {
+    $controller->uploadAvatar();
 } elseif ($url[0] === 'admin') {
     // Admin routes (simple guard + custom login/logout)
     $action = isset($url[1]) ? $url[1] : (isAdminLoggedIn() ? 'dashboard' : 'login');

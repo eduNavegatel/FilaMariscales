@@ -210,7 +210,7 @@ $documentos_socios = [
 </section>
 
 <!-- Login Section -->
-<section class="login-section py-5" id="loginSection">
+<section class="login-section py-5 <?php echo isset($user) ? 'd-none' : ''; ?>" id="loginSection">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-5">
@@ -260,8 +260,8 @@ $documentos_socios = [
     </div>
 </section>
 
-<!-- Dashboard Section (hidden by default) -->
-<section class="dashboard-section py-5 d-none" id="dashboardSection">
+<!-- Dashboard Section -->
+<section class="dashboard-section py-5 <?php echo isset($user) ? '' : 'd-none'; ?>" id="dashboardSection">
     <div class="container">
         <!-- Welcome Banner -->
         <div class="welcome-banner mb-5">
@@ -280,6 +280,9 @@ $documentos_socios = [
                             <i class="bi bi-check-circle me-1"></i>
                             <?php echo $socio_data['cuota_al_dia'] ? 'Cuota al día' : 'Cuota pendiente'; ?>
                         </span>
+                        <a href="/prueba-php/public/logout.php" class="btn btn-outline-light btn-sm ms-3">
+                            <i class="bi bi-box-arrow-right me-1"></i>Cerrar Sesión
+                        </a>
                     </div>
                 </div>
             </div>
@@ -581,6 +584,7 @@ $documentos_socios = [
     font-family: 'Cinzel', serif;
     font-size: 1.8rem;
     margin-bottom: 0.5rem;
+    color: white;
 }
 
 .welcome-subtitle {
@@ -770,14 +774,45 @@ $documentos_socios = [
 </style>
 
 <script>
-// Toggle between login and dashboard (demo purposes)
+// Real login functionality
 document.getElementById('loginForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    document.getElementById('loginSection').classList.add('d-none');
-    document.getElementById('dashboardSection').classList.remove('d-none');
     
-    // Scroll to top
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const email = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    
+    if (!email || !password) {
+        alert('Por favor, completa todos los campos');
+        return;
+    }
+    
+    // Show loading state
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Iniciando sesión...';
+    submitBtn.disabled = true;
+    
+    // Send login request
+    fetch('/prueba-php/public/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+    })
+    .then(response => {
+        if (response.ok) {
+            // Login successful, reload page to show dashboard
+            window.location.reload();
+        } else {
+            throw new Error('Error en el login');
+        }
+    })
+    .catch(error => {
+        alert('Error al iniciar sesión. Verifica tus credenciales.');
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    });
 });
 
 // Show register form
@@ -809,6 +844,28 @@ function showDocuments() {
 
 function showDirectory() {
     alert('Funcionalidad de directorio en desarrollo. Próximamente podrás ver el directorio completo de socios.');
+}
+
+// Logout function
+function logout() {
+    if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+        fetch('/prueba-php/public/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Error al cerrar sesión');
+            }
+        })
+        .catch(error => {
+            alert('Error al cerrar sesión');
+        });
+    }
 }
 
 // Add smooth animations

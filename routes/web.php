@@ -25,6 +25,12 @@ $router->get('hermanamientos', 'Pages@hermanamientos');
 $router->get('socios', 'Pages@socios');
 $router->get('login', 'Pages@login');
 $router->post('login', 'Pages@login');
+$router->get('logout', 'Pages@logout');
+$router->post('logout', 'Pages@logout');
+$router->get('dashboard', 'UserController@dashboard');
+$router->get('profile', 'Pages@profile');
+$router->post('profile/update', 'UserController@updateProfile');
+$router->post('profile/change-password', 'UserController@changePassword');
 $router->get('registro', 'Pages@registro');
 $router->post('registro', 'Pages@registro');
 $router->get('contacto', 'Pages@contacto');
@@ -36,7 +42,6 @@ $router->group('auth', function($router) {
     $router->post('login', 'AuthController@login');
     $router->get('register', 'AuthController@registerForm');
     $router->post('register', 'AuthController@register');
-    $router->get('logout', 'AuthController@logout');
     $router->get('forgot-password', 'AuthController@forgotPasswordForm');
     $router->post('forgot-password', 'AuthController@forgotPassword');
     $router->get('reset-password/{token}', 'AuthController@resetPasswordForm');
@@ -45,10 +50,7 @@ $router->group('auth', function($router) {
 
 // Authenticated user routes
 $router->group('', function($router) {
-    $router->get('dashboard', 'UserController@dashboard');
-    $router->get('profile', 'UserController@profile');
-    $router->post('profile/update', 'UserController@updateProfile');
-    $router->post('profile/change-password', 'UserController@changePassword');
+    $router->get('zona-privada', 'Pages@zonaPrivada');
     $router->post('events/{id}/register', 'EventController@register');
     $router->post('events/{id}/cancel', 'EventController@cancelRegistration');
 });
@@ -116,6 +118,9 @@ $router->group('admin', function($router) {
     $router->get('productos', 'Admin\AdminController@productos');
     $router->get('nuevo-producto', 'Admin\AdminController@nuevoProducto');
     $router->post('nuevo-producto', 'Admin\AdminController@nuevoProducto');
+    $router->get('editar-producto/{id}', 'Admin\AdminController@editarProducto');
+    $router->post('editar-producto/{id}', 'Admin\AdminController@editarProducto');
+    $router->post('eliminar-producto/{id}', 'Admin\AdminController@eliminarProducto');
     
     // Settings
     $router->group('settings', function($router) {
