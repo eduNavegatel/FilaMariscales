@@ -244,7 +244,21 @@ class OrderController extends Controller {
             $stmt->execute([$usuario_id, $session_id, $product_id]);
             
             if ($stmt->rowCount() > 0) {
-                echo json_encode(['success' => true, 'message' => 'Producto añadido a favoritos']);
+                // Obtener el nuevo contador de wishlist
+                if ($usuario_id) {
+                    $countStmt = $pdo->prepare("SELECT COUNT(*) as count FROM wishlist WHERE usuario_id = ?");
+                    $countStmt->execute([$usuario_id]);
+                } else {
+                    $countStmt = $pdo->prepare("SELECT COUNT(*) as count FROM wishlist WHERE session_id = ?");
+                    $countStmt->execute([$session_id]);
+                }
+                $countResult = $countStmt->fetch(PDO::FETCH_OBJ);
+                
+                echo json_encode([
+                    'success' => true, 
+                    'message' => 'Producto añadido a favoritos',
+                    'wishlist_count' => $countResult->count
+                ]);
             } else {
                 echo json_encode(['success' => false, 'message' => 'El producto ya está en favoritos']);
             }
@@ -578,7 +592,54 @@ class OrderController extends Controller {
                 $stmt->execute([$session_id, $product_id]);
             }
             
-            echo json_encode(['success' => true, 'message' => 'Producto eliminado de favoritos']);
+            // Obtener el nuevo contador de wishlist
+            if ($usuario_id) {
+                $countStmt = $pdo->prepare("SELECT COUNT(*) as count FROM wishlist WHERE usuario_id = ?");
+                $countStmt->execute([$usuario_id]);
+            } else {
+                $countStmt = $pdo->prepare("SELECT COUNT(*) as count FROM wishlist WHERE session_id = ?");
+                $countStmt->execute([$session_id]);
+            }
+            $countResult = $countStmt->fetch(PDO::FETCH_OBJ);
+            
+            echo json_encode([
+                'success' => true, 
+                'message' => 'Producto eliminado de favoritos',
+                'wishlist_count' => $countResult->count
+            ]);
+            
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+        }
+    }
+    
+    // Obtener información de la wishlist
+    public function getWishlistInfo() {
+        header('Content-Type: application/json');
+        
+        try {
+            $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
+            $usuario_id = $_SESSION['user_id'] ?? null;
+            $session_id = $usuario_id ? null : session_id();
+            
+            if ($usuario_id) {
+                $stmt = $pdo->prepare("SELECT COUNT(*) as count FROM wishlist WHERE usuario_id = ?");
+                $stmt->execute([$usuario_id]);
+            } else {
+                $stmt = $pdo->prepare("SELECT COUNT(*) as count FROM wishlist WHERE session_id = ?");
+                $stmt->execute([$session_id]);
+            }
+            
+            $result = $stmt->fetch(PDO::FETCH_OBJ);
+            $wishlist_count = $result->count;
+            
+            echo json_encode([
+                'success' => true,
+                'wishlist_count' => $wishlist_count
+            ]);
             
         } catch (Exception $e) {
             http_response_code(500);

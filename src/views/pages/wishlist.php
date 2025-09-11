@@ -191,6 +191,12 @@ function removeFromWishlist(productId) {
         .then(data => {
             if (data.success) {
                 showMessage('success', data.message);
+                
+                // Actualizar contador de favoritos en la navegación
+                if (typeof updateWishlistCounter === 'function') {
+                    updateWishlistCounter(data.wishlist_count || 0);
+                }
+                
                 // Recargar página para actualizar la vista
                 setTimeout(() => {
                     window.location.reload();
@@ -266,6 +272,12 @@ function clearWishlist() {
         .then(data => {
             if (data.success) {
                 showMessage('success', data.message);
+                
+                // Actualizar contador de favoritos en la navegación
+                if (typeof updateWishlistCounter === 'function') {
+                    updateWishlistCounter(0);
+                }
+                
                 setTimeout(() => {
                     window.location.reload();
                 }, 1000);

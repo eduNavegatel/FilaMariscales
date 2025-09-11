@@ -112,7 +112,11 @@ if (empty($url[0])) {
     } elseif ($action === 'clear-wishlist') {
         $orderController->clearWishlist();
     } elseif ($action === 'wishlist') {
-        $orderController->getWishlist();
+        if (isset($url[2]) && $url[2] === 'info') {
+            $orderController->getWishlistInfo();
+        } else {
+            $orderController->getWishlist();
+        }
     } elseif ($action === 'confirmation' && isset($url[2])) {
         $orderController->showConfirmation($url[2]);
     } else {

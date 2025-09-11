@@ -166,12 +166,21 @@ if (!function_exists('isLoggedIn')) {
                         </li>
                     <?php endif; ?>
                     
-                    <!-- Favoritos -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="/prueba-php/public/order/wishlist">
-                            <i class="bi bi-heart me-1"></i>Favoritos
-                        </a>
-                    </li>
+                    <!-- Favoritos (solo mostrar si hay productos) -->
+                    <?php 
+                    $wishlist_count = 0;
+                    if (isset($_SESSION['wishlist']) && !empty($_SESSION['wishlist'])) {
+                        $wishlist_count = count($_SESSION['wishlist']);
+                    }
+                    ?>
+                    <?php if ($wishlist_count > 0): ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/prueba-php/public/order/wishlist">
+                                <i class="bi bi-heart me-1"></i>Favoritos
+                                <span class="badge bg-danger ms-1 wishlist-counter"><?= $wishlist_count ?></span>
+                            </a>
+                        </li>
+                    <?php endif; ?>
                     
                     <?php if (isLoggedIn()): ?>
                         <?php if (isAdmin()): ?>
@@ -565,9 +574,69 @@ if (!function_exists('isLoggedIn')) {
                 });
         }
 
+        // Función para actualizar el contador de favoritos en la navegación
+        function updateWishlistCounter(count) {
+            const wishlistLink = document.querySelector('.navbar-nav .nav-link[href*="wishlist"]');
+            const wishlistCounter = document.querySelector('.wishlist-counter');
+            
+            if (count > 0) {
+                // Mostrar enlace de favoritos si no existe
+                if (!wishlistLink) {
+                    const navbarNav = document.querySelector('.navbar-nav');
+                    const wishlistItem = document.createElement('li');
+                    wishlistItem.className = 'nav-item';
+                    wishlistItem.innerHTML = `
+                        <a class="nav-link" href="/prueba-php/public/order/wishlist">
+                            <i class="bi bi-heart me-1"></i>Favoritos
+                            <span class="badge bg-danger ms-1 wishlist-counter">${count}</span>
+                        </a>
+                    `;
+                    
+                    // Insertar después del enlace del carrito o al final
+                    const cartLink = document.querySelector('.navbar-nav .nav-link[href*="cart"]');
+                    if (cartLink) {
+                        cartLink.closest('li').after(wishlistItem);
+                    } else {
+                        navbarNav.appendChild(wishlistItem);
+                    }
+                } else {
+                    // Actualizar contador existente
+                    if (wishlistCounter) {
+                        wishlistCounter.textContent = count;
+                    } else {
+                        // Añadir contador si no existe
+                        const badge = document.createElement('span');
+                        badge.className = 'badge bg-danger ms-1 wishlist-counter';
+                        badge.textContent = count;
+                        wishlistLink.appendChild(badge);
+                    }
+                }
+            } else {
+                // Ocultar enlace de favoritos si no hay productos
+                if (wishlistLink) {
+                    wishlistLink.closest('li').remove();
+                }
+            }
+        }
+
+        // Función para obtener información de la wishlist
+        function getWishlistInfo() {
+            fetch('/prueba-php/public/order/wishlist/info')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        updateWishlistCounter(data.wishlist_count);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al obtener información de favoritos:', error);
+                });
+        }
+
         // Actualizar contador del carrito al cargar la página
         document.addEventListener('DOMContentLoaded', function() {
             getCartInfo();
+            getWishlistInfo();
         });
     </script>
 </body>

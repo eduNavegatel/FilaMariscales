@@ -353,6 +353,11 @@ function addToWishlist(productId) {
             button.classList.remove('btn-outline-danger');
             button.classList.add('btn-danger');
             
+            // Actualizar contador de favoritos en la navegación
+            if (typeof updateWishlistCounter === 'function') {
+                updateWishlistCounter(data.wishlist_count || 1);
+            }
+            
             setTimeout(() => {
                 button.innerHTML = originalText;
                 button.classList.remove('btn-danger');
