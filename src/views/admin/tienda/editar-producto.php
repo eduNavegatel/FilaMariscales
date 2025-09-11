@@ -100,7 +100,7 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-body">
-                            <form method="POST" action="/prueba-php/public/admin/editar-producto/<?= $product->id ?>" onsubmit="return actualizarProducto()">
+                            <form method="POST" action="/prueba-php/public/admin/editar-producto/<?= $product->id ?>" enctype="multipart/form-data" onsubmit="return actualizarProducto()">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
@@ -119,6 +119,27 @@
                                 <div class="mb-3">
                                     <label for="descripcion" class="form-label">Descripción</label>
                                     <textarea class="form-control" id="descripcion" name="descripcion" rows="4"><?= htmlspecialchars($product->descripcion) ?></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="imagen" class="form-label">Imagen del Producto</label>
+                                    <?php if (!empty($product->imagen)): ?>
+                                        <div class="mb-2">
+                                            <label class="form-label text-muted">Imagen actual:</label>
+                                            <div>
+                                                <img src="/prueba-php/public/uploads/products/<?= htmlspecialchars($product->imagen) ?>" 
+                                                     alt="Imagen actual" 
+                                                     class="img-thumbnail" 
+                                                     style="max-width: 200px; max-height: 200px;">
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                                    <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*">
+                                    <div class="form-text">Formatos permitidos: JPG, PNG, GIF. Tamaño máximo: 5MB. Dejar vacío para mantener la imagen actual.</div>
+                                    <div id="imagePreview" class="mt-2" style="display: none;">
+                                        <label class="form-label text-muted">Nueva imagen:</label>
+                                        <img id="previewImg" src="" alt="Vista previa" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
+                                    </div>
                                 </div>
 
                                 <div class="row">
@@ -195,6 +216,21 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
+    // Vista previa de la imagen
+    document.getElementById('imagen').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('previewImg').src = e.target.result;
+                document.getElementById('imagePreview').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            document.getElementById('imagePreview').style.display = 'none';
+        }
+    });
+
     function actualizarProducto() {
         // Mostrar mensaje de carga
         const boton = document.querySelector('button[type="submit"]');

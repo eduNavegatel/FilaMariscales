@@ -206,6 +206,7 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
+                                        <th>Imagen</th>
                                         <th>Nombre</th>
                                         <th>Precio</th>
                                         <th>Stock</th>
@@ -218,6 +219,19 @@
                                     <?php foreach ($products as $product): ?>
                                         <tr>
                                             <td><?= $product->id ?></td>
+                                            <td>
+                                                <?php if (!empty($product->imagen)): ?>
+                                                    <img src="/prueba-php/public/uploads/products/<?= htmlspecialchars($product->imagen) ?>" 
+                                                         alt="<?= htmlspecialchars($product->nombre) ?>" 
+                                                         class="img-thumbnail" 
+                                                         style="width: 50px; height: 50px; object-fit: cover;">
+                                                <?php else: ?>
+                                                    <div class="bg-light d-flex align-items-center justify-content-center" 
+                                                         style="width: 50px; height: 50px; border-radius: 4px;">
+                                                        <i class="fas fa-image text-muted"></i>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </td>
                                             <td><?= htmlspecialchars($product->nombre) ?></td>
                                             <td>€<?= number_format($product->precio, 2) ?></td>
                                             <td>

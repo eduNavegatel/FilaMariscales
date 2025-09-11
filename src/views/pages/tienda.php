@@ -70,7 +70,7 @@
                         <div class="card h-100 border-0 shadow-sm product-card">
                             <div class="position-relative">
                                 <?php if (!empty($product->imagen)): ?>
-                                    <img src="public/uploads/products/<?= htmlspecialchars($product->imagen) ?>" 
+                                    <img src="/prueba-php/public/uploads/products/<?= htmlspecialchars($product->imagen) ?>" 
                                          class="card-img-top" 
                                          alt="<?= htmlspecialchars($product->nombre) ?>"
                                          style="height: 250px; object-fit: cover;">

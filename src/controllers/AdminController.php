@@ -1594,17 +1594,52 @@ class AdminController extends Controller {
             $stock = $_POST['stock'] ?? 0;
             $categoria_id = $_POST['categoria_id'] ?? null;
             $activo = isset($_POST['activo']) ? 1 : 0;
+            $imagen = '';
             
-            // Insertar directamente
-            $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
-            $sql = "INSERT INTO productos (nombre, descripcion, precio, stock, categoria_id, activo, fecha_creacion) 
-                    VALUES ('$nombre', '$descripcion', $precio, $stock, " . ($categoria_id ? $categoria_id : 'NULL') . ", $activo, NOW())";
-            $pdo->exec($sql);
+            // Manejar subida de imagen
+            if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
+                $file = $_FILES['imagen'];
+                $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+                $max_size = 5 * 1024 * 1024; // 5MB
+                
+                if (in_array($file['type'], $allowed_types) && $file['size'] <= $max_size) {
+                    $upload_dir = 'public/uploads/products/';
+                    if (!is_dir($upload_dir)) {
+                        mkdir($upload_dir, 0755, true);
+                    }
+                    
+                    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+                    $imagen = 'product_' . time() . '_' . rand(1000, 9999) . '.' . $extension;
+                    $filepath = $upload_dir . $imagen;
+                    
+                    if (move_uploaded_file($file['tmp_name'], $filepath)) {
+                        // Imagen subida correctamente
+                    } else {
+                        $imagen = '';
+                    }
+                }
+            }
             
-            // Devolver respuesta simple para JavaScript
-            http_response_code(200);
-            echo "OK";
-            exit;
+            // Insertar usando consulta preparada
+            try {
+                $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                
+                $sql = "INSERT INTO productos (nombre, descripcion, precio, stock, categoria_id, activo, imagen, fecha_creacion) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([$nombre, $descripcion, $precio, $stock, $categoria_id, $activo, $imagen]);
+                
+                // Devolver respuesta simple para JavaScript
+                http_response_code(200);
+                echo "OK";
+                exit;
+            } catch (Exception $e) {
+                error_log("Error al crear producto: " . $e->getMessage());
+                http_response_code(500);
+                echo "Error al crear el producto";
+                exit;
+            }
         }
         
         $data = [
@@ -1629,16 +1664,52 @@ class AdminController extends Controller {
                 $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 
+                // Obtener imagen actual
+                $stmt = $pdo->prepare("SELECT imagen FROM productos WHERE id = ?");
+                $stmt->execute([$id]);
+                $current_image = $stmt->fetchColumn();
+                
+                $imagen = $current_image; // Mantener imagen actual por defecto
+                
+                // Manejar nueva imagen si se subió
+                if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
+                    $file = $_FILES['imagen'];
+                    $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+                    $max_size = 5 * 1024 * 1024; // 5MB
+                    
+                    if (in_array($file['type'], $allowed_types) && $file['size'] <= $max_size) {
+                        $upload_dir = 'public/uploads/products/';
+                        if (!is_dir($upload_dir)) {
+                            mkdir($upload_dir, 0755, true);
+                        }
+                        
+                        $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+                        $imagen = 'product_' . $id . '_' . time() . '.' . $extension;
+                        $filepath = $upload_dir . $imagen;
+                        
+                        if (move_uploaded_file($file['tmp_name'], $filepath)) {
+                            // Eliminar imagen anterior si existe
+                            if (!empty($current_image) && file_exists($upload_dir . $current_image)) {
+                                unlink($upload_dir . $current_image);
+                            }
+                        } else {
+                            $imagen = $current_image; // Mantener imagen actual si falla la subida
+                        }
+                    }
+                }
+                
                 $sql = "UPDATE productos SET 
-                        nombre = '$nombre', 
-                        descripcion = '$descripcion', 
-                        precio = $precio, 
-                        stock = $stock, 
-                        categoria_id = " . ($categoria_id ? $categoria_id : 'NULL') . ", 
-                        activo = $activo,
+                        nombre = ?, 
+                        descripcion = ?, 
+                        precio = ?, 
+                        stock = ?, 
+                        categoria_id = ?, 
+                        activo = ?,
+                        imagen = ?,
                         fecha_actualizacion = NOW()
-                        WHERE id = $id";
-                $pdo->exec($sql);
+                        WHERE id = ?";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([$nombre, $descripcion, $precio, $stock, $categoria_id, $activo, $imagen, $id]);
                 
                 // Devolver respuesta para JavaScript
                 http_response_code(200);
@@ -1703,15 +1774,18 @@ class AdminController extends Controller {
         // Configurar headers para JSON
         header('Content-Type: application/json');
         
-        if (!isAdminLoggedIn()) {
+        // Verificación simple de sesión de admin
+        if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
             http_response_code(401);
             echo json_encode(['success' => false, 'message' => 'No autorizado']);
             return;
         }
 
         if (!isset($_FILES['photo']) || $_FILES['photo']['error'] !== UPLOAD_ERR_OK) {
+            $error_msg = 'Error al subir el archivo: ' . ($_FILES['photo']['error'] ?? 'Archivo no encontrado');
+            error_log("Upload error: " . $error_msg);
             http_response_code(400);
-            echo json_encode(['success' => false, 'message' => 'Error al subir el archivo: ' . ($_FILES['photo']['error'] ?? 'Archivo no encontrado')]);
+            echo json_encode(['success' => false, 'message' => $error_msg]);
             return;
         }
 
@@ -1761,12 +1835,13 @@ class AdminController extends Controller {
             if (move_uploaded_file($file['tmp_name'], $filepath)) {
                 // Actualizar en la base de datos
                 try {
-                    $pdo = new PDO('mysql:host=localhost;dbname=mariscales_db', 'root', '');
+                    $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     
-                    $stmt = $pdo->prepare("UPDATE productos SET imagen = ?, updated_at = NOW() WHERE id = ?");
+                    $stmt = $pdo->prepare("UPDATE productos SET imagen = ?, fecha_actualizacion = NOW() WHERE id = ?");
                     $stmt->execute([$filename, $product_id]);
                     
+                    error_log("Photo uploaded successfully: product_id=$product_id, filename=$filename");
                     echo json_encode(['success' => true, 'message' => 'Foto subida correctamente', 'filename' => $filename]);
                 } catch (PDOException $e) {
                     // Si falla la BD, al menos el archivo se subió
