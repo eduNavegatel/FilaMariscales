@@ -141,6 +141,9 @@ if (empty($url[0])) {
                 // Manejar la ruta eliminar-producto
                 $id = isset($url[2]) ? $url[2] : null;
                 $adminController->eliminarProducto($id);
+            } elseif ($action === 'upload-product-photo') {
+                // Manejar la subida de fotos de productos
+                $adminController->uploadProductPhoto();
             } else {
                 $adminController->dashboard();
             }

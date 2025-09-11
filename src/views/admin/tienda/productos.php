@@ -85,6 +85,16 @@
             color: white;
         }
         
+        .btn-photo {
+            background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+            color: white;
+        }
+        
+        .btn-photo:hover {
+            background: linear-gradient(135deg, #45b7aa 0%, #3d8b7a 100%);
+            color: white;
+        }
+        
         /* Responsive para botones */
         @media (max-width: 1200px) {
             .action-btn span {
@@ -227,6 +237,10 @@
                                                         <i class="fas fa-edit"></i>
                                                         <span>Editar</span>
                                                     </a>
+                                                    <button class="action-btn btn-photo" onclick="subirFoto(<?= $product->id ?>, '<?= htmlspecialchars($product->nombre) ?>')" title="Subir foto del producto">
+                                                        <i class="fas fa-camera"></i>
+                                                        <span>Foto</span>
+                                                    </button>
                                                     <button class="action-btn btn-delete" onclick="eliminarProducto(<?= $product->id ?>, '<?= htmlspecialchars($product->nombre) ?>')" title="Eliminar producto">
                                                         <i class="fas fa-trash"></i>
                                                         <span>Eliminar</span>
@@ -255,6 +269,132 @@
 </div>
 
 <script>
+// Función para subir foto del producto (definida globalmente)
+function subirFoto(productId, productName) {
+    console.log('subirFoto llamada con:', productId, productName);
+    alert('Función subirFoto ejecutada para producto: ' + productName + ' (ID: ' + productId + ')');
+    
+    // Crear modal dinámicamente
+    const modalHtml = `
+        <div class="modal fade" id="photoModal" tabindex="-1" aria-labelledby="photoModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="photoModalLabel">Subir Foto - ${productName}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="photoForm" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="productPhoto" class="form-label">Seleccionar Imagen</label>
+                                <input type="file" class="form-control" id="productPhoto" name="photo" accept="image/*" required>
+                                <div class="form-text">Formatos permitidos: JPG, PNG, GIF. Tamaño máximo: 5MB</div>
+                            </div>
+                            <div id="photoPreview" class="mb-3" style="display: none;">
+                                <label class="form-label">Vista Previa:</label>
+                                <div class="text-center">
+                                    <img id="previewImg" src="" alt="Vista previa" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" id="uploadBtn" data-product-id="${productId}">
+                            <i class="fas fa-upload me-2"></i>Subir Foto
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Remover modal existente si existe
+    const existingModal = document.getElementById('photoModal');
+    if (existingModal) {
+        existingModal.remove();
+    }
+    
+    // Añadir modal al body
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    
+    // Mostrar modal
+    const modalElement = document.getElementById('photoModal');
+    const modal = new bootstrap.Modal(modalElement);
+    modal.show();
+    
+    // Vista previa de la imagen
+    const photoInput = document.getElementById('productPhoto');
+    if (photoInput) {
+        photoInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewImg = document.getElementById('previewImg');
+                    const photoPreview = document.getElementById('photoPreview');
+                    if (previewImg && photoPreview) {
+                        previewImg.src = e.target.result;
+                        photoPreview.style.display = 'block';
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+    
+    // Botón de subir
+    const uploadBtn = document.getElementById('uploadBtn');
+    if (uploadBtn) {
+        uploadBtn.addEventListener('click', function() {
+            guardarFoto(productId);
+        });
+    }
+    
+    // Limpiar modal cuando se cierre
+    modalElement.addEventListener('hidden.bs.modal', function() {
+        this.remove();
+    });
+}
+
+// Función para guardar la foto
+function guardarFoto(productId) {
+    const form = document.getElementById('photoForm');
+    const formData = new FormData(form);
+    formData.append('product_id', productId);
+    
+    const submitBtn = document.querySelector('#photoModal .btn-primary');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Subiendo...';
+    submitBtn.disabled = true;
+    
+    fetch('/prueba-php/public/admin/upload-product-photo', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Foto subida correctamente');
+            // Cerrar modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('photoModal'));
+            modal.hide();
+            // Recargar página para ver la foto
+            window.location.reload();
+        } else {
+            alert('Error: ' + data.message);
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al subir la foto');
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    });
+}
+
 function eliminarProducto(id, nombre) {
     if (confirm(`¿Estás seguro de que quieres eliminar el producto "${nombre}"?`)) {
         // Mostrar indicador de carga

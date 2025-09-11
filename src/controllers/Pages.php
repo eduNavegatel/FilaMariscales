@@ -386,9 +386,38 @@ class Pages extends Controller {
 
     // Página de tienda
     public function tienda() {
+        $products = [];
+        
+        try {
+            // Usar la misma lógica que AdminController
+            $pdo = new PDO('mysql:host=localhost;dbname=mariscales_db', 'root', '');
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
+            // Consulta más robusta
+            $stmt = $pdo->query("SELECT * FROM productos ORDER BY id DESC");
+            $all_products = $stmt->fetchAll(PDO::FETCH_OBJ);
+            
+            // Filtrar solo los activos si existe la columna activo
+            foreach ($all_products as $product) {
+                if (property_exists($product, 'activo')) {
+                    if ($product->activo == 1) {
+                        $products[] = $product;
+                    }
+                } else {
+                    // Si no hay columna activo, mostrar todos
+                    $products[] = $product;
+                }
+            }
+            
+        } catch (Exception $e) {
+            error_log("Error obteniendo productos para tienda: " . $e->getMessage());
+            $products = [];
+        }
+        
         $data = [
             'title' => 'Tienda Online',
-            'description' => 'Compra los artículos oficiales de la Filá Mariscales'
+            'description' => 'Compra los artículos oficiales de la Filá Mariscales',
+            'products' => $products
         ];
         $this->view('pages/tienda', $data);
     }

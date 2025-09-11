@@ -1697,5 +1697,89 @@ class AdminController extends Controller {
             exit;
         }
     }
+
+    // Subir foto de producto
+    public function uploadProductPhoto() {
+        // Configurar headers para JSON
+        header('Content-Type: application/json');
+        
+        if (!isAdminLoggedIn()) {
+            http_response_code(401);
+            echo json_encode(['success' => false, 'message' => 'No autorizado']);
+            return;
+        }
+
+        if (!isset($_FILES['photo']) || $_FILES['photo']['error'] !== UPLOAD_ERR_OK) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Error al subir el archivo: ' . ($_FILES['photo']['error'] ?? 'Archivo no encontrado')]);
+            return;
+        }
+
+        $file = $_FILES['photo'];
+        $product_id = $_POST['product_id'] ?? null;
+        
+        if (!$product_id) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'ID de producto requerido']);
+            return;
+        }
+
+        $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+        $max_size = 5 * 1024 * 1024; // 5MB
+
+        if (!in_array($file['type'], $allowed_types)) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Tipo de archivo no permitido. Solo se permiten JPG, PNG y GIF']);
+            return;
+        }
+
+        if ($file['size'] > $max_size) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'El archivo es demasiado grande. Máximo 5MB']);
+            return;
+        }
+
+        try {
+            $upload_dir = 'public/uploads/products/';
+            
+            // Crear directorio si no existe
+            if (!is_dir($upload_dir)) {
+                if (!mkdir($upload_dir, 0755, true)) {
+                    throw new Exception('No se pudo crear el directorio de uploads');
+                }
+            }
+
+            // Verificar permisos de escritura
+            if (!is_writable($upload_dir)) {
+                throw new Exception('El directorio no tiene permisos de escritura');
+            }
+
+            $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+            $filename = 'product_' . $product_id . '_' . time() . '.' . $extension;
+            $filepath = $upload_dir . $filename;
+
+            if (move_uploaded_file($file['tmp_name'], $filepath)) {
+                // Actualizar en la base de datos
+                try {
+                    $pdo = new PDO('mysql:host=localhost;dbname=mariscales_db', 'root', '');
+                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    
+                    $stmt = $pdo->prepare("UPDATE productos SET imagen = ?, updated_at = NOW() WHERE id = ?");
+                    $stmt->execute([$filename, $product_id]);
+                    
+                    echo json_encode(['success' => true, 'message' => 'Foto subida correctamente', 'filename' => $filename]);
+                } catch (PDOException $e) {
+                    // Si falla la BD, al menos el archivo se subió
+                    echo json_encode(['success' => true, 'message' => 'Foto subida correctamente (error al actualizar BD)', 'filename' => $filename]);
+                }
+            } else {
+                http_response_code(500);
+                echo json_encode(['success' => false, 'message' => 'Error al guardar el archivo en el servidor']);
+            }
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+        }
+    }
 }
 

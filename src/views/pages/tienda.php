@@ -1,5 +1,5 @@
-<?php $content = '\n';
-ob_start(); // Start output buffering
+<?php
+// Página de Tienda Online - Filá Mariscales
 ?>
 
 <!-- Hero Section -->
@@ -13,197 +13,280 @@ ob_start(); // Start output buffering
 <!-- Main Content -->
 <section class="py-5">
     <div class="container">
-        <!-- Categories -->
+        
+        <!-- Estadísticas de la Tienda -->
+        <div class="row mb-5">
+            <div class="col-md-3 col-6 mb-3">
+                <div class="text-center">
+                    <div class="display-6 text-primary fw-bold"><?= count($products) ?></div>
+                    <small class="text-muted">Productos Disponibles</small>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+                <div class="text-center">
+                    <div class="display-6 text-success fw-bold">100%</div>
+                    <small class="text-muted">Oficiales</small>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+                <div class="text-center">
+                    <div class="display-6 text-warning fw-bold">24h</div>
+                    <small class="text-muted">Envío Rápido</small>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+                <div class="text-center">
+                    <div class="display-6 text-info fw-bold">1975</div>
+                    <small class="text-muted">Desde</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filtros de Categorías -->
         <div class="row mb-5">
             <div class="col-12">
                 <div class="d-flex flex-wrap justify-content-center gap-3">
-                    <button class="btn btn-outline-primary active">Todos los productos</button>
-                    <button class="btn btn-outline-primary">Ropa</button>
-                    <button class="btn btn-outline-primary">Accesorios</button>
-                    <button class="btn btn-outline-primary">Música</button>
-                    <button class="btn btn-outline-primary">Recuerdos</button>
+                    <button class="btn btn-outline-primary active" onclick="filterProducts('all')">
+                        <i class="bi bi-grid me-2"></i>Todos los productos
+                    </button>
+                    <button class="btn btn-outline-primary" onclick="filterProducts('Ropa')">
+                        <i class="bi bi-shirt me-2"></i>Ropa
+                    </button>
+                    <button class="btn btn-outline-primary" onclick="filterProducts('Accesorios')">
+                        <i class="bi bi-gem me-2"></i>Accesorios
+                    </button>
+                    <button class="btn btn-outline-primary" onclick="filterProducts('Recuerdos')">
+                        <i class="bi bi-gift me-2"></i>Recuerdos
+                    </button>
                 </div>
             </div>
         </div>
 
-        <!-- Featured Products -->
-        <div class="row mb-5">
-            <div class="col-12 mb-4">
-                <h2 class="fw-bold">Productos Destacados</h2>
-                <p class="text-muted">Los artículos más populares de nuestra tienda</p>
-            </div>
-            
-            <!-- Product 1 -->
-            <div class="col-md-6 col-lg-3 mb-4">
-                <div class="card h-100 border-0 shadow-sm product-card">
-                    <div class="position-relative">
-                        <img src="/mariscales1-php/public/assets/images/tienda/camiseta.jpg" class="card-img-top" alt="Camiseta Oficial">
-                        <div class="badge bg-danger position-absolute top-0 end-0 m-2">¡Nuevo!</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <h5 class="card-title mb-0">Camiseta Oficial 2025</h5>
-                            <div class="text-warning">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star"></i>
+        <!-- Lista de Productos -->
+        <?php if (!empty($products)): ?>
+            <div class="row" id="products-container">
+                <?php foreach ($products as $product): ?>
+                    <div class="col-md-6 col-lg-4 col-xl-3 mb-4 product-item" data-category="<?= trim($product->categoria ?? 'General') ?>">
+                        <div class="card h-100 border-0 shadow-sm product-card">
+                            <div class="position-relative">
+                                <?php if (!empty($product->imagen)): ?>
+                                    <img src="public/uploads/products/<?= htmlspecialchars($product->imagen) ?>" 
+                                         class="card-img-top" 
+                                         alt="<?= htmlspecialchars($product->nombre) ?>"
+                                         style="height: 250px; object-fit: cover;">
+                                <?php else: ?>
+                                    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" 
+                                         style="height: 250px;">
+                                        <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                                    </div>
+                                <?php endif; ?>
+                                
+                                <?php if ($product->stock <= 5 && $product->stock > 0): ?>
+                                    <div class="badge bg-warning position-absolute top-0 end-0 m-2">
+                                        ¡Últimas unidades!
+                                    </div>
+                                <?php elseif ($product->stock == 0): ?>
+                                    <div class="badge bg-danger position-absolute top-0 end-0 m-2">
+                                        Agotado
+                                    </div>
+                                <?php else: ?>
+                                    <div class="badge bg-success position-absolute top-0 end-0 m-2">
+                                        Disponible
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            
+                            <div class="card-body d-flex flex-column">
+                                <div class="mb-2">
+                                    <h5 class="card-title mb-1"><?= htmlspecialchars($product->nombre) ?></h5>
+                                    <small class="text-muted"><?= htmlspecialchars($product->categoria ?? 'General') ?></small>
+                                </div>
+                                
+                                <p class="card-text text-muted small flex-grow-1">
+                                    <?= htmlspecialchars(substr($product->descripcion ?? 'Sin descripción', 0, 100)) ?>
+                                    <?php if (strlen($product->descripcion ?? '') > 100): ?>...<?php endif; ?>
+                                </p>
+                                
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <span class="h5 text-primary mb-0"><?= number_format($product->precio, 2) ?>€</span>
+                                        <?php if (!empty($product->precio_original) && $product->precio_original > $product->precio): ?>
+                                            <small class="text-muted text-decoration-line-through ms-2">
+                                                <?= number_format($product->precio_original, 2) ?>€
+                                            </small>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="text-warning">
+                                        <?php 
+                                        $rating = $product->rating ?? 5;
+                                        for ($i = 1; $i <= 5; $i++): 
+                                        ?>
+                                            <i class="bi bi-star<?= $i <= $rating ? '-fill' : '' ?>"></i>
+                                        <?php endfor; ?>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex gap-2">
+                                    <?php if ($product->stock > 0): ?>
+                                        <button class="btn btn-primary flex-grow-1" onclick="addToCart(<?= $product->id ?>)">
+                                            <i class="bi bi-cart-plus me-1"></i>Añadir al Carrito
+                                        </button>
+                                    <?php else: ?>
+                                        <button class="btn btn-secondary flex-grow-1" disabled>
+                                            <i class="bi bi-x-circle me-1"></i>Agotado
+                                        </button>
+                                    <?php endif; ?>
+                                    <button class="btn btn-outline-primary" onclick="viewProduct(<?= $product->id ?>)">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                                
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        <i class="bi bi-box me-1"></i>Stock: <?= $product->stock ?>
+                                    </small>
+                                </div>
                             </div>
                         </div>
-                        <p class="text-muted small">Camiseta oficial de la Filá Mariscales temporada 2024-2025</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0 text-danger">25,00 €</h5>
-                            <button class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-cart-plus"></i> Añadir
-                            </button>
-                        </div>
                     </div>
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+            <!-- Sin Productos -->
+            <div class="row">
+                <div class="col-12 text-center py-5">
+                    <div class="mb-4">
+                        <i class="bi bi-shop text-muted" style="font-size: 4rem;"></i>
+                    </div>
+                    <h3 class="text-muted mb-3">No hay productos disponibles</h3>
+                    <p class="text-muted mb-4">Pronto tendremos productos oficiales de la Filá Mariscales disponibles para ti.</p>
+                    <a href="/prueba-php/public/contacto" class="btn btn-primary">
+                        <i class="bi bi-envelope me-2"></i>Contactar para más información
+                    </a>
                 </div>
             </div>
-            
-            <!-- Product 2 -->
-            <div class="col-md-6 col-lg-3 mb-4">
-                <div class="card h-100 border-0 shadow-sm product-card">
-                    <img src="/mariscales1-php/public/assets/images/tienda/gorra.jpg" class="card-img-top" alt="Gorra Bordada">
-                    <div class="card-body">
-                        <h5 class="card-title">Gorra Bordada</h5>
-                        <p class="text-muted small">Gorra con el escudo bordado de la Filá Mariscales</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0 text-danger">15,00 €</h5>
-                            <button class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-cart-plus"></i> Añadir
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Product 3 -->
-            <div class="col-md-6 col-lg-3 mb-4">
-                <div class="card h-100 border-0 shadow-sm product-card">
-                    <div class="position-relative">
-                        <img src="/mariscales1-php/public/assets/images/tienda/cd.jpg" class="card-img-top" alt="CD Música">
-                        <div class="badge bg-success position-absolute top-0 end-0 m-2">¡Más vendido!</div>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">CD Música Oficial</h5>
-                        <p class="text-muted small">Recopilación de nuestras mejores marchas y pasodobles</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0 text-danger">12,00 €</h5>
-                            <button class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-cart-plus"></i> Añadir
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Product 4 -->
-            <div class="col-md-6 col-lg-3 mb-4">
-                <div class="card h-100 border-0 shadow-sm product-card">
-                    <img src="/mariscales1-php/public/assets/images/tienda/bandera.jpg" class="card-img-top" alt="Bandera">
-                    <div class="card-body">
-                        <h5 class="card-title">Bandera Oficial</h5>
-                        <p class="text-muted small">Bandera oficial de la Filá Mariscales (100x150cm)</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0 text-danger">35,00 €</h5>
-                            <button class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-cart-plus"></i> Añadir
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- All Products -->
-        <div class="row">
-            <div class="col-12 mb-4">
-                <h2 class="fw-bold">Todos los Productos</h2>
-                <div class="d-flex justify-content-between align-items-center">
-                    <p class="text-muted mb-0">Descubre nuestra amplia gama de productos</p>
-                    <div class="d-flex align-items-center">
-                        <label for="sortBy" class="me-2 mb-0">Ordenar por:</label>
-                        <select class="form-select form-select-sm" style="width: auto;">
-                            <option selected>Destacados</option>
-                            <option>Precio: menor a mayor</option>
-                            <option>Precio: mayor a menor</option>
-                            <option>Más recientes</option>
-                            <option>Más vendidos</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Product Grid -->
-            <?php for($i = 1; $i <= 8; $i++): ?>
-            <div class="col-md-6 col-lg-3 mb-4">
-                <div class="card h-100 border-0 shadow-sm product-card">
-                    <img src="/mariscales1-php/public/assets/images/tienda/producto<?php echo ($i % 4) + 1; ?>.jpg" class="card-img-top" alt="Producto <?php echo $i; ?>">
-                    <div class="card-body">
-                        <h5 class="card-title">Producto <?php echo $i; ?></h5>
-                        <p class="text-muted small">Descripción breve del producto <?php echo $i; ?></p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0 text-danger"><?php echo (10 + $i * 2); ?>,00 €</h5>
-                            <button class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-cart-plus"></i> Añadir
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php endfor; ?>
-        </div>
-        
-        <!-- Pagination -->
-        <nav aria-label="Page navigation" class="mt-5">
-            <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
-                </li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">Siguiente</a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-</section>
+        <?php endif; ?>
 
-<!-- Shopping Cart Sidebar -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="shoppingCart" aria-labelledby="shoppingCartLabel">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="shoppingCartLabel">Mi Carrito</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body">
-        <div class="text-center py-5">
-            <i class="bi bi-cart-x display-1 text-muted"></i>
-            <p class="mt-3">Tu carrito está vacío</p>
-            <button class="btn btn-primary mt-2" data-bs-dismiss="offcanvas">Seguir comprando</button>
-        </div>
-    </div>
-</div>
-
-<!-- Newsletter Section -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 text-center">
-                <h3 class="fw-bold mb-4">¿Quieres estar al día de nuestras novedades?</h3>
-                <p class="text-muted mb-4">Suscríbete a nuestro boletín y recibe ofertas exclusivas y novedades sobre nuevos productos.</p>
-                <form class="row g-3 justify-content-center">
-                    <div class="col-md-8">
-                        <input type="email" class="form-control form-control-lg" placeholder="Tu correo electrónico">
+        <!-- Información de Envío -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card bg-light border-0">
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-md-3 mb-3">
+                                <i class="bi bi-truck text-primary mb-2" style="font-size: 2rem;"></i>
+                                <h6>Envío Gratis</h6>
+                                <small class="text-muted">En pedidos superiores a 50€</small>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <i class="bi bi-shield-check text-success mb-2" style="font-size: 2rem;"></i>
+                                <h6>Pago Seguro</h6>
+                                <small class="text-muted">Protegido con SSL</small>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <i class="bi bi-arrow-clockwise text-warning mb-2" style="font-size: 2rem;"></i>
+                                <h6>Devoluciones</h6>
+                                <small class="text-muted">30 días de garantía</small>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <i class="bi bi-headset text-info mb-2" style="font-size: 2rem;"></i>
+                                <h6>Soporte 24/7</h6>
+                                <small class="text-muted">Atención personalizada</small>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-auto">
-                        <button type="submit" class="btn btn-primary btn-lg">Suscribirse</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
 </section>
+
+<script>
+// Filtrar productos por categoría
+function filterProducts(category) {
+    const products = document.querySelectorAll('.product-item');
+    const buttons = document.querySelectorAll('.btn-outline-primary');
+    
+    // Actualizar botones activos
+    buttons.forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    // Filtrar productos
+    products.forEach(product => {
+        const productCategory = product.dataset.category.trim();
+        const filterCategory = category.trim();
+        
+        if (category === 'all' || productCategory === filterCategory) {
+            product.style.display = 'block';
+        } else {
+            product.style.display = 'none';
+        }
+    });
+    
+    // Mostrar mensaje si no hay productos en la categoría
+    const visibleProducts = document.querySelectorAll('.product-item[style*="block"], .product-item:not([style*="none"])');
+    const noProductsMessage = document.getElementById('no-products-message');
+    
+    if (visibleProducts.length === 0 && category !== 'all') {
+        if (!noProductsMessage) {
+            const message = document.createElement('div');
+            message.id = 'no-products-message';
+            message.className = 'col-12 text-center py-5';
+            message.innerHTML = `
+                <div class="mb-4">
+                    <i class="bi bi-search text-muted" style="font-size: 4rem;"></i>
+                </div>
+                <h3 class="text-muted mb-3">No hay productos en esta categoría</h3>
+                <p class="text-muted mb-4">Pronto tendremos productos de ${category} disponibles.</p>
+                <button class="btn btn-primary" onclick="filterProducts('all')">
+                    <i class="bi bi-grid me-2"></i>Ver todos los productos
+                </button>
+            `;
+            document.getElementById('products-container').appendChild(message);
+        }
+    } else if (noProductsMessage) {
+        noProductsMessage.remove();
+    }
+}
+
+// Añadir al carrito
+function addToCart(productId) {
+    // Aquí se implementaría la lógica del carrito
+    alert('Producto añadido al carrito (ID: ' + productId + ')');
+}
+
+// Ver producto
+function viewProduct(productId) {
+    // Aquí se implementaría la vista detallada del producto
+    alert('Ver producto (ID: ' + productId + ')');
+}
+
+// Debug: Mostrar categorías disponibles (solo en desarrollo)
+document.addEventListener('DOMContentLoaded', function() {
+    const products = document.querySelectorAll('.product-item');
+    const categories = new Set();
+    
+    products.forEach(product => {
+        categories.add(product.dataset.category);
+    });
+    
+    console.log('Categorías disponibles:', Array.from(categories));
+});
+</script>
+
+<style>
+.product-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+}
+
+.btn-outline-primary.active {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+</style>
