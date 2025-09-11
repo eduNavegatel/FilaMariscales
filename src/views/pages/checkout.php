@@ -10,7 +10,7 @@
                     <!-- Formulario de Checkout -->
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="mb-0">
+                            <h5 class="mb-0 text-white">
                                 <i class="bi bi-person me-2"></i>Información de Envío
                             </h5>
                         </div>
@@ -78,7 +78,7 @@
                                 <!-- Cupón de Descuento -->
                                 <div class="card mt-4">
                                     <div class="card-header">
-                                        <h6 class="mb-0">
+                                        <h6 class="mb-0 text-white">
                                             <i class="bi bi-ticket-perforated me-2"></i>Cupón de Descuento
                                         </h6>
                                     </div>
@@ -101,7 +101,7 @@
                                 <!-- Método de Pago -->
                                 <div class="card mt-4">
                                     <div class="card-header">
-                                        <h6 class="mb-0">
+                                        <h6 class="mb-0 text-white">
                                             <i class="bi bi-credit-card me-2"></i>Método de Pago
                                         </h6>
                                     </div>
@@ -169,7 +169,7 @@
                     <!-- Resumen del Pedido -->
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="mb-0">
+                            <h5 class="mb-0 text-white">
                                 <i class="bi bi-receipt me-2"></i>Resumen del Pedido
                             </h5>
                         </div>
@@ -314,11 +314,16 @@ document.getElementById('checkoutForm').addEventListener('submit', function(e) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Mostrar mensaje de éxito
-            alert('¡Pedido procesado correctamente! ID: ' + data.pedido_id);
-            
-            // Redirigir a página de confirmación
-            window.location.href = '/prueba-php/public/order/confirmation/' + data.pedido_id;
+            if (data.payment_required) {
+                // Procesar pago según el método seleccionado
+                processPayment(data.pedido_id, data.total, data.payment_method, formData);
+            } else {
+                // Mostrar mensaje de éxito
+                alert('¡Pedido procesado correctamente! ID: ' + data.pedido_id);
+                
+                // Redirigir a página de confirmación
+                window.location.href = '/prueba-php/public/order/confirmation/' + data.pedido_id;
+            }
         } else {
             alert('Error: ' + data.message);
             submitBtn.innerHTML = originalText;
@@ -332,4 +337,126 @@ document.getElementById('checkoutForm').addEventListener('submit', function(e) {
         submitBtn.disabled = false;
     });
 });
+
+// Procesar pago según el método seleccionado
+function processPayment(pedido_id, total, payment_method, formData) {
+    const email = formData.get('email');
+    
+    switch (payment_method) {
+        case 'tarjeta':
+            processStripePayment(pedido_id, total, email);
+            break;
+        case 'paypal':
+            processPayPalPayment(pedido_id, total, email);
+            break;
+        case 'transferencia':
+            processBankTransfer(pedido_id, email);
+            break;
+        case 'contra_entrega':
+            // Para contra entrega, no se requiere pago online
+            alert('¡Pedido confirmado! Te contactaremos para coordinar la entrega y el pago.');
+            window.location.href = '/prueba-php/public/order/confirmation/' + pedido_id;
+            break;
+        default:
+            alert('Método de pago no válido');
+    }
+}
+
+// Procesar pago con Stripe
+function processStripePayment(pedido_id, total, email) {
+    // Simular token de Stripe (en producción se obtendría del frontend de Stripe)
+    const stripe_token = 'tok_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    const paymentData = {
+        stripe_token: stripe_token,
+        amount: total,
+        email: email,
+        pedido_id: pedido_id
+    };
+    
+    fetch('/prueba-php/public/payment/stripe', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(paymentData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('¡Pago procesado correctamente! ID de transacción: ' + data.transaction_id);
+            window.location.href = '/prueba-php/public/order/confirmation/' + pedido_id;
+        } else {
+            alert('Error en el pago: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al procesar el pago');
+    });
+}
+
+// Procesar pago con PayPal
+function processPayPalPayment(pedido_id, total, email) {
+    const paymentData = {
+        amount: total,
+        email: email,
+        pedido_id: pedido_id
+    };
+    
+    fetch('/prueba-php/public/payment/paypal', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(paymentData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            if (data.redirect_url) {
+                // Redirigir a PayPal
+                window.location.href = data.redirect_url;
+            } else {
+                alert('¡Pago procesado correctamente! ID de transacción: ' + data.transaction_id);
+                window.location.href = '/prueba-php/public/order/confirmation/' + pedido_id;
+            }
+        } else {
+            alert('Error en el pago: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al procesar el pago');
+    });
+}
+
+// Procesar transferencia bancaria
+function processBankTransfer(pedido_id, email) {
+    const paymentData = {
+        pedido_id: pedido_id,
+        email: email
+    };
+    
+    fetch('/prueba-php/public/payment/bank-transfer', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(paymentData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('¡Instrucciones de transferencia enviadas por correo! Revisa tu email para completar el pago.');
+            window.location.href = '/prueba-php/public/order/confirmation/' + pedido_id;
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al procesar la transferencia');
+    });
+}
 </script>

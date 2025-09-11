@@ -12,6 +12,7 @@ require_once 'src/controllers/Controller.php';
 require_once 'src/controllers/Pages.php';
 require_once 'src/controllers/CartController.php';
 require_once 'src/controllers/OrderController.php';
+require_once 'src/controllers/PaymentController.php';
 
 // Load AdminController early to ensure functions are available
 if (file_exists('src/controllers/AdminController.php')) {
@@ -29,6 +30,7 @@ $url = isset($_GET['url']) ? explode('/', filter_var(rtrim($_GET['url'], '/'), F
 $controller = new Pages();
 $cartController = new CartController();
 $orderController = new OrderController();
+$paymentController = new PaymentController();
 
 // Route the request
 if (empty($url[0])) {
@@ -111,8 +113,23 @@ if (empty($url[0])) {
         $orderController->clearWishlist();
     } elseif ($action === 'wishlist') {
         $orderController->getWishlist();
+    } elseif ($action === 'confirmation' && isset($url[2])) {
+        $orderController->showConfirmation($url[2]);
     } else {
         $orderController->checkout();
+    }
+} elseif ($url[0] === 'payment') {
+    // Payment routes
+    $action = isset($url[1]) ? $url[1] : 'stripe';
+    
+    if ($action === 'stripe') {
+        $paymentController->processStripePayment();
+    } elseif ($action === 'paypal') {
+        $paymentController->processPayPalPayment();
+    } elseif ($action === 'bank-transfer') {
+        $paymentController->processBankTransfer();
+    } else {
+        $paymentController->processStripePayment();
     }
 } elseif ($url[0] === 'admin') {
     // Admin routes (simple guard + custom login/logout)

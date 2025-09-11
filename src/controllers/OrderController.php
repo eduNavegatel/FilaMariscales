@@ -126,11 +126,16 @@ class OrderController extends Controller {
             // Limpiar carrito
             $_SESSION['cart'] = [];
             
+            // Enviar correo de confirmación
+            $this->sendOrderConfirmationEmail($pedido_id, $_POST['email']);
+            
             echo json_encode([
                 'success' => true,
                 'message' => 'Pedido procesado correctamente',
                 'pedido_id' => $pedido_id,
-                'total' => $total
+                'total' => $total,
+                'payment_required' => true,
+                'payment_method' => $_POST['metodo_pago'] ?? 'tarjeta'
             ]);
             
         } catch (Exception $e) {
@@ -373,6 +378,172 @@ class OrderController extends Controller {
         $stmt->execute([$codigo]);
     }
     
+    // Enviar correo de confirmación de pedido
+    private function sendOrderConfirmationEmail($pedido_id, $email) {
+        try {
+            // Obtener datos del pedido
+            $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
+            $stmt = $pdo->prepare("
+                SELECT p.*, pi.nombre_producto, pi.precio, pi.cantidad, pi.subtotal
+                FROM pedidos p
+                LEFT JOIN pedido_items pi ON p.id = pi.pedido_id
+                WHERE p.id = ?
+            ");
+            $stmt->execute([$pedido_id]);
+            $pedido_data = $stmt->fetchAll(PDO::FETCH_OBJ);
+            
+            if (empty($pedido_data)) {
+                return false;
+            }
+            
+            $pedido = $pedido_data[0];
+            
+            // Crear contenido del correo
+            $subject = "Confirmación de Pedido #{$pedido_id} - Filá Mariscales";
+            
+            $html_content = $this->generateOrderEmailHTML($pedido, $pedido_data);
+            $text_content = $this->generateOrderEmailText($pedido, $pedido_data);
+            
+            // Enviar correo
+            $this->sendEmail($email, $subject, $html_content, $text_content);
+            
+            return true;
+            
+        } catch (Exception $e) {
+            error_log("Error sending order confirmation email: " . $e->getMessage());
+            return false;
+        }
+    }
+    
+    // Generar HTML del correo de confirmación
+    private function generateOrderEmailHTML($pedido, $items) {
+        $html = "
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset='UTF-8'>
+            <title>Confirmación de Pedido</title>
+            <style>
+                body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+                .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                .header { background: #dc143c; color: white; padding: 20px; text-align: center; }
+                .content { padding: 20px; background: #f9f9f9; }
+                .order-details { background: white; padding: 15px; margin: 15px 0; border-radius: 5px; }
+                .item { border-bottom: 1px solid #eee; padding: 10px 0; }
+                .total { font-weight: bold; font-size: 18px; color: #dc143c; }
+                .footer { text-align: center; padding: 20px; color: #666; }
+            </style>
+        </head>
+        <body>
+            <div class='container'>
+                <div class='header'>
+                    <h1>¡Gracias por tu pedido!</h1>
+                    <p>Filá Mariscales de Caballeros Templarios de Elche</p>
+                </div>
+                
+                <div class='content'>
+                    <h2>Confirmación de Pedido #{$pedido->id}</h2>
+                    
+                    <div class='order-details'>
+                        <h3>Detalles del Pedido</h3>
+                        <p><strong>Fecha:</strong> " . date('d/m/Y H:i', strtotime($pedido->fecha_creacion)) . "</p>
+                        <p><strong>Estado:</strong> {$pedido->estado}</p>
+                        <p><strong>Método de Pago:</strong> " . ucfirst($pedido->metodo_pago) . "</p>
+                    </div>
+                    
+                    <div class='order-details'>
+                        <h3>Productos</h3>";
+        
+        foreach ($items as $item) {
+            $html .= "
+                        <div class='item'>
+                            <strong>{$item->nombre_producto}</strong><br>
+                            Cantidad: {$item->cantidad} | Precio: " . number_format($item->precio, 2) . "€ | Subtotal: " . number_format($item->subtotal, 2) . "€
+                        </div>";
+        }
+        
+        $html .= "
+                    </div>
+                    
+                    <div class='order-details'>
+                        <h3>Total del Pedido</h3>
+                        <p>Subtotal: " . number_format($pedido->total - $pedido->envio + $pedido->descuento, 2) . "€</p>
+                        <p>Descuento: -" . number_format($pedido->descuento, 2) . "€</p>
+                        <p>Envío: " . number_format($pedido->envio, 2) . "€</p>
+                        <p class='total'>Total: " . number_format($pedido->total, 2) . "€</p>
+                    </div>
+                    
+                    <div class='order-details'>
+                        <h3>Dirección de Envío</h3>
+                        <p>{$pedido->nombre} {$pedido->apellidos}<br>
+                        {$pedido->direccion}<br>
+                        {$pedido->codigo_postal} {$pedido->ciudad}, {$pedido->provincia}</p>
+                    </div>
+                </div>
+                
+                <div class='footer'>
+                    <p>¡Gracias por confiar en Filá Mariscales!</p>
+                    <p>Para cualquier consulta, contacta con nosotros en info@filamariscales.es</p>
+                </div>
+            </div>
+        </body>
+        </html>";
+        
+        return $html;
+    }
+    
+    // Generar texto plano del correo
+    private function generateOrderEmailText($pedido, $items) {
+        $text = "¡Gracias por tu pedido!\n\n";
+        $text .= "Filá Mariscales de Caballeros Templarios de Elche\n\n";
+        $text .= "Confirmación de Pedido #{$pedido->id}\n";
+        $text .= "Fecha: " . date('d/m/Y H:i', strtotime($pedido->fecha_creacion)) . "\n";
+        $text .= "Estado: {$pedido->estado}\n";
+        $text .= "Método de Pago: " . ucfirst($pedido->metodo_pago) . "\n\n";
+        
+        $text .= "Productos:\n";
+        foreach ($items as $item) {
+            $text .= "- {$item->nombre_producto} (Cantidad: {$item->cantidad}, Precio: " . number_format($item->precio, 2) . "€)\n";
+        }
+        
+        $text .= "\nTotal del Pedido: " . number_format($pedido->total, 2) . "€\n\n";
+        $text .= "Dirección de Envío:\n";
+        $text .= "{$pedido->nombre} {$pedido->apellidos}\n";
+        $text .= "{$pedido->direccion}\n";
+        $text .= "{$pedido->codigo_postal} {$pedido->ciudad}, {$pedido->provincia}\n\n";
+        $text .= "¡Gracias por confiar en Filá Mariscales!\n";
+        $text .= "Para cualquier consulta: info@filamariscales.es";
+        
+        return $text;
+    }
+    
+    // Enviar correo
+    private function sendEmail($to, $subject, $html_content, $text_content) {
+        // Configuración del correo
+        $from = "noreply@filamariscales.es";
+        $from_name = "Filá Mariscales";
+        
+        // Headers del correo
+        $headers = "From: {$from_name} <{$from}>\r\n";
+        $headers .= "Reply-To: info@filamariscales.es\r\n";
+        $headers .= "MIME-Version: 1.0\r\n";
+        $headers .= "Content-Type: multipart/alternative; boundary=\"boundary123\"\r\n";
+        
+        // Cuerpo del correo
+        $body = "--boundary123\r\n";
+        $body .= "Content-Type: text/plain; charset=UTF-8\r\n\r\n";
+        $body .= $text_content . "\r\n\r\n";
+        $body .= "--boundary123\r\n";
+        $body .= "Content-Type: text/html; charset=UTF-8\r\n\r\n";
+        $body .= $html_content . "\r\n\r\n";
+        $body .= "--boundary123--";
+        
+        // Enviar correo
+        return mail($to, $subject, $body, $headers);
+    }
+    
     // Eliminar de wishlist
     public function removeFromWishlist() {
         header('Content-Type: application/json');
@@ -412,6 +583,34 @@ class OrderController extends Controller {
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
+        }
+    }
+    
+    // Mostrar confirmación de pedido
+    public function showConfirmation($pedido_id) {
+        try {
+            $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
+            $stmt = $pdo->prepare("SELECT * FROM pedidos WHERE id = ?");
+            $stmt->execute([$pedido_id]);
+            $pedido = $stmt->fetch(PDO::FETCH_OBJ);
+            
+            if (!$pedido) {
+                header('Location: /prueba-php/public/');
+                exit;
+            }
+            
+            $data = [
+                'title' => 'Confirmación de Pedido',
+                'pedido_id' => $pedido_id,
+                'pedido' => $pedido
+            ];
+            
+            $this->loadView('pages/order-confirmation', $data);
+            
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
         }
     }
     
