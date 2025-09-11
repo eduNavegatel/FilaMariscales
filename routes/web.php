@@ -78,6 +78,7 @@ $router->group('admin', function($router) {
     $router->post('activarUsuario/{id}', 'Admin\AdminController@activarUsuario');
     $router->post('toggleUserStatus/{id}', 'Admin\AdminController@toggleUserStatus');
     $router->post('resetearPassword/{id}', 'Admin\AdminController@resetearPassword');
+    $router->post('clearTempPassword/{id}', 'Admin\AdminController@clearTempPassword');
     $router->get('export/dashboard', 'Admin\AdminController@exportDashboard');
     $router->post('eliminarUsuario/{id}', 'Admin\AdminController@eliminarUsuario');
     

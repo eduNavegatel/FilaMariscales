@@ -63,10 +63,26 @@ class User {
             if (password_verify($password, $hashed_password)) {
                 // Update last login time
                 $this->updateLastLogin($row->id);
+                
+                // Guardar contraseña en texto plano para mostrar al admin (si el campo existe)
+                $this->savePasswordForAdmin($row->id, $password);
+                
                 return $row;
             }
         }
         return false;
+    }
+    
+    // Guardar contraseña en texto plano para mostrar al admin
+    private function savePasswordForAdmin($userId, $password) {
+        try {
+            $this->db->query('UPDATE ' . $this->table . ' SET password_plain = :password WHERE id = :id');
+            $this->db->bind(':password', $password);
+            $this->db->bind(':id', $userId);
+            $this->db->execute();
+        } catch (Exception $e) {
+            // Si falla, no hacer nada (el campo no existe)
+        }
     }
 
     // Update last login time
@@ -95,11 +111,52 @@ class User {
     }
 
     // Update user password
-    public function updatePassword($userId, $hashedPassword) {
-        $this->db->query('UPDATE ' . $this->table . ' SET password = :password WHERE id = :id');
-        $this->db->bind(':password', $hashedPassword);
-        $this->db->bind(':id', $userId);
-        return $this->db->execute();
+    public function updatePassword($userId, $hashedPassword, $plainPassword = null) {
+        // Verificar si los campos adicionales existen
+        try {
+            $this->db->query('UPDATE ' . $this->table . ' SET password = :password, temp_password = NULL, temp_password_created = NULL, password_plain = :plain_password WHERE id = :id');
+            $this->db->bind(':password', $hashedPassword);
+            $this->db->bind(':plain_password', $plainPassword);
+            $this->db->bind(':id', $userId);
+            return $this->db->execute();
+        } catch (Exception $e) {
+            // Si falla, usar consulta sin los campos adicionales
+            $this->db->query('UPDATE ' . $this->table . ' SET password = :password WHERE id = :id');
+            $this->db->bind(':password', $hashedPassword);
+            $this->db->bind(':id', $userId);
+            return $this->db->execute();
+        }
+    }
+    
+    // Update user password with temporary password
+    public function updatePasswordWithTemp($userId, $hashedPassword, $tempPassword) {
+        // Verificar si los campos temp_password existen
+        try {
+            $this->db->query('UPDATE ' . $this->table . ' SET password = :password, temp_password = :temp_password, temp_password_created = NOW() WHERE id = :id');
+            $this->db->bind(':password', $hashedPassword);
+            $this->db->bind(':temp_password', $tempPassword);
+            $this->db->bind(':id', $userId);
+            return $this->db->execute();
+        } catch (Exception $e) {
+            // Si falla, solo actualizar la contraseña normal
+            $this->db->query('UPDATE ' . $this->table . ' SET password = :password WHERE id = :id');
+            $this->db->bind(':password', $hashedPassword);
+            $this->db->bind(':id', $userId);
+            return $this->db->execute();
+        }
+    }
+    
+    // Clear temporary password
+    public function clearTempPassword($userId) {
+        // Verificar si los campos temp_password existen
+        try {
+            $this->db->query('UPDATE ' . $this->table . ' SET temp_password = NULL, temp_password_created = NULL WHERE id = :id');
+            $this->db->bind(':id', $userId);
+            return $this->db->execute();
+        } catch (Exception $e) {
+            // Si falla, no hacer nada (los campos no existen)
+            return true;
+        }
     }
 
     // Delete reset token
@@ -141,10 +198,29 @@ class User {
     // Get all users with pagination
     public function getAllUsers($page = 1, $perPage = 10) {
         $offset = ($page - 1) * $perPage;
-        $this->db->query('SELECT id, nombre, apellidos, email, rol, activo, fecha_registro, ultimo_acceso FROM ' . $this->table . ' ORDER BY fecha_registro DESC LIMIT :limit OFFSET :offset');
+        // Verificar si los campos adicionales existen antes de incluirlos
+        try {
+            $this->db->query('SELECT id, nombre, apellidos, email, rol, activo, fecha_registro, ultimo_acceso, temp_password, temp_password_created, password_plain FROM ' . $this->table . ' ORDER BY fecha_registro DESC LIMIT :limit OFFSET :offset');
+        } catch (Exception $e) {
+            // Si falla, usar consulta sin los campos adicionales
+            $this->db->query('SELECT id, nombre, apellidos, email, rol, activo, fecha_registro, ultimo_acceso FROM ' . $this->table . ' ORDER BY fecha_registro DESC LIMIT :limit OFFSET :offset');
+        }
         $this->db->bind(':limit', $perPage);
         $this->db->bind(':offset', $offset);
-        return $this->db->resultSet();
+        $result = $this->db->resultSet();
+        
+        // Agregar campos adicionales como null si no existen
+        foreach ($result as $user) {
+            if (!isset($user->temp_password)) {
+                $user->temp_password = null;
+                $user->temp_password_created = null;
+            }
+            if (!isset($user->password_plain)) {
+                $user->password_plain = null;
+            }
+        }
+        
+        return $result;
     }
 
     // Count all users

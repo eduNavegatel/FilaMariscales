@@ -1147,25 +1147,80 @@ class AdminController extends Controller {
     // User Management - Reset password
     public function resetearPassword($id) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $newPassword = trim($_POST['new_password']);
+            $newPassword = trim($_POST['new_password'] ?? '');
+            $confirmPassword = trim($_POST['confirm_password'] ?? '');
             
-            if (strlen($newPassword) >= 6) {
+            // Validar contraseña
+            if (empty($newPassword)) {
+                setFlashMessage('error', 'La contraseña es requerida');
+            } elseif (strlen($newPassword) < 6) {
+                setFlashMessage('error', 'La contraseña debe tener al menos 6 caracteres');
+            } elseif ($newPassword !== $confirmPassword) {
+                setFlashMessage('error', 'Las contraseñas no coinciden');
+            } else {
+                // Hash la nueva contraseña
                 $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
                 
                 if ($this->userModel) {
-                    $result = $this->userModel->updatePassword($id, $hashedPassword);
+                    // Actualizar contraseña (definitiva, no temporal) y guardar en texto plano
+                    $result = $this->userModel->updatePassword($id, $hashedPassword, $newPassword);
                     if ($result) {
-                        setFlashMessage('success', 'Contraseña actualizada correctamente');
+                        // Obtener datos del usuario para mostrar en el mensaje
+                        $user = $this->userModel->getUserById($id);
+                        $userName = $user ? $user->nombre . ' ' . $user->apellidos : 'Usuario';
+                        
+                        // Mostrar confirmación
+                        setFlashMessage('success', "Contraseña actualizada correctamente para {$userName}.<br><small class='text-muted'>El usuario puede usar esta contraseña inmediatamente.</small>");
                     } else {
                         setFlashMessage('error', 'Error al actualizar la contraseña');
                     }
                 }
-            } else {
-                setFlashMessage('error', 'La contraseña debe tener al menos 6 caracteres');
             }
         }
         
         $this->redirect('/admin/usuarios');
+    }
+    
+    // Limpiar contraseña temporal
+    public function clearTempPassword($id) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if ($this->userModel) {
+                $result = $this->userModel->clearTempPassword($id);
+                if ($result) {
+                    setFlashMessage('success', 'Contraseña temporal eliminada correctamente');
+                } else {
+                    setFlashMessage('error', 'Error al eliminar la contraseña temporal');
+                }
+            }
+        }
+        
+        $this->redirect('/admin/usuarios');
+    }
+    
+    // Generar contraseña segura aleatoria
+    private function generateSecurePassword($length = 6) {
+        // Caracteres que son fáciles de distinguir (sin 0, O, l, I, 1)
+        $lowercase = 'abcdefghijkmnopqrstuvwxyz';
+        $uppercase = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+        $numbers = '23456789';
+        $symbols = '!@#$%^&*';
+        
+        $password = '';
+        
+        // Asegurar al menos un carácter de cada tipo
+        $password .= $lowercase[rand(0, strlen($lowercase) - 1)];
+        $password .= $uppercase[rand(0, strlen($uppercase) - 1)];
+        $password .= $numbers[rand(0, strlen($numbers) - 1)];
+        $password .= $symbols[rand(0, strlen($symbols) - 1)];
+        
+        // Completar con caracteres aleatorios
+        $allChars = $lowercase . $uppercase . $numbers . $symbols;
+        for ($i = 4; $i < $length; $i++) {
+            $password .= $allChars[rand(0, strlen($allChars) - 1)];
+        }
+        
+        // Mezclar la contraseña
+        return str_shuffle($password);
     }
     
     // User Management - Toggle user status (AJAX)

@@ -125,6 +125,14 @@ if (empty($url[0])) {
             } elseif ($action === 'productos') {
                 // Manejar la ruta productos
                 $adminController->productos();
+            } elseif ($action === 'editar-producto') {
+                // Manejar la ruta editar-producto
+                $id = isset($url[2]) ? $url[2] : null;
+                $adminController->editarProducto($id);
+            } elseif ($action === 'eliminar-producto') {
+                // Manejar la ruta eliminar-producto
+                $id = isset($url[2]) ? $url[2] : null;
+                $adminController->eliminarProducto($id);
             } else {
                 $adminController->dashboard();
             }

@@ -35,6 +35,119 @@
             margin-right: 0.25rem;
         }
         
+        /* Estilos para botones de acciones */
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            align-items: center;
+        }
+        
+        .action-btn {
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            text-decoration: none;
+            min-width: auto;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        
+        .action-btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-edit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-edit:hover {
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+            color: white;
+        }
+        
+        .btn-activate {
+            background: linear-gradient(135deg, #56ab2f 0%, #a8e6cf 100%);
+            color: white;
+        }
+        
+        .btn-activate:hover {
+            background: linear-gradient(135deg, #4a9a1f 0%, #98d6bf 100%);
+            color: white;
+        }
+        
+        .btn-deactivate {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffa8a8 100%);
+            color: white;
+        }
+        
+        .btn-deactivate:hover {
+            background: linear-gradient(135deg, #ff5555 0%, #ff9898 100%);
+            color: white;
+        }
+        
+        .btn-password {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        .btn-password:hover {
+            background: linear-gradient(135deg, #ee85eb 0%, #f4475c 100%);
+            color: white;
+        }
+        
+        .btn-delete {
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            color: white;
+        }
+        
+        .btn-delete:hover {
+            background: linear-gradient(135deg, #ff2b5c 0%, #ff3b1b 100%);
+            color: white;
+        }
+        
+        /* Responsive para botones */
+        @media (max-width: 1200px) {
+            .action-btn span {
+                display: none;
+            }
+            
+            .action-btn {
+                padding: 8px;
+                min-width: 36px;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .action-buttons {
+                flex-direction: column;
+                gap: 2px;
+            }
+            
+            .action-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 8px 12px;
+                font-size: 0.85rem;
+            }
+            
+            .action-btn span {
+                display: inline;
+            }
+        }
+        
         /* Modal personalizado */
         .custom-modal {
             display: none;
@@ -139,6 +252,7 @@
                                 <th>ID</th>
                                 <th>Nombre</th>
                                 <th>Email</th>
+                                <th>Contraseña</th>
                                 <th>Rol</th>
                                 <th>Estado</th>
                                 <th>Fecha Registro</th>
@@ -155,6 +269,15 @@
                                         </td>
                                         <td><?= htmlspecialchars($user->email) ?></td>
                                         <td>
+                                            <?php if (!empty($user->password_plain)): ?>
+                                                <code class="password-display" style="background: #f8f9fa; padding: 2px 6px; border-radius: 3px; font-size: 0.85em; color: #495057;">
+                                                    <?= htmlspecialchars($user->password_plain) ?>
+                                                </code>
+                                            <?php else: ?>
+                                                <span class="text-muted">-</span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td>
                                             <span class="badge bg-<?= $user->rol === 'admin' ? 'danger' : ($user->rol === 'socio' ? 'primary' : 'secondary') ?>">
                                                 <?= ucfirst($user->rol) ?>
                                             </span>
@@ -168,46 +291,51 @@
                                         </td>
                                                                                  <td><?= date('d/m/Y H:i', strtotime($user->fecha_registro)) ?></td>
                                         <td>
-                                            <div class="btn-group" role="group">
+                                            <div class="action-buttons">
                                                 <!-- Botón Editar -->
                                                 <button type="button" 
-                                                        class="btn btn-sm btn-outline-primary" 
+                                                        class="action-btn btn-edit" 
                                                         onclick="openEditModal(<?= $user->id ?>, '<?= htmlspecialchars($user->nombre) ?>', '<?= htmlspecialchars($user->apellidos) ?>', '<?= htmlspecialchars($user->email) ?>', '<?= $user->rol ?>', <?= $user->activo ? 'true' : 'false' ?>)"
                                                         title="Editar usuario">
-                                                    <i class="fas fa-edit me-1"></i>Editar
+                                                    <i class="fas fa-edit"></i>
+                                                    <span>Editar</span>
                                                 </button>
                                                 
                                                 <!-- Botón Activar/Desactivar -->
                                                 <?php if ($user->activo): ?>
                                                     <button type="button" 
-                                                            class="btn btn-sm btn-outline-warning"
+                                                            class="action-btn btn-deactivate"
                                                             onclick="toggleUserStatus(<?= $user->id ?>, 'desactivar')"
                                                             title="Desactivar usuario">
-                                                        <i class="fas fa-user-slash me-1"></i>Desactivar
+                                                        <i class="fas fa-user-slash"></i>
+                                                        <span>Desactivar</span>
                                                     </button>
                                                 <?php else: ?>
                                                     <button type="button" 
-                                                            class="btn btn-sm btn-outline-success"
+                                                            class="action-btn btn-activate"
                                                             onclick="toggleUserStatus(<?= $user->id ?>, 'activar')"
                                                             title="Activar usuario">
-                                                        <i class="fas fa-user-check me-1"></i>Activar
+                                                        <i class="fas fa-user-check"></i>
+                                                        <span>Activar</span>
                                                     </button>
                                                 <?php endif; ?>
                                                 
-                                                <!-- Botón Resetear Contraseña -->
+                                                <!-- Botón Cambiar Contraseña -->
                                                 <button type="button" 
-                                                        class="btn btn-sm btn-outline-info"
+                                                        class="action-btn btn-password"
                                                         onclick="openResetModal(<?= $user->id ?>)"
-                                                        title="Resetear contraseña">
-                                                    <i class="fas fa-key me-1"></i>Resetear
+                                                        title="Cambiar contraseña">
+                                                    <i class="fas fa-key"></i>
+                                                    <span>Contraseña</span>
                                                 </button>
                                                 
                                                 <!-- Botón Eliminar -->
                                                 <button type="button" 
-                                                        class="btn btn-sm btn-outline-danger"
+                                                        class="action-btn btn-delete"
                                                         onclick="deleteUser(<?= $user->id ?>)"
                                                         title="Eliminar usuario">
-                                                    <i class="fas fa-trash me-1"></i>Eliminar
+                                                    <i class="fas fa-trash"></i>
+                                                    <span>Eliminar</span>
                                                 </button>
                                             </div>
                                         </td>
@@ -283,8 +411,14 @@
                     </div>
                 </div>
                 <div class="custom-modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="button" class="action-btn btn-deactivate" onclick="closeEditModal()">
+                        <i class="fas fa-times"></i>
+                        <span>Cancelar</span>
+                    </button>
+                    <button type="submit" class="action-btn btn-edit">
+                        <i class="fas fa-save"></i>
+                        <span>Guardar Cambios</span>
+                    </button>
                 </div>
             </form>
         </div>
@@ -294,18 +428,51 @@
     <div id="resetPasswordModal" class="custom-modal">
         <div class="custom-modal-content">
             <div class="custom-modal-header">
-                <h5 class="modal-title">Resetear Contraseña</h5>
+                <h5 class="modal-title">Cambiar Contraseña</h5>
                 <button type="button" class="close" onclick="closeResetModal()">&times;</button>
             </div>
             <form id="resetPasswordForm" method="POST">
                 <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
                 <div class="custom-modal-body">
-                    <p>¿Estás seguro de que quieres resetear la contraseña de este usuario?</p>
-                    <p>Se generará una nueva contraseña aleatoria.</p>
+                    <div class="alert alert-info">
+                        <i class="fas fa-key me-2"></i>
+                        <strong>Cambiar Contraseña</strong>
+                    </div>
+                    <p>Escribe la nueva contraseña para este usuario:</p>
+                    
+                    <div class="mb-3">
+                        <label for="newPassword" class="form-label">Nueva Contraseña</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="newPassword" name="new_password" minlength="6" required>
+                            <button class="btn btn-outline-secondary" type="button" id="toggleNewPassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="form-text">Mínimo 6 caracteres</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="confirmNewPassword" class="form-label">Confirmar Contraseña</label>
+                        <input type="password" class="form-control" id="confirmNewPassword" name="confirm_password" minlength="6" required>
+                        <div class="invalid-feedback" id="passwordMismatch" style="display: none;">
+                            Las contraseñas no coinciden
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Importante:</strong> Esta contraseña será definitiva. El usuario podrá usarla inmediatamente.
+                    </div>
                 </div>
                 <div class="custom-modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="closeResetModal()">Cancelar</button>
-                    <button type="submit" class="btn btn-warning">Resetear Contraseña</button>
+                    <button type="button" class="action-btn btn-deactivate" onclick="closeResetModal()">
+                        <i class="fas fa-times"></i>
+                        <span>Cancelar</span>
+                    </button>
+                    <button type="submit" class="action-btn btn-password">
+                        <i class="fas fa-key"></i>
+                        <span>Cambiar Contraseña</span>
+                    </button>
                 </div>
             </form>
         </div>
@@ -370,8 +537,18 @@
         // Actualizar la acción del formulario
         document.getElementById('resetPasswordForm').action = '/prueba-php/public/admin/resetearPassword/' + userId;
         
+        // Limpiar campos del formulario
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmNewPassword').value = '';
+        document.getElementById('passwordMismatch').style.display = 'none';
+        document.getElementById('confirmNewPassword').classList.remove('is-invalid');
+        
         // Mostrar el modal
         document.getElementById('resetPasswordModal').style.display = 'block';
+        
+        // Inicializar validaciones
+        validatePasswords();
+        togglePasswordVisibility();
     }
 
     // Función para cerrar modal de resetear contraseña
@@ -562,6 +739,70 @@
             window.history.replaceState({}, document.title, window.location.pathname);
         }
     });
+    
+    // Función para limpiar contraseña temporal
+    function clearTempPassword(userId) {
+        if (confirm('¿Estás seguro de que quieres limpiar la contraseña temporal de este usuario?')) {
+            // Crear formulario para enviar la petición
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/prueba-php/public/admin/clearTempPassword/' + userId;
+            
+            // Agregar token CSRF
+            const csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = 'csrf_token';
+            csrfInput.value = '<?= generateCsrfToken() ?>';
+            
+            form.appendChild(csrfInput);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+    
+    // Validación de contraseñas en tiempo real
+    function validatePasswords() {
+        const newPassword = document.getElementById('newPassword');
+        const confirmPassword = document.getElementById('confirmNewPassword');
+        const mismatchDiv = document.getElementById('passwordMismatch');
+        
+        if (newPassword && confirmPassword) {
+            confirmPassword.addEventListener('input', function() {
+                if (newPassword.value !== confirmPassword.value) {
+                    confirmPassword.setCustomValidity('Las contraseñas no coinciden');
+                    mismatchDiv.style.display = 'block';
+                    confirmPassword.classList.add('is-invalid');
+                } else {
+                    confirmPassword.setCustomValidity('');
+                    mismatchDiv.style.display = 'none';
+                    confirmPassword.classList.remove('is-invalid');
+                }
+            });
+            
+            newPassword.addEventListener('input', function() {
+                if (confirmPassword.value) {
+                    confirmPassword.dispatchEvent(new Event('input'));
+                }
+            });
+        }
+    }
+    
+    // Toggle para mostrar/ocultar contraseña
+    function togglePasswordVisibility() {
+        const toggleBtn = document.getElementById('toggleNewPassword');
+        const passwordInput = document.getElementById('newPassword');
+        
+        if (toggleBtn && passwordInput) {
+            toggleBtn.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                const icon = this.querySelector('i');
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+            });
+        }
+    }
     </script>
 </body>
 </html>
