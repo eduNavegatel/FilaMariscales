@@ -677,25 +677,44 @@ body::before {
 .socios-stats .stat-item {
     text-align: center;
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 10px;
-    border: 2px solid var(--primary);
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 15px;
+    border: 2px solid rgba(220, 20, 60, 0.3);
     min-width: 120px;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.socios-stats .stat-item:hover {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(220, 20, 60, 0.2);
 }
 
 .login-section {
-    background: rgba(248, 249, 250, 0.6);
-    backdrop-filter: blur(15px);
+    background: rgba(248, 249, 250, 0.4);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .login-card {
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 25px;
     padding: 2.5rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    border: 2px solid var(--primary);
-    backdrop-filter: blur(15px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    border: 2px solid rgba(220, 20, 60, 0.3);
+    backdrop-filter: blur(25px);
+    transition: all 0.3s ease;
+}
+
+.login-card:hover {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: var(--primary);
+    transform: translateY(-5px);
+    box-shadow: 0 20px 50px rgba(220, 20, 60, 0.2);
 }
 
 .login-header {
@@ -779,16 +798,26 @@ body::before {
 
 /* Dashboard Styles */
 .dashboard-section {
-    background: rgba(248, 249, 250, 0.8);
-    backdrop-filter: blur(10px);
+    background: rgba(248, 249, 250, 0.5);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .welcome-banner {
-    background: linear-gradient(135deg, rgba(220, 20, 60, 0.9) 0%, rgba(139, 0, 0, 0.9) 100%);
-    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(220, 20, 60, 0.8) 0%, rgba(139, 0, 0, 0.8) 100%);
+    border-radius: 25px;
     padding: 2rem;
     color: white;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.welcome-banner:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
 }
 
 .welcome-content {
@@ -835,21 +864,41 @@ body::before {
 }
 
 .action-card {
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
     padding: 2rem;
     text-align: center;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    border: 2px solid transparent;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(220, 20, 60, 0.2);
     transition: all 0.3s ease;
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(20px);
     height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.action-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(220, 20, 60, 0.05) 0%, rgba(255, 255, 255, 0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
 }
 
 .action-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
     border-color: var(--primary);
-    box-shadow: 0 10px 30px rgba(220, 20, 60, 0.2);
+    box-shadow: 0 15px 40px rgba(220, 20, 60, 0.25);
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.action-card:hover::before {
+    opacity: 1;
 }
 
 .action-icon {
@@ -897,11 +946,37 @@ body::before {
 }
 
 .activity-card, .info-card {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(220, 20, 60, 0.3);
+    backdrop-filter: blur(20px);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.activity-card::before, .info-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(220, 20, 60, 0.05) 0%, rgba(255, 255, 255, 0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.activity-card:hover, .info-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(220, 20, 60, 0.2);
     background: rgba(255, 255, 255, 0.7);
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    border: 2px solid var(--primary);
-    backdrop-filter: blur(15px);
+}
+
+.activity-card:hover::before, .info-card:hover::before {
+    opacity: 1;
 }
 
 .card-header {
@@ -922,12 +997,20 @@ body::before {
     display: flex;
     align-items: flex-start;
     gap: 1rem;
-    padding: 1rem 0;
-    border-bottom: 1px solid rgba(233, 236, 239, 0.5);
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
-    backdrop-filter: blur(5px);
+    padding: 1rem;
+    border-bottom: 1px solid rgba(233, 236, 239, 0.3);
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 12px;
+    margin-bottom: 0.8rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.activity-item:hover {
+    background: rgba(255, 255, 255, 0.6);
+    transform: translateX(5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .activity-item:last-child {
@@ -964,12 +1047,20 @@ body::before {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid rgba(233, 236, 239, 0.5);
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
-    backdrop-filter: blur(5px);
+    padding: 1rem;
+    border-bottom: 1px solid rgba(233, 236, 239, 0.3);
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 12px;
+    margin-bottom: 0.8rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.info-item:hover {
+    background: rgba(255, 255, 255, 0.6);
+    transform: translateX(5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .info-item:last-child {
@@ -994,12 +1085,20 @@ body::before {
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 1rem 0;
-    border-bottom: 1px solid rgba(233, 236, 239, 0.5);
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
-    backdrop-filter: blur(5px);
+    padding: 1rem;
+    border-bottom: 1px solid rgba(233, 236, 239, 0.3);
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 12px;
+    margin-bottom: 0.8rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.notification-item:hover {
+    background: rgba(255, 255, 255, 0.6);
+    transform: translateX(5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .notification-item:last-child {
@@ -1037,10 +1136,18 @@ body::before {
     align-items: center;
     gap: 1rem;
     padding: 1rem;
-    background: rgba(220, 20, 60, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 10px;
-    border: 1px solid rgba(220, 20, 60, 0.1);
+    background: rgba(220, 20, 60, 0.15);
+    backdrop-filter: blur(15px);
+    border-radius: 15px;
+    border: 1px solid rgba(220, 20, 60, 0.2);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.stats-grid .stat-item:hover {
+    background: rgba(220, 20, 60, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(220, 20, 60, 0.2);
 }
 
 .stats-grid .stat-icon {
@@ -1092,10 +1199,19 @@ body::before {
     position: relative;
     margin-bottom: 2rem;
     padding-left: 2rem;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
-    padding: 1rem;
-    backdrop-filter: blur(5px);
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 15px;
+    padding: 1.5rem;
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-item:hover {
+    background: rgba(255, 255, 255, 0.6);
+    transform: translateX(5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 .timeline-marker {
@@ -1122,6 +1238,182 @@ body::before {
     font-family: 'Cinzel', serif;
     color: var(--primary);
     margin-bottom: 0.5rem;
+}
+
+.timeline-content p {
+    margin-bottom: 0.5rem;
+}
+
+.timeline-content p i {
+    margin-right: 0.5rem;
+    width: 16px;
+    text-align: center;
+    display: inline-block;
+}
+
+.timeline-content p .ms-3 {
+    margin-left: 1rem !important;
+}
+
+/* Ajustes generales para iconos en toda la página */
+.bi {
+    vertical-align: middle;
+}
+
+/* Espaciado específico para iconos con texto */
+.me-2 {
+    margin-right: 0.5rem !important;
+}
+
+.me-1 {
+    margin-right: 0.25rem !important;
+}
+
+.ms-2 {
+    margin-left: 0.5rem !important;
+}
+
+.ms-3 {
+    margin-left: 1rem !important;
+}
+
+/* Asegurar que los iconos no se superpongan */
+i[class*="bi-"] {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1;
+}
+
+/* Espaciado específico para elementos de timeline */
+.timeline-content p {
+    line-height: 1.6;
+}
+
+.timeline-content p i.bi-calendar3,
+.timeline-content p i.bi-clock,
+.timeline-content p i.bi-geo-alt {
+    margin-right: 0.5rem;
+    margin-left: 0;
+    width: 18px;
+    text-align: center;
+}
+
+/* Espaciado para elementos de actividad */
+.activity-content p i,
+.notification-content p i {
+    margin-right: 0.5rem;
+    width: 16px;
+    text-align: center;
+}
+
+/* Espaciado para botones con iconos */
+.btn i {
+    margin-right: 0.25rem;
+    vertical-align: middle;
+}
+
+/* Espaciado para elementos de información */
+.info-item i {
+    margin-right: 0.5rem;
+    width: 16px;
+    text-align: center;
+}
+
+/* Menú hamburguesa con rayas blancas */
+.navbar-toggler {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.25rem 0.5rem;
+}
+
+.navbar-toggler:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Estilos para el dropdown del usuario en la barra superior */
+.navbar .dropdown-toggle {
+    color: white !important;
+}
+
+.navbar .dropdown-toggle:hover {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.navbar .dropdown-toggle:focus {
+    color: white !important;
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25) !important;
+}
+
+.navbar .dropdown-menu {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(220, 20, 60, 0.2) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+    backdrop-filter: blur(10px) !important;
+    margin-top: 0.5rem !important;
+}
+
+.navbar .dropdown-item {
+    padding: 0.75rem 1rem !important;
+    color: var(--primary) !important;
+    border-radius: 4px !important;
+    margin: 0.25rem 0.5rem !important;
+    transition: all 0.3s ease !important;
+}
+
+.navbar .dropdown-item:hover {
+    background-color: rgba(220, 20, 60, 0.1) !important;
+    color: var(--primary-dark) !important;
+    transform: translateX(5px) !important;
+}
+
+.navbar .dropdown-divider {
+    margin: 0.5rem 0.5rem !important;
+    border-color: rgba(220, 20, 60, 0.2) !important;
+}
+
+/* Estilos para dropdowns en menú hamburguesa */
+@media (max-width: 991.98px) {
+    .navbar-collapse .dropdown-menu {
+        position: static !important;
+        float: none !important;
+        width: 100% !important;
+        margin-top: 0 !important;
+        background-color: rgba(255, 255, 255, 0.95) !important;
+        border: 1px solid rgba(220, 20, 60, 0.2) !important;
+        border-radius: 8px !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+        backdrop-filter: blur(10px) !important;
+        margin-left: 1rem !important;
+        margin-right: 1rem !important;
+    }
+    
+    .navbar-collapse .dropdown-item {
+        padding: 0.75rem 1rem !important;
+        color: var(--primary) !important;
+        border-radius: 4px !important;
+        margin: 0.25rem 0 !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .navbar-collapse .dropdown-item:hover {
+        background-color: rgba(220, 20, 60, 0.1) !important;
+        color: var(--primary-dark) !important;
+        transform: translateX(5px) !important;
+    }
+    
+    .navbar-collapse .dropdown-divider {
+        margin: 0.5rem 1rem !important;
+        border-color: rgba(220, 20, 60, 0.2) !important;
+    }
+    
+    .navbar-collapse .dropdown-toggle::after {
+        float: right !important;
+        margin-top: 0.5rem !important;
+    }
 }
 
 .timeline-actions {
@@ -1162,30 +1454,39 @@ body::before {
 
 /* Modales con transparencia */
 .modal-content {
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(20px);
-    border: 2px solid var(--primary);
-    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(30px);
+    border: 2px solid rgba(220, 20, 60, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
 }
 
 .modal-header {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    background: linear-gradient(135deg, rgba(220, 20, 60, 0.9) 0%, rgba(139, 0, 0, 0.9) 100%);
     color: white;
     border-bottom: 1px solid rgba(220, 20, 60, 0.2);
-    border-radius: 15px 15px 0 0;
+    border-radius: 20px 20px 0 0;
+    backdrop-filter: blur(10px);
 }
 
 .modal-body {
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(15px);
 }
 
 /* Elementos dentro de modales */
 .event-item, .achievement-item, .category-item {
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(220, 20, 60, 0.1);
-    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(220, 20, 60, 0.2);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.event-item:hover, .achievement-item:hover, .category-item:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 </style>
 
@@ -2113,5 +2414,55 @@ document.querySelectorAll('.action-card, .activity-card, .info-card').forEach(it
     item.style.transform = 'translateY(20px)';
     item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
     observer.observe(item);
+});
+
+// Manejar dropdowns en menú hamburguesa
+document.addEventListener('DOMContentLoaded', function() {
+    // Detectar si estamos en móvil/tablet
+    function isMobile() {
+        return window.innerWidth <= 991.98;
+    }
+    
+    // Manejar clicks en dropdowns del menú colapsado
+    document.querySelectorAll('.navbar-collapse .dropdown-toggle').forEach(function(toggle) {
+        toggle.addEventListener('click', function(e) {
+            if (isMobile()) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const dropdown = this.nextElementSibling;
+                const isOpen = dropdown.classList.contains('show');
+                
+                // Cerrar todos los dropdowns abiertos en el menú colapsado
+                document.querySelectorAll('.navbar-collapse .dropdown-menu.show').forEach(function(menu) {
+                    menu.classList.remove('show');
+                });
+                
+                // Abrir/cerrar el dropdown actual
+                if (!isOpen) {
+                    dropdown.classList.add('show');
+                }
+            }
+        });
+    });
+    
+    // Cerrar dropdowns del menú colapsado al hacer click fuera
+    document.addEventListener('click', function(e) {
+        if (isMobile() && !e.target.closest('.navbar-collapse .dropdown')) {
+            document.querySelectorAll('.navbar-collapse .dropdown-menu.show').forEach(function(menu) {
+                menu.classList.remove('show');
+            });
+        }
+    });
+    
+    // Manejar resize de ventana
+    window.addEventListener('resize', function() {
+        if (!isMobile()) {
+            // Cerrar todos los dropdowns del menú colapsado cuando se cambia a desktop
+            document.querySelectorAll('.navbar-collapse .dropdown-menu.show').forEach(function(menu) {
+                menu.classList.remove('show');
+            });
+        }
+    });
 });
 </script>
