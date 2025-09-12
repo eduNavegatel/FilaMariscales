@@ -197,6 +197,26 @@
                 </a>
             </div>
 
+            <!-- Filtros de Categorías -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="d-flex flex-wrap gap-3">
+                        <button class="btn btn-outline-primary active" onclick="filterProducts('all')">
+                            <i class="fas fa-th me-2"></i>Todos los productos
+                        </button>
+                        <button class="btn btn-outline-primary" onclick="filterProducts('Ropa')">
+                            <i class="fas fa-tshirt me-2"></i>Ropa
+                        </button>
+                        <button class="btn btn-outline-primary" onclick="filterProducts('Accesorios')">
+                            <i class="fas fa-gem me-2"></i>Accesorios
+                        </button>
+                        <button class="btn btn-outline-primary" onclick="filterProducts('Recuerdos')">
+                            <i class="fas fa-gift me-2"></i>Recuerdos
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Lista de productos -->
             <div class="card">
                 <div class="card-body">
@@ -215,9 +235,9 @@
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="products-table-body">
                                     <?php foreach ($products as $product): ?>
-                                        <tr>
+                                        <tr class="product-row" data-category="<?= htmlspecialchars(trim($product->categoria_nombre ?? 'Sin categoría')) ?>">
                                             <td><?= $product->id ?></td>
                                             <td>
                                                 <?php if (!empty($product->imagen)): ?>
@@ -283,6 +303,56 @@
 </div>
 
 <script>
+// Filtrar productos por categoría
+function filterProducts(category) {
+    const productRows = document.querySelectorAll('.product-row');
+    const buttons = document.querySelectorAll('.btn-outline-primary');
+    
+    // Actualizar botones activos
+    buttons.forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    // Filtrar productos
+    productRows.forEach(row => {
+        const productCategory = row.dataset.category.trim();
+        const filterCategory = category.trim();
+        
+        if (category === 'all' || productCategory === filterCategory) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+    
+    // Mostrar mensaje si no hay productos en la categoría
+    const visibleRows = document.querySelectorAll('.product-row:not([style*="none"])');
+    const tableBody = document.getElementById('products-table-body');
+    
+    // Remover mensaje anterior si existe
+    const existingMessage = document.getElementById('no-products-message');
+    if (existingMessage) {
+        existingMessage.remove();
+    }
+    
+    if (visibleRows.length === 0 && category !== 'all') {
+        const message = document.createElement('tr');
+        message.id = 'no-products-message';
+        message.innerHTML = `
+            <td colspan="8" class="text-center py-5">
+                <div class="mb-4">
+                    <i class="fas fa-search text-muted" style="font-size: 3rem;"></i>
+                </div>
+                <h5 class="text-muted mb-3">No hay productos en esta categoría</h5>
+                <p class="text-muted mb-4">No se encontraron productos de "${category}".</p>
+                <button class="btn btn-primary" onclick="filterProducts('all')">
+                    <i class="fas fa-th me-2"></i>Ver todos los productos
+                </button>
+            </td>
+        `;
+        tableBody.appendChild(message);
+    }
+}
+
 // Función para subir foto del producto (definida globalmente)
 function subirFoto(productId, productName) {
     console.log('subirFoto llamada con:', productId, productName);

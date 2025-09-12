@@ -66,7 +66,7 @@
         <?php if (!empty($products)): ?>
             <div class="row" id="products-container">
                 <?php foreach ($products as $product): ?>
-                    <div class="col-md-6 col-lg-4 col-xl-3 mb-4 product-item" data-category="<?= trim($product->categoria ?? 'General') ?>">
+                    <div class="col-md-6 col-lg-4 col-xl-3 mb-4 product-item" data-category="<?= trim($product->categoria_nombre ?? 'General') ?>">
                 <div class="card h-100 border-0 shadow-sm product-card">
                     <div class="position-relative">
                                 <?php if (!empty($product->imagen)): ?>
@@ -99,7 +99,7 @@
                             <div class="card-body d-flex flex-column">
                                 <div class="mb-2">
                                     <h5 class="card-title mb-1"><?= htmlspecialchars($product->nombre) ?></h5>
-                                    <small class="text-muted"><?= htmlspecialchars($product->categoria ?? 'General') ?></small>
+                                    <small class="text-muted"><?= htmlspecialchars($product->categoria_nombre ?? 'General') ?></small>
             </div>
             
                                 <p class="card-text text-muted small flex-grow-1">

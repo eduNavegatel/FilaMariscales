@@ -11,6 +11,24 @@ class Pages extends Controller {
         if (class_exists('Event')) {
             $this->eventModel = $this->model('Event');
         }
+        
+        // Registrar visita automáticamente para páginas públicas
+        $this->trackPageVisit();
+    }
+    
+    /**
+     * Registrar visita de la página actual
+     */
+    private function trackPageVisit() {
+        try {
+            if (class_exists('VisitTracker')) {
+                require_once __DIR__ . '/../helpers/VisitTracker.php';
+                $visitTracker = VisitTracker::getInstance();
+                $visitTracker->trackVisit();
+            }
+        } catch (Exception $e) {
+            error_log("Error al registrar visita en Pages: " . $e->getMessage());
+        }
     }
 
     // Página de inicio
@@ -393,8 +411,11 @@ class Pages extends Controller {
             $pdo = new PDO('mysql:host=localhost;dbname=mariscales_db', 'root', '');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             
-            // Consulta más robusta
-            $stmt = $pdo->query("SELECT * FROM productos ORDER BY id DESC");
+            // Consulta que incluye las categorías (igual que AdminController)
+            $stmt = $pdo->query('SELECT p.*, c.nombre as categoria_nombre 
+                                FROM productos p 
+                                LEFT JOIN categorias c ON p.categoria_id = c.id 
+                                ORDER BY p.id DESC');
             $all_products = $stmt->fetchAll(PDO::FETCH_OBJ);
             
             // Filtrar solo los activos si existe la columna activo

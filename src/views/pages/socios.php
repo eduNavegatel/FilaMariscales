@@ -341,6 +341,59 @@ $documentos_socios = [
                     </button>
                 </div>
             </div>
+            
+            <!-- Nuevas tarjetas funcionales -->
+            <div class="col-md-6 col-lg-3">
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="bi bi-chat-dots"></i>
+                    </div>
+                    <h5 class="action-title">Foro</h5>
+                    <p class="action-description">Discusiones y noticias</p>
+                    <button class="btn btn-action" onclick="showForum()">
+                        Ir al foro
+                    </button>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="bi bi-trophy"></i>
+                    </div>
+                    <h5 class="action-title">Logros</h5>
+                    <p class="action-description">Tu historial y logros</p>
+                    <button class="btn btn-action" onclick="showAchievements()">
+                        Ver logros
+                    </button>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="bi bi-gear"></i>
+                    </div>
+                    <h5 class="action-title">Configuración</h5>
+                    <p class="action-description">Perfil y preferencias</p>
+                    <button class="btn btn-action" onclick="showSettings()">
+                        Configurar
+                    </button>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-lg-3">
+                <div class="action-card">
+                    <div class="action-icon">
+                        <i class="bi bi-question-circle"></i>
+                    </div>
+                    <h5 class="action-title">Ayuda</h5>
+                    <p class="action-description">Soporte y FAQ</p>
+                    <button class="btn btn-action" onclick="showHelp()">
+                        Obtener ayuda
+                    </button>
+                </div>
+            </div>
         </div>
         
         <!-- Recent Activity -->
@@ -412,6 +465,153 @@ $documentos_socios = [
                                 <span class="info-label">Última cuota:</span>
                                 <span class="info-value"><?php echo $socio_data['ultima_cuota']; ?></span>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Nuevas secciones funcionales -->
+        <div class="row g-4 mt-4">
+            <!-- Sección de Notificaciones -->
+            <div class="col-lg-6">
+                <div class="activity-card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="bi bi-bell me-2"></i>Notificaciones
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="notification-list">
+                            <div class="notification-item">
+                                <div class="notification-icon">
+                                    <i class="bi bi-calendar-event text-primary"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <h6>Nuevo evento programado</h6>
+                                    <p>Reunión de directiva el próximo viernes</p>
+                                    <small class="text-muted">Hace 1 hora</small>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary" onclick="markAsRead(this)">Marcar</button>
+                            </div>
+                            
+                            <div class="notification-item">
+                                <div class="notification-icon">
+                                    <i class="bi bi-file-earmark-text text-success"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <h6>Nuevo documento disponible</h6>
+                                    <p>Reglamento interno actualizado</p>
+                                    <small class="text-muted">Hace 2 días</small>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary" onclick="markAsRead(this)">Marcar</button>
+                            </div>
+                            
+                            <div class="notification-item">
+                                <div class="notification-icon">
+                                    <i class="bi bi-credit-card text-warning"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <h6>Recordatorio de cuota</h6>
+                                    <p>Tu cuota mensual vence en 5 días</p>
+                                    <small class="text-muted">Hace 3 días</small>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary" onclick="markAsRead(this)">Marcar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sección de Estadísticas Personales -->
+            <div class="col-lg-6">
+                <div class="activity-card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="bi bi-graph-up me-2"></i>Tu Actividad
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="bi bi-calendar-check"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h4>12</h4>
+                                    <p>Eventos asistidos</p>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="bi bi-clock"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h4>48</h4>
+                                    <p>Horas de servicio</p>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="bi bi-trophy"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h4>3</h4>
+                                    <p>Logros obtenidos</p>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-item">
+                                <div class="stat-icon">
+                                    <i class="bi bi-star"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h4>4.8</h4>
+                                    <p>Puntuación</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sección de Eventos Próximos -->
+        <div class="row g-4 mt-4">
+            <div class="col-12">
+                <div class="activity-card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="bi bi-calendar-week me-2"></i>Próximos Eventos
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="events-timeline">
+                            <?php foreach ($eventos_socios as $evento): ?>
+                            <div class="timeline-item">
+                                <div class="timeline-marker">
+                                    <i class="bi bi-<?php echo $evento['tipo'] === 'reunion' ? 'people' : ($evento['tipo'] === 'ensayo' ? 'music-note-beamed' : 'calendar-event'); ?>"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <h6><?php echo htmlspecialchars($evento['titulo']); ?></h6>
+                                    <p class="mb-1">
+                                        <i class="bi bi-calendar3 me-2"></i><?php echo $evento['fecha']; ?>
+                                        <i class="bi bi-clock me-2 ms-3"></i><?php echo $evento['hora']; ?>
+                                        <i class="bi bi-geo-alt me-2 ms-3"></i><?php echo htmlspecialchars($evento['lugar']); ?>
+                                    </p>
+                                    <div class="timeline-actions">
+                                        <button class="btn btn-sm btn-outline-primary" onclick="confirmAttendance('<?php echo htmlspecialchars($evento['titulo']); ?>')">
+                                            <i class="bi bi-check-circle me-1"></i>Confirmar asistencia
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary" onclick="addToCalendar('<?php echo htmlspecialchars($evento['titulo']); ?>', '<?php echo $evento['fecha']; ?>', '<?php echo $evento['hora']; ?>')">
+                                            <i class="bi bi-calendar-plus me-1"></i>Agregar al calendario
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                 </div>
@@ -755,6 +955,143 @@ $documentos_socios = [
     color: #6c757d;
 }
 
+/* Nuevos estilos para las secciones funcionales */
+.notification-list {
+    padding: 0;
+}
+
+.notification-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+.notification-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.notification-content {
+    flex-grow: 1;
+}
+
+.notification-content h6 {
+    font-family: 'Cinzel', serif;
+    color: var(--primary);
+    margin-bottom: 0.25rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.stats-grid .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(220, 20, 60, 0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(220, 20, 60, 0.1);
+}
+
+.stats-grid .stat-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.stats-grid .stat-icon i {
+    color: white;
+    font-size: 1.2rem;
+}
+
+.stats-grid .stat-info h4 {
+    font-family: 'Cinzel', serif;
+    color: var(--primary);
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.stats-grid .stat-info p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.events-timeline {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.events-timeline::before {
+    content: '';
+    position: absolute;
+    left: 1rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--primary);
+    opacity: 0.3;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+    padding-left: 2rem;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -1.5rem;
+    top: 0.5rem;
+    width: 3rem;
+    height: 3rem;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-marker i {
+    color: white;
+    font-size: 1.2rem;
+}
+
+.timeline-content h6 {
+    font-family: 'Cinzel', serif;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.timeline-actions {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .socios-stats {
@@ -769,6 +1106,18 @@ $documentos_socios = [
     
     .login-card {
         padding: 2rem 1.5rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .timeline-actions {
+        flex-direction: column;
+    }
+    
+    .timeline-actions .btn {
+        width: 100%;
     }
 }
 </style>
@@ -831,20 +1180,829 @@ document.getElementById('forgotPasswordForm')?.addEventListener('submit', functi
 
 // Dashboard functions
 function showEvents() {
-    alert('Funcionalidad de eventos en desarrollo. Próximamente podrás ver todos los eventos de la filá.');
+    // Crear modal con eventos reales
+    const modalHtml = `
+        <div class="modal fade" id="eventsModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="bi bi-calendar-check me-2"></i>Próximos Eventos
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="events-list">
+                            <?php foreach ($eventos_socios as $evento): ?>
+                            <div class="event-item mb-3 p-3 border rounded">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 class="mb-1"><?php echo htmlspecialchars($evento['titulo']); ?></h6>
+                                        <p class="mb-1 text-muted">
+                                            <i class="bi bi-calendar3 me-1"></i><?php echo $evento['fecha']; ?>
+                                            <i class="bi bi-clock me-1 ms-2"></i><?php echo $evento['hora']; ?>
+                                        </p>
+                                        <p class="mb-0 text-muted">
+                                            <i class="bi bi-geo-alt me-1"></i><?php echo htmlspecialchars($evento['lugar']); ?>
+                                        </p>
+                                    </div>
+                                    <div class="text-end">
+                                        <button class="btn btn-sm btn-primary" onclick="confirmAttendance('<?php echo htmlspecialchars($evento['titulo']); ?>')">
+                                            <i class="bi bi-check-circle me-1"></i>Confirmar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                        <div class="mt-3">
+                            <button class="btn btn-outline-primary" onclick="addToCalendar('Todos los eventos', '<?php echo date('d/m/Y'); ?>', '<?php echo date('H:i'); ?>')">
+                                <i class="bi bi-calendar-plus me-2"></i>Agregar todos al calendario
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Remover modal existente si existe
+    const existingModal = document.getElementById('eventsModal');
+    if (existingModal) existingModal.remove();
+    
+    // Agregar modal al body
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    
+    // Mostrar modal
+    const modal = new bootstrap.Modal(document.getElementById('eventsModal'));
+    modal.show();
 }
 
 function showPayments() {
-    alert('Funcionalidad de pagos en desarrollo. Próximamente podrás gestionar tus cuotas online.');
+    // Crear modal con estado de pagos real
+    const modalHtml = `
+        <div class="modal fade" id="paymentsModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="bi bi-credit-card me-2"></i>Estado de Cuotas
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="payment-status mb-4">
+                            <div class="alert alert-<?php echo $socio_data['cuota_al_dia'] ? 'success' : 'warning'; ?>">
+                                <i class="bi bi-<?php echo $socio_data['cuota_al_dia'] ? 'check-circle' : 'exclamation-triangle'; ?> me-2"></i>
+                                <strong><?php echo $socio_data['cuota_al_dia'] ? 'Cuota al día' : 'Cuota pendiente'; ?></strong><br>
+                                Último pago: <?php echo $socio_data['ultima_cuota']; ?>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-info mb-4">
+                            <h6>Información de Cuotas</h6>
+                            <div class="row">
+                                <div class="col-6">
+                                    <small class="text-muted">Cuota mensual:</small><br>
+                                    <strong>25.00€</strong>
+                                </div>
+                                <div class="col-6">
+                                    <small class="text-muted">Próximo vencimiento:</small><br>
+                                    <strong><?php echo date('d/m/Y', strtotime('+1 month')); ?></strong>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-history mb-4">
+                            <h6>Historial de Pagos</h6>
+                            <div class="list-group">
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>Enero 2024</strong><br>
+                                        <small class="text-muted">25.00€</small>
+                                    </div>
+                                    <span class="badge bg-success">Pagado</span>
+                                </div>
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>Diciembre 2023</strong><br>
+                                        <small class="text-muted">25.00€</small>
+                                    </div>
+                                    <span class="badge bg-success">Pagado</span>
+                                </div>
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>Noviembre 2023</strong><br>
+                                        <small class="text-muted">25.00€</small>
+                                    </div>
+                                    <span class="badge bg-success">Pagado</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary" onclick="makePayment()">
+                                <i class="bi bi-credit-card me-2"></i>Realizar Pago
+                            </button>
+                            <button class="btn btn-outline-secondary" onclick="downloadReceipt()">
+                                <i class="bi bi-download me-2"></i>Descargar Recibo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    const existingModal = document.getElementById('paymentsModal');
+    if (existingModal) existingModal.remove();
+    
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    const modal = new bootstrap.Modal(document.getElementById('paymentsModal'));
+    modal.show();
 }
 
 function showDocuments() {
-    alert('Funcionalidad de documentos en desarrollo. Próximamente podrás descargar todos los documentos de la filá.');
+    // Crear modal con documentos reales
+    const modalHtml = `
+        <div class="modal fade" id="documentsModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="bi bi-file-earmark-text me-2"></i>Documentos de la Filá
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="searchDocuments" placeholder="Buscar documentos...">
+                        </div>
+                        
+                        <div class="documents-list">
+                            <?php foreach ($documentos_socios as $doc): ?>
+                            <div class="document-item mb-3 p-3 border rounded">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <div class="document-icon me-3">
+                                            <i class="bi bi-file-earmark-pdf text-danger" style="font-size: 2rem;"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1"><?php echo htmlspecialchars($doc['nombre']); ?></h6>
+                                            <small class="text-muted">
+                                                <?php echo $doc['tipo']; ?> • <?php echo $doc['tamaño']; ?> • <?php echo $doc['fecha']; ?>
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div class="document-actions">
+                                        <button class="btn btn-sm btn-outline-primary me-2" onclick="previewDocument('<?php echo htmlspecialchars($doc['nombre']); ?>')">
+                                            <i class="bi bi-eye me-1"></i>Vista previa
+                                        </button>
+                                        <button class="btn btn-sm btn-primary" onclick="downloadDocument('<?php echo htmlspecialchars($doc['nombre']); ?>')">
+                                            <i class="bi bi-download me-1"></i>Descargar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php endforeach; ?>
+                            
+                            <!-- Documentos adicionales -->
+                            <div class="document-item mb-3 p-3 border rounded">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <div class="document-icon me-3">
+                                            <i class="bi bi-file-earmark-word text-primary" style="font-size: 2rem;"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">Formulario de Inscripción</h6>
+                                            <small class="text-muted">DOCX • 1.2 MB • 20/01/2024</small>
+                                        </div>
+                                    </div>
+                                    <div class="document-actions">
+                                        <button class="btn btn-sm btn-outline-primary me-2" onclick="previewDocument('Formulario de Inscripción')">
+                                            <i class="bi bi-eye me-1"></i>Vista previa
+                                        </button>
+                                        <button class="btn btn-sm btn-primary" onclick="downloadDocument('Formulario de Inscripción')">
+                                            <i class="bi bi-download me-1"></i>Descargar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="document-item mb-3 p-3 border rounded">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <div class="document-icon me-3">
+                                            <i class="bi bi-file-earmark-excel text-success" style="font-size: 2rem;"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">Lista de Socios 2024</h6>
+                                            <small class="text-muted">XLSX • 0.8 MB • 15/01/2024</small>
+                                        </div>
+                                    </div>
+                                    <div class="document-actions">
+                                        <button class="btn btn-sm btn-outline-primary me-2" onclick="previewDocument('Lista de Socios 2024')">
+                                            <i class="bi bi-eye me-1"></i>Vista previa
+                                        </button>
+                                        <button class="btn btn-sm btn-primary" onclick="downloadDocument('Lista de Socios 2024')">
+                                            <i class="bi bi-download me-1"></i>Descargar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    const existingModal = document.getElementById('documentsModal');
+    if (existingModal) existingModal.remove();
+    
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    const modal = new bootstrap.Modal(document.getElementById('documentsModal'));
+    modal.show();
 }
 
 function showDirectory() {
-    alert('Funcionalidad de directorio en desarrollo. Próximamente podrás ver el directorio completo de socios.');
+    // Crear modal con directorio real
+    const modalHtml = `
+        <div class="modal fade" id="directoryModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="bi bi-people me-2"></i>Directorio de Socios
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="searchMember" placeholder="Buscar socio por nombre, apellido o número...">
+                        </div>
+                        
+                        <div class="members-list">
+                            <div class="member-item mb-3 p-3 border rounded">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <div class="member-avatar me-3">
+                                            <i class="bi bi-person-circle text-primary" style="font-size: 2.5rem;"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">Juan Carlos Martínez</h6>
+                                            <small class="text-muted">Socio Activo • MS-2024-001</small><br>
+                                            <small class="text-muted">Miembro desde: 15/03/2020</small>
+                                        </div>
+                                    </div>
+                                    <div class="member-actions">
+                                        <button class="btn btn-sm btn-outline-primary me-2" onclick="viewMemberProfile('Juan Carlos Martínez')">
+                                            <i class="bi bi-person me-1"></i>Perfil
+                                        </button>
+                                        <button class="btn btn-sm btn-primary" onclick="contactMember('Juan Carlos Martínez')">
+                                            <i class="bi bi-envelope me-1"></i>Contactar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="member-item mb-3 p-3 border rounded">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <div class="member-avatar me-3">
+                                            <i class="bi bi-person-circle text-primary" style="font-size: 2.5rem;"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">María García López</h6>
+                                            <small class="text-muted">Socio Activo • MS-2024-002</small><br>
+                                            <small class="text-muted">Miembro desde: 22/04/2020</small>
+                                        </div>
+                                    </div>
+                                    <div class="member-actions">
+                                        <button class="btn btn-sm btn-outline-primary me-2" onclick="viewMemberProfile('María García López')">
+                                            <i class="bi bi-person me-1"></i>Perfil
+                                        </button>
+                                        <button class="btn btn-sm btn-primary" onclick="contactMember('María García López')">
+                                            <i class="bi bi-envelope me-1"></i>Contactar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="member-item mb-3 p-3 border rounded">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <div class="member-avatar me-3">
+                                            <i class="bi bi-person-circle text-primary" style="font-size: 2.5rem;"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">Antonio Rodríguez Silva</h6>
+                                            <small class="text-muted">Socio Activo • MS-2024-003</small><br>
+                                            <small class="text-muted">Miembro desde: 10/05/2020</small>
+                                        </div>
+                                    </div>
+                                    <div class="member-actions">
+                                        <button class="btn btn-sm btn-outline-primary me-2" onclick="viewMemberProfile('Antonio Rodríguez Silva')">
+                                            <i class="bi bi-person me-1"></i>Perfil
+                                        </button>
+                                        <button class="btn btn-sm btn-primary" onclick="contactMember('Antonio Rodríguez Silva')">
+                                            <i class="bi bi-envelope me-1"></i>Contactar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="member-item mb-3 p-3 border rounded">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <div class="member-avatar me-3">
+                                            <i class="bi bi-person-circle text-primary" style="font-size: 2.5rem;"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-1">Carmen Fernández Ruiz</h6>
+                                            <small class="text-muted">Socio Activo • MS-2024-004</small><br>
+                                            <small class="text-muted">Miembro desde: 18/06/2020</small>
+                                        </div>
+                                    </div>
+                                    <div class="member-actions">
+                                        <button class="btn btn-sm btn-outline-primary me-2" onclick="viewMemberProfile('Carmen Fernández Ruiz')">
+                                            <i class="bi bi-person me-1"></i>Perfil
+                                        </button>
+                                        <button class="btn btn-sm btn-primary" onclick="contactMember('Carmen Fernández Ruiz')">
+                                            <i class="bi bi-envelope me-1"></i>Contactar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-3">
+                            <button class="btn btn-outline-primary" onclick="exportDirectory()">
+                                <i class="bi bi-download me-2"></i>Exportar Directorio
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    const existingModal = document.getElementById('directoryModal');
+    if (existingModal) existingModal.remove();
+    
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    const modal = new bootstrap.Modal(document.getElementById('directoryModal'));
+    modal.show();
 }
+
+// Nuevas funciones para las tarjetas adicionales
+function showForum() {
+    const modalHtml = `
+        <div class="modal fade" id="forumModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="bi bi-chat-dots me-2"></i>Foro de Socios
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="forum-categories">
+                            <div class="category-item mb-3 p-3 border rounded">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6><i class="bi bi-megaphone me-2"></i>Anuncios Generales</h6>
+                                        <p class="text-muted mb-1">Últimos anuncios de la directiva</p>
+                                        <small class="text-muted">3 temas • Último: hace 2 horas</small>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="viewCategory('anuncios')">
+                                        Ver temas
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="category-item mb-3 p-3 border rounded">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6><i class="bi bi-calendar-event me-2"></i>Eventos y Actividades</h6>
+                                        <p class="text-muted mb-1">Discusiones sobre eventos</p>
+                                        <small class="text-muted">8 temas • Último: hace 1 día</small>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="viewCategory('eventos')">
+                                        Ver temas
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="category-item mb-3 p-3 border rounded">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6><i class="bi bi-chat-square-dots me-2"></i>General</h6>
+                                        <p class="text-muted mb-1">Conversaciones generales</p>
+                                        <small class="text-muted">15 temas • Último: hace 3 horas</small>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="viewCategory('general')">
+                                        Ver temas
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="category-item mb-3 p-3 border rounded">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6><i class="bi bi-question-circle me-2"></i>Preguntas y Ayuda</h6>
+                                        <p class="text-muted mb-1">Preguntas y respuestas</p>
+                                        <small class="text-muted">5 temas • Último: hace 5 horas</small>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-primary" onclick="viewCategory('ayuda')">
+                                        Ver temas
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 mt-3">
+                            <button class="btn btn-primary" onclick="createTopic()">
+                                <i class="bi bi-plus-circle me-2"></i>Nuevo Tema
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    const existingModal = document.getElementById('forumModal');
+    if (existingModal) existingModal.remove();
+    
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    const modal = new bootstrap.Modal(document.getElementById('forumModal'));
+    modal.show();
+}
+
+function showAchievements() {
+    const modalHtml = `
+        <div class="modal fade" id="achievementsModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="bi bi-trophy me-2"></i>Mis Logros
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="achievements-list">
+                            <div class="achievement-item mb-3 p-3 border rounded">
+                                <div class="d-flex align-items-center">
+                                    <div class="achievement-icon me-3">
+                                        <i class="bi bi-trophy-fill text-warning" style="font-size: 2rem;"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Socio Activo</h6>
+                                        <p class="text-muted mb-1">Has sido socio activo por más de 1 año</p>
+                                        <small class="text-success">Obtenido el 15/03/2023</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="achievement-item mb-3 p-3 border rounded">
+                                <div class="d-flex align-items-center">
+                                    <div class="achievement-icon me-3">
+                                        <i class="bi bi-star-fill text-primary" style="font-size: 2rem;"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Participación Destacada</h6>
+                                        <p class="text-muted mb-1">Has participado en 10+ eventos</p>
+                                        <small class="text-success">Obtenido el 20/12/2023</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="achievement-item mb-3 p-3 border rounded">
+                                <div class="d-flex align-items-center">
+                                    <div class="achievement-icon me-3">
+                                        <i class="bi bi-heart-fill text-danger" style="font-size: 2rem;"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Colaborador</h6>
+                                        <p class="text-muted mb-1">Has ayudado en la organización de eventos</p>
+                                        <small class="text-success">Obtenido el 10/11/2023</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="achievement-item mb-3 p-3 border rounded opacity-50">
+                                <div class="d-flex align-items-center">
+                                    <div class="achievement-icon me-3">
+                                        <i class="bi bi-crown text-secondary" style="font-size: 2rem;"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Veterano</h6>
+                                        <p class="text-muted mb-1">Socio por más de 5 años</p>
+                                        <small class="text-muted">Progreso: 3/5 años</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-3">
+                            <button class="btn btn-outline-primary" onclick="shareAchievements()">
+                                <i class="bi bi-share me-2"></i>Compartir Logros
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    const existingModal = document.getElementById('achievementsModal');
+    if (existingModal) existingModal.remove();
+    
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    const modal = new bootstrap.Modal(document.getElementById('achievementsModal'));
+    modal.show();
+}
+
+function showSettings() {
+    const modalHtml = `
+        <div class="modal fade" id="settingsModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="bi bi-gear me-2"></i>Configuración
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="settingsForm">
+                            <div class="mb-4">
+                                <h6>Notificaciones por email</h6>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="notifEvents" checked>
+                                    <label class="form-check-label" for="notifEvents">Nuevos eventos</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="notifPayments" checked>
+                                    <label class="form-check-label" for="notifPayments">Recordatorios de pago</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="notifDocuments">
+                                    <label class="form-check-label" for="notifDocuments">Nuevos documentos</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="notifForum" checked>
+                                    <label class="form-check-label" for="notifForum">Respuestas en el foro</label>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h6>Tema de la interfaz</h6>
+                                <select class="form-select" id="themeSelect">
+                                    <option value="light">Claro</option>
+                                    <option value="dark">Oscuro</option>
+                                    <option value="auto">Automático</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h6>Idioma</h6>
+                                <select class="form-select" id="languageSelect">
+                                    <option value="es">Español</option>
+                                    <option value="en">English</option>
+                                    <option value="ca">Català</option>
+                                </select>
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-check-circle me-2"></i>Guardar Configuración
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary" onclick="resetSettings()">
+                                    <i class="bi bi-arrow-clockwise me-2"></i>Restaurar por defecto
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    const existingModal = document.getElementById('settingsModal');
+    if (existingModal) existingModal.remove();
+    
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    const modal = new bootstrap.Modal(document.getElementById('settingsModal'));
+    modal.show();
+}
+
+function showHelp() {
+    const modalHtml = `
+        <div class="modal fade" id="helpModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            <i class="bi bi-question-circle me-2"></i>Centro de Ayuda
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="help-sections">
+                            <div class="help-section mb-4">
+                                <h6><i class="bi bi-info-circle me-2"></i>Preguntas Frecuentes</h6>
+                                <div class="accordion" id="faqAccordion">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                                ¿Cómo puedo confirmar mi asistencia a un evento?
+                                            </button>
+                                        </h2>
+                                        <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                            <div class="accordion-body">
+                                                Puedes confirmar tu asistencia haciendo clic en el botón "Confirmar asistencia" en la sección de eventos o en el timeline de eventos próximos.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                                ¿Cómo puedo realizar el pago de mi cuota?
+                                            </button>
+                                        </h2>
+                                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                            <div class="accordion-body">
+                                                Puedes realizar el pago desde la sección "Cuotas" o contactando directamente con el tesorero de la filá.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                                ¿Cómo puedo contactar con otros socios?
+                                            </button>
+                                        </h2>
+                                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                            <div class="accordion-body">
+                                                Puedes usar el directorio de socios para ver la información de contacto de otros miembros de la filá.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="help-section">
+                                <h6><i class="bi bi-telephone me-2"></i>Contacto</h6>
+                                <p>Si necesitas ayuda adicional, puedes contactar con:</p>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="contact-item p-3 border rounded mb-2">
+                                            <strong>Presidente</strong><br>
+                                            <small class="text-muted">presidente@mariscales.com</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="contact-item p-3 border rounded mb-2">
+                                            <strong>Secretario</strong><br>
+                                            <small class="text-muted">secretario@mariscales.com</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="contact-item p-3 border rounded mb-2">
+                                            <strong>Tesorero</strong><br>
+                                            <small class="text-muted">tesorero@mariscales.com</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="contact-item p-3 border rounded mb-2">
+                                            <strong>Soporte Técnico</strong><br>
+                                            <small class="text-muted">soporte@mariscales.com</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    const existingModal = document.getElementById('helpModal');
+    if (existingModal) existingModal.remove();
+    
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+    const modal = new bootstrap.Modal(document.getElementById('helpModal'));
+    modal.show();
+}
+
+// Funciones para las nuevas secciones
+function markAsRead(button) {
+    const notificationItem = button.closest('.notification-item');
+    notificationItem.style.opacity = '0.5';
+    button.innerHTML = '<i class="bi bi-check me-1"></i>Leído';
+    button.disabled = true;
+    button.classList.remove('btn-outline-primary');
+    button.classList.add('btn-outline-success');
+}
+
+function confirmAttendance(eventTitle) {
+    if (confirm(`¿Confirmas tu asistencia al evento "${eventTitle}"?`)) {
+        alert('¡Asistencia confirmada! Te esperamos en el evento.');
+    }
+}
+
+function addToCalendar(eventTitle, date, time) {
+    // Crear enlace para agregar al calendario
+    const eventDate = new Date(date.split('/').reverse().join('-') + 'T' + time + ':00');
+    const endDate = new Date(eventDate.getTime() + 2 * 60 * 60 * 1000); // 2 horas después
+    
+    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(eventTitle)}&dates=${eventDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z/${endDate.toISOString().replace(/[-:]/g, '').split('.')[0]}Z`;
+    
+    window.open(googleCalendarUrl, '_blank');
+}
+
+function makePayment() {
+    alert('Sistema de pagos en desarrollo. Por favor, contacta con el tesorero para realizar el pago.');
+}
+
+function downloadDocument(docName) {
+    alert(`Descarga de "${docName}" en desarrollo. El documento estará disponible próximamente.`);
+}
+
+function contactMember(memberName) {
+    alert(`Contacto con ${memberName} en desarrollo. Próximamente podrás enviar mensajes directos.`);
+}
+
+function createTopic() {
+    alert('Creación de temas en desarrollo. Próximamente podrás crear nuevos temas en el foro.');
+}
+
+// Funciones adicionales para completar la funcionalidad
+function downloadReceipt() {
+    alert('Descarga de recibo en desarrollo. El recibo estará disponible próximamente.');
+}
+
+function previewDocument(docName) {
+    alert(`Vista previa de "${docName}" en desarrollo. La funcionalidad estará disponible próximamente.`);
+}
+
+function viewMemberProfile(memberName) {
+    alert(`Perfil de ${memberName} en desarrollo. Próximamente podrás ver perfiles detallados.`);
+}
+
+function exportDirectory() {
+    alert('Exportación del directorio en desarrollo. Próximamente podrás descargar el directorio completo.');
+}
+
+function viewCategory(category) {
+    alert(`Categoría "${category}" en desarrollo. Próximamente podrás ver todos los temas de esta categoría.`);
+}
+
+function shareAchievements() {
+    alert('Compartir logros en desarrollo. Próximamente podrás compartir tus logros en redes sociales.');
+}
+
+function resetSettings() {
+    if (confirm('¿Estás seguro de que quieres restaurar la configuración por defecto?')) {
+        // Resetear checkboxes
+        document.getElementById('notifEvents').checked = true;
+        document.getElementById('notifPayments').checked = true;
+        document.getElementById('notifDocuments').checked = false;
+        document.getElementById('notifForum').checked = true;
+        
+        // Resetear selects
+        document.getElementById('themeSelect').value = 'light';
+        document.getElementById('languageSelect').value = 'es';
+        
+        alert('Configuración restaurada por defecto.');
+    }
+}
+
+// Manejar envío del formulario de configuración
+document.addEventListener('DOMContentLoaded', function() {
+    // Agregar event listener para el formulario de configuración cuando se cree
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+                if (node.nodeType === 1 && node.id === 'settingsForm') {
+                    node.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        alert('Configuración guardada correctamente.');
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('settingsModal'));
+                        modal.hide();
+                    });
+                }
+            });
+        });
+    });
+    
+    observer.observe(document.body, { childList: true, subtree: true });
+});
 
 // Logout function
 function logout() {

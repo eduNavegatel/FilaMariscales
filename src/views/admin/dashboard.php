@@ -55,6 +55,7 @@
                 <a class="nav-link" href="/prueba-php/public/admin/usuarios">Usuarios</a>
                 <a class="nav-link" href="/prueba-php/public/admin/eventos">Eventos</a>
                 <a class="nav-link" href="/prueba-php/public/admin/galeria">Galería</a>
+                <a class="nav-link" href="/prueba-php/public/admin/visitas">Analíticas</a>
                 <a class="nav-link" href="/prueba-php/public/admin/logout">Cerrar Sesión</a>
             </div>
         </div>
@@ -143,6 +144,89 @@
                     <a href="/prueba-php/public/admin/nuevoEvento" class="text-white d-block small">Nuevo evento</a>
                     <a href="/prueba-php/public/admin/galeria" class="text-white d-block small">Subir archivos</a>
                     <a href="/prueba-php/public/admin/noticias/nueva" class="text-white d-block small">Nueva noticia</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estadísticas de Visitas -->
+<div class="row mb-4">
+    <div class="col-md-3 mb-3">
+        <div class="card text-white h-100" style="background: linear-gradient(135deg, #6f42c1 0%, #e83e8c 100%);">
+            <div class="card-body d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h5 class="card-title mb-1">📊 Visitas Totales</h5>
+                        <h2 class="mb-0"><?= number_format($visitStats['total_visitas'] ?? 0) ?></h2>
+                        <small class="opacity-75">Últimos 30 días</small>
+                    </div>
+                    <i class="fas fa-chart-line fa-2x opacity-50"></i>
+                </div>
+                <div class="mt-auto">
+                    <button class="btn btn-light btn-sm" onclick="showVisitAnalytics()">
+                        <i class="fas fa-chart-bar me-1"></i>Ver Analíticas
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card text-white h-100" style="background: linear-gradient(135deg, #fd7e14 0%, #ffc107 100%);">
+            <div class="card-body d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h5 class="card-title mb-1">👥 Visitas Únicas</h5>
+                        <h2 class="mb-0"><?= number_format($visitStats['visitas_unicas'] ?? 0) ?></h2>
+                        <small class="opacity-75">Usuarios únicos</small>
+                    </div>
+                    <i class="fas fa-user-friends fa-2x opacity-50"></i>
+                </div>
+                <div class="mt-auto">
+                    <button class="btn btn-light btn-sm" onclick="showUniqueVisitors()">
+                        <i class="fas fa-users me-1"></i>Ver Detalles
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card text-white h-100" style="background: linear-gradient(135deg, #20c997 0%, #17a2b8 100%);">
+            <div class="card-body d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h5 class="card-title mb-1">📅 Visitas Hoy</h5>
+                        <h2 class="mb-0"><?= number_format($visitStats['visitas_hoy'] ?? 0) ?></h2>
+                        <small class="opacity-75"><?= number_format($visitStats['visitas_unicas_hoy'] ?? 0) ?> únicas</small>
+                    </div>
+                    <i class="fas fa-calendar-day fa-2x opacity-50"></i>
+                </div>
+                <div class="mt-auto">
+                    <button class="btn btn-light btn-sm" onclick="showTodayStats()">
+                        <i class="fas fa-clock me-1"></i>Ver Hoy
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card text-white h-100" style="background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);">
+            <div class="card-body d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h5 class="card-title mb-1">🟢 Usuarios Online</h5>
+                        <h2 class="mb-0"><?= number_format($realTimeStats['usuarios_online'] ?? 0) ?></h2>
+                        <small class="opacity-75">Últimos 5 min</small>
+                    </div>
+                    <i class="fas fa-circle fa-2x opacity-50" style="color: #28a745 !important;"></i>
+                </div>
+                <div class="mt-auto">
+                    <button class="btn btn-light btn-sm" onclick="showOnlineUsers()">
+                        <i class="fas fa-wifi me-1"></i>Ver Online
+                    </button>
                 </div>
             </div>
         </div>
@@ -1206,6 +1290,186 @@ function initializeCalendar() {
                 }
             }, 1000);
         });
+        
+        // Funciones para analíticas de visitas
+        function showVisitAnalytics() {
+            const modalHtml = `
+                <div class="modal fade" id="visitAnalyticsModal" tabindex="-1">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    <i class="fas fa-chart-line me-2"></i>Analíticas de Visitas
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6>Páginas Más Visitadas</h6>
+                                        <div class="list-group">
+                                            <?php foreach (array_slice($visitStats['paginas_populares'] ?? [], 0, 5) as $page): ?>
+                                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                <span><?= htmlspecialchars($page['page_url']) ?></span>
+                                                <span class="badge bg-primary rounded-pill"><?= $page['visitas'] ?></span>
+                                            </div>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6>Dispositivos</h6>
+                                        <div class="list-group">
+                                            <?php foreach ($visitStats['dispositivos'] ?? [] as $device): ?>
+                                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                <span><?= htmlspecialchars($device['device_type']) ?></span>
+                                                <span class="badge bg-success rounded-pill"><?= $device['cantidad'] ?></span>
+                                            </div>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <h6>Navegadores</h6>
+                                        <div class="list-group">
+                                            <?php foreach ($visitStats['navegadores'] ?? [] as $browser): ?>
+                                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                <span><?= htmlspecialchars($browser['browser']) ?></span>
+                                                <span class="badge bg-info rounded-pill"><?= $browser['cantidad'] ?></span>
+                                            </div>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6>Estadísticas Generales</h6>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <p><strong>Total de visitas:</strong> <?= number_format($visitStats['total_visitas'] ?? 0) ?></p>
+                                                <p><strong>Visitas únicas:</strong> <?= number_format($visitStats['visitas_unicas'] ?? 0) ?></p>
+                                                <p><strong>Visitas hoy:</strong> <?= number_format($visitStats['visitas_hoy'] ?? 0) ?></p>
+                                                <p><strong>Visitas únicas hoy:</strong> <?= number_format($visitStats['visitas_unicas_hoy'] ?? 0) ?></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            const existingModal = document.getElementById('visitAnalyticsModal');
+            if (existingModal) existingModal.remove();
+            
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            const modal = new bootstrap.Modal(document.getElementById('visitAnalyticsModal'));
+            modal.show();
+        }
+        
+        function showUniqueVisitors() {
+            alert('Detalles de visitantes únicos en desarrollo. Próximamente podrás ver información detallada de cada visitante.');
+        }
+        
+        function showTodayStats() {
+            const modalHtml = `
+                <div class="modal fade" id="todayStatsModal" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    <i class="fas fa-calendar-day me-2"></i>Estadísticas de Hoy
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card text-center">
+                                            <div class="card-body">
+                                                <h3 class="text-primary"><?= number_format($visitStats['visitas_hoy'] ?? 0) ?></h3>
+                                                <p class="card-text">Visitas Totales</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card text-center">
+                                            <div class="card-body">
+                                                <h3 class="text-success"><?= number_format($visitStats['visitas_unicas_hoy'] ?? 0) ?></h3>
+                                                <p class="card-text">Visitas Únicas</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <h6>Páginas Más Visitadas Hoy</h6>
+                                    <div class="list-group">
+                                        <?php foreach (array_slice($realTimeStats['paginas_hoy'] ?? [], 0, 5) as $page): ?>
+                                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                                            <span><?= htmlspecialchars($page['page_url']) ?></span>
+                                            <span class="badge bg-primary rounded-pill"><?= $page['visitas'] ?></span>
+                                        </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            const existingModal = document.getElementById('todayStatsModal');
+            if (existingModal) existingModal.remove();
+            
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            const modal = new bootstrap.Modal(document.getElementById('todayStatsModal'));
+            modal.show();
+        }
+        
+        function showOnlineUsers() {
+            const modalHtml = `
+                <div class="modal fade" id="onlineUsersModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    <i class="fas fa-wifi me-2"></i>Usuarios Online
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="text-center">
+                                    <h2 class="text-success"><?= number_format($realTimeStats['usuarios_online'] ?? 0) ?></h2>
+                                    <p>Usuarios activos en los últimos 5 minutos</p>
+                                </div>
+                                <div class="mt-3">
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Los usuarios online se actualizan automáticamente cada 5 minutos.
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <button class="btn btn-primary" onclick="refreshOnlineUsers()">
+                                        <i class="fas fa-sync-alt me-2"></i>Actualizar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            const existingModal = document.getElementById('onlineUsersModal');
+            if (existingModal) existingModal.remove();
+            
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            const modal = new bootstrap.Modal(document.getElementById('onlineUsersModal'));
+            modal.show();
+        }
+        
+        function refreshOnlineUsers() {
+            alert('Actualizando usuarios online...');
+            // Aquí se podría implementar una llamada AJAX para actualizar los datos
+        }
     </script>
 </body>
 </html>

@@ -7,6 +7,22 @@ require_once 'src/config/config.php';
 require_once 'src/config/helpers.php';
 require_once 'src/config/admin_credentials.php';
 
+// Iniciar sesión para el tracking de visitas
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Registrar visita automáticamente (solo para páginas públicas)
+try {
+    if (class_exists('VisitTracker')) {
+        require_once 'src/helpers/VisitTracker.php';
+        $visitTracker = VisitTracker::getInstance();
+        $visitTracker->trackVisit();
+    }
+} catch (Exception $e) {
+    error_log("Error al registrar visita: " . $e->getMessage());
+}
+
 // Load controllers
 require_once 'src/controllers/Controller.php';
 require_once 'src/controllers/Pages.php';

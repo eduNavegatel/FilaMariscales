@@ -133,6 +133,36 @@ class AdminController extends Controller {
             $messagesCount = count($messageFiles);
         }
         
+        // Obtener estadísticas de visitas
+        $visitStats = [];
+        $realTimeStats = [];
+        try {
+            if (class_exists('VisitTracker')) {
+                require_once __DIR__ . '/../helpers/VisitTracker.php';
+                $visitTracker = VisitTracker::getInstance();
+                $visitStats = $visitTracker->getStats(30);
+                $realTimeStats = $visitTracker->getRealTimeStats();
+            }
+        } catch (Exception $e) {
+            error_log("Error al obtener estadísticas de visitas: " . $e->getMessage());
+            $visitStats = [
+                'total_visitas' => 0,
+                'visitas_unicas' => 0,
+                'visitas_hoy' => 0,
+                'visitas_unicas_hoy' => 0,
+                'paginas_populares' => [],
+                'dispositivos' => [],
+                'navegadores' => [],
+                'visitas_por_hora' => [],
+                'visitas_por_dia' => []
+            ];
+            $realTimeStats = [
+                'visitas_ultima_hora' => 0,
+                'usuarios_online' => 0,
+                'paginas_hoy' => []
+            ];
+        }
+        
         $data = [
             'title' => 'Panel de Administración',
             'userCount' => $userCount,
@@ -142,11 +172,104 @@ class AdminController extends Controller {
             'newsCount' => $newsCount,
             'messagesCount' => $messagesCount,
             'recentUsers' => $recentUsers,
-            'recentEvents' => $recentEvents
+            'recentEvents' => $recentEvents,
+            'visitStats' => $visitStats,
+            'realTimeStats' => $realTimeStats
         ];
         
         // Cargar vista directamente
         $this->loadViewDirectly('admin/dashboard', $data);
+    }
+    
+    /**
+     * Página de analíticas de visitas detalladas
+     */
+    public function visitas() {
+        try {
+            require_once __DIR__ . '/../helpers/VisitTracker.php';
+            $visitTracker = VisitTracker::getInstance();
+            
+            // Obtener estadísticas detalladas
+            $visitStats = $visitTracker->getStats(30);
+            $realTimeStats = $visitTracker->getRealTimeStats();
+            
+            // Obtener datos para gráficos
+            $chartData = $this->getChartData();
+            
+            $data = [
+                'title' => 'Analíticas de Visitas',
+                'visitStats' => $visitStats,
+                'realTimeStats' => $realTimeStats,
+                'chartData' => $chartData
+            ];
+            
+            $this->loadViewDirectly('admin/visitas', $data);
+            
+        } catch (Exception $e) {
+            error_log("Error en analíticas de visitas: " . $e->getMessage());
+            $this->loadViewDirectly('admin/visitas', [
+                'title' => 'Analíticas de Visitas',
+                'visitStats' => [],
+                'realTimeStats' => [],
+                'chartData' => []
+            ]);
+        }
+    }
+    
+    /**
+     * Obtener datos para gráficos
+     */
+    private function getChartData() {
+        try {
+            $pdo = new PDO('mysql:host=localhost;dbname=mariscales_db', 'root', '');
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
+            // Datos para gráfico de visitas por día (últimos 30 días)
+            $stmt = $pdo->prepare("
+                SELECT DATE(visit_date) as fecha, COUNT(*) as visitas, COUNT(DISTINCT ip_address) as visitas_unicas
+                FROM visitas 
+                WHERE visit_date >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+                GROUP BY DATE(visit_date) 
+                ORDER BY fecha ASC
+            ");
+            $stmt->execute();
+            $dailyVisits = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Datos para gráfico de visitas por hora
+            $stmt = $pdo->prepare("
+                SELECT HOUR(visit_date) as hora, COUNT(*) as visitas
+                FROM visitas 
+                WHERE visit_date >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+                GROUP BY HOUR(visit_date) 
+                ORDER BY hora ASC
+            ");
+            $stmt->execute();
+            $hourlyVisits = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Datos para gráfico de dispositivos
+            $stmt = $pdo->prepare("
+                SELECT device_type, COUNT(*) as cantidad
+                FROM visitas 
+                WHERE visit_date >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+                GROUP BY device_type
+            ");
+            $stmt->execute();
+            $deviceStats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            return [
+                'dailyVisits' => $dailyVisits,
+                'hourlyVisits' => $hourlyVisits,
+                'deviceStats' => $deviceStats
+            ];
+            
+        } catch (PDOException $e) {
+            error_log("Error al obtener datos de gráficos: " . $e->getMessage());
+            return [
+                'dailyVisits' => [],
+                'hourlyVisits' => [],
+                'deviceStats' => []
+            ];
+        }
     }
     
     // Export dashboard data as CSV
