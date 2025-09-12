@@ -764,45 +764,126 @@ section {
 /* Estilos para dropdowns en menú hamburguesa - Global */
 @media (max-width: 991.98px) {
     .navbar-collapse .dropdown-menu {
-        position: absolute !important;
+        position: static !important;
         float: none !important;
-        width: 100% !important;
-        margin-top: 0 !important;
-        background-color: rgba(220, 20, 60, 0.9) !important;
-        border: 1px solid rgba(255, 255, 255, 0.3) !important;
-        border-radius: 8px !important;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
-        backdrop-filter: blur(10px) !important;
-        margin-left: 1rem !important;
-        margin-right: 1rem !important;
+        width: calc(100% - 2rem) !important;
+        margin: 0.5rem 1rem !important;
+        background-color: rgba(220, 20, 60, 0.95) !important;
+        border: 2px solid rgba(255, 255, 255, 0.4) !important;
+        border-radius: 12px !important;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3) !important;
+        backdrop-filter: blur(15px) !important;
         display: none !important;
+        transform: none !important;
+        will-change: auto !important;
+        padding: 0.5rem 0 !important;
+        max-height: 300px !important;
+        overflow-y: auto !important;
+        z-index: 1050 !important;
     }
     
     .navbar-collapse .dropdown-menu.show {
         display: block !important;
+        animation: slideDown 0.3s ease-out !important;
+    }
+    
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Deshabilitar el comportamiento por defecto de Bootstrap en móviles */
+    .navbar-collapse .dropdown-toggle[data-bs-toggle="dropdown"] {
+        pointer-events: auto !important;
+    }
+    
+    /* Hover para dropdowns en responsive */
+    .navbar-collapse .dropdown:hover .dropdown-menu {
+        display: block !important;
+        animation: slideDown 0.3s ease-out !important;
+    }
+    
+    /* Asegurar que los botones de login/register estén por debajo */
+    .navbar-collapse .btn {
+        z-index: 1000 !important;
+        position: relative !important;
+    }
+    
+    /* Asegurar que el contenedor del menú tenga z-index alto */
+    .navbar-collapse {
+        z-index: 1055 !important;
+        position: relative !important;
+    }
+    
+    /* Los dropdowns deben estar por encima de todo */
+    .navbar-collapse .dropdown {
+        z-index: 1060 !important;
+        position: relative !important;
     }
     
     .navbar-collapse .dropdown-item {
-        padding: 0.75rem 1rem !important;
+        padding: 1rem 1.5rem !important;
         color: white !important;
-        border-radius: 4px !important;
-        margin: 0.25rem 0 !important;
+        border-radius: 8px !important;
+        margin: 0.25rem 0.75rem !important;
         transition: all 0.3s ease !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        font-size: 0.95rem !important;
+        font-weight: 500 !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
     }
     
     .navbar-collapse .dropdown-item:hover {
-        background-color: rgba(255, 255, 255, 0.2) !important;
+        background: rgba(255, 255, 255, 0.25) !important;
         color: white !important;
+        transform: translateX(8px) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+    }
+    
+    .navbar-collapse .dropdown-item:active {
+        background: rgba(255, 255, 255, 0.3) !important;
         transform: translateX(5px) !important;
     }
     
     .navbar-collapse .dropdown-divider {
-        margin: 0.5rem 1rem !important;
-        border-color: rgba(255, 255, 255, 0.3) !important;
+        margin: 0.75rem 1rem !important;
+        border-color: rgba(255, 255, 255, 0.4) !important;
+        border-width: 1px !important;
+    }
+    
+    /* Mejorar el espaciado del contenedor del menú */
+    .navbar-collapse {
+        padding: 1rem 0 !important;
+    }
+    
+    .navbar-collapse .nav-item {
+        margin-bottom: 0.5rem !important;
     }
     
     .navbar-collapse .dropdown-toggle::after {
         float: right !important;
         margin-top: 0.5rem !important;
+    }
+    
+    /* Mejorar el espaciado del menú colapsado */
+    .navbar-collapse {
+        margin-top: 1rem;
+    }
+    
+    .navbar-collapse .navbar-nav {
+        margin: 0 !important;
+    }
+    
+    .navbar-collapse .nav-item {
+        margin-bottom: 0.5rem;
     }
 }

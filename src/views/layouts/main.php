@@ -34,12 +34,9 @@ if (!function_exists('isLoggedIn')) {
                 Filá Mariscales
             </a>
             
-            <div class="d-flex align-items-center">
-                <button class="navbar-toggler me-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                
-            </div>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
@@ -646,6 +643,138 @@ if (!function_exists('isLoggedIn')) {
             getCartInfo();
             getWishlistInfo();
         });
+    </script>
+    
+    <!-- JavaScript para manejar dropdowns en menú hamburguesa -->
+    <script>
+    // Esperar a que el DOM esté completamente cargado
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('JavaScript para dropdowns cargado');
+        
+        // Detectar si estamos en móvil/tablet
+        function isMobile() {
+            return window.innerWidth <= 991.98;
+        }
+        
+        // Función para manejar clicks en dropdowns
+        function handleDropdownClick(e) {
+            if (isMobile()) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                
+                console.log('Click en dropdown detectado');
+                
+                const dropdown = this.nextElementSibling;
+                const isOpen = dropdown.classList.contains('show');
+                
+                // Cerrar todos los dropdowns abiertos
+                document.querySelectorAll('.navbar-collapse .dropdown-menu.show').forEach(function(menu) {
+                    menu.classList.remove('show');
+                });
+                
+                // Abrir/cerrar el dropdown actual
+                if (!isOpen) {
+                    dropdown.classList.add('show');
+                    console.log('Dropdown abierto');
+                } else {
+                    console.log('Dropdown cerrado');
+                }
+                
+                return false;
+            }
+        }
+        
+        // Deshabilitar Bootstrap dropdowns en móviles
+        function disableBootstrapDropdowns() {
+            if (isMobile()) {
+                document.querySelectorAll('.navbar-collapse .dropdown-toggle').forEach(function(toggle) {
+                    // Remover data-bs-toggle para deshabilitar Bootstrap
+                    toggle.removeAttribute('data-bs-toggle');
+                    toggle.removeAttribute('data-bs-auto-close');
+                    
+                    // Agregar nuestro event listener
+                    toggle.addEventListener('click', handleDropdownClick, true);
+                });
+                
+                // Agregar hover para dispositivos que lo soporten
+                document.querySelectorAll('.navbar-collapse .dropdown').forEach(function(dropdown) {
+                    dropdown.addEventListener('mouseenter', function() {
+                        if (isMobile()) {
+                            const menu = this.querySelector('.dropdown-menu');
+                            if (menu) {
+                                // Cerrar otros dropdowns
+                                document.querySelectorAll('.navbar-collapse .dropdown-menu.show').forEach(function(otherMenu) {
+                                    if (otherMenu !== menu) {
+                                        otherMenu.classList.remove('show');
+                                    }
+                                });
+                                // Abrir este dropdown
+                                menu.classList.add('show');
+                            }
+                        }
+                    });
+                    
+                    dropdown.addEventListener('mouseleave', function() {
+                        if (isMobile()) {
+                            const menu = this.querySelector('.dropdown-menu');
+                            if (menu) {
+                                // Cerrar dropdown al salir del hover
+                                setTimeout(function() {
+                                    menu.classList.remove('show');
+                                }, 300);
+                            }
+                        }
+                    });
+                });
+            }
+        }
+        
+        // Habilitar Bootstrap dropdowns en desktop
+        function enableBootstrapDropdowns() {
+            if (!isMobile()) {
+                document.querySelectorAll('.navbar-collapse .dropdown-toggle').forEach(function(toggle) {
+                    // Restaurar data-bs-toggle para habilitar Bootstrap
+                    toggle.setAttribute('data-bs-toggle', 'dropdown');
+                    toggle.setAttribute('data-bs-auto-close', 'true');
+                    
+                    // Remover nuestro event listener
+                    toggle.removeEventListener('click', handleDropdownClick, true);
+                });
+                
+                // Remover event listeners de hover
+                document.querySelectorAll('.navbar-collapse .dropdown').forEach(function(dropdown) {
+                    dropdown.removeEventListener('mouseenter', arguments.callee);
+                    dropdown.removeEventListener('mouseleave', arguments.callee);
+                });
+            }
+        }
+        
+        // Inicializar
+        disableBootstrapDropdowns();
+        
+        // Manejar resize de ventana
+        window.addEventListener('resize', function() {
+            if (isMobile()) {
+                disableBootstrapDropdowns();
+            } else {
+                enableBootstrapDropdowns();
+                // Cerrar todos los dropdowns al cambiar a desktop
+                document.querySelectorAll('.navbar-collapse .dropdown-menu.show').forEach(function(menu) {
+                    menu.classList.remove('show');
+                });
+            }
+        });
+        
+        // Cerrar dropdowns al hacer click fuera
+        document.addEventListener('click', function(e) {
+            if (isMobile() && !e.target.closest('.navbar-collapse .dropdown')) {
+                document.querySelectorAll('.navbar-collapse .dropdown-menu.show').forEach(function(menu) {
+                    menu.classList.remove('show');
+                });
+            }
+        });
+    });
     </script>
 </body>
 </html>
