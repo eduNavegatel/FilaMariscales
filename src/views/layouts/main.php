@@ -39,23 +39,6 @@ if (!function_exists('isLoggedIn')) {
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 
-                <?php if (isLoggedIn()): ?>
-                    <div class="dropdown">
-                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-person-circle me-1"></i>
-                            <span class="d-none d-md-inline"><?php echo $_SESSION['user_name']; ?></span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="profile">
-                                <i class="bi bi-person me-2"></i>Mi Perfil
-                            </a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/prueba-php/public/logout.php">
-                                <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
-                            </a></li>
-                        </ul>
-                    </div>
-                <?php endif; ?>
             </div>
             
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -165,6 +148,25 @@ if (!function_exists('isLoggedIn')) {
                             <i class="bi bi-person-badge me-1"></i>Socios
                         </a>
                     </li>
+                    
+                    <!-- Usuario Dropdown -->
+                    <?php if (isLoggedIn()): ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle me-1"></i>
+                                <span class="d-none d-md-inline"><?php echo $_SESSION['user_name']; ?></span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="profile">
+                                    <i class="bi bi-person me-2"></i>Mi Perfil
+                                </a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/prueba-php/public/logout.php">
+                                    <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
+                                </a></li>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
                 </ul>
                 
                 <ul class="navbar-nav">

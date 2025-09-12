@@ -721,13 +721,17 @@ section {
 }
 
 .navbar .dropdown-menu {
-    background-color: rgba(255, 255, 255, 0.95) !important;
-    border: 1px solid rgba(220, 20, 60, 0.2) !important;
+    background-color: rgba(220, 20, 60, 0.9) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
     border-radius: 8px !important;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
     backdrop-filter: blur(10px) !important;
     margin-top: 0.5rem !important;
     display: none !important;
+    min-width: 180px !important;
+    max-width: 220px !important;
+    right: 0 !important;
+    left: auto !important;
 }
 
 .navbar .dropdown-menu.show {
@@ -735,22 +739,26 @@ section {
 }
 
 .navbar .dropdown-item {
-    padding: 0.75rem 1rem !important;
-    color: var(--primary) !important;
+    padding: 0.75rem 1.25rem !important;
+    color: white !important;
     border-radius: 4px !important;
     margin: 0.25rem 0.5rem !important;
     transition: all 0.3s ease !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    font-size: 0.9rem !important;
 }
 
 .navbar .dropdown-item:hover {
-    background-color: rgba(220, 20, 60, 0.1) !important;
-    color: var(--primary-dark) !important;
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
     transform: translateX(5px) !important;
 }
 
 .navbar .dropdown-divider {
     margin: 0.5rem 0.5rem !important;
-    border-color: rgba(220, 20, 60, 0.2) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 /* Estilos para dropdowns en menú hamburguesa - Global */
@@ -760,10 +768,10 @@ section {
         float: none !important;
         width: 100% !important;
         margin-top: 0 !important;
-        background-color: rgba(255, 255, 255, 0.95) !important;
-        border: 1px solid rgba(220, 20, 60, 0.2) !important;
+        background-color: rgba(220, 20, 60, 0.9) !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
         border-radius: 8px !important;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
         backdrop-filter: blur(10px) !important;
         margin-left: 1rem !important;
         margin-right: 1rem !important;
@@ -776,21 +784,21 @@ section {
     
     .navbar-collapse .dropdown-item {
         padding: 0.75rem 1rem !important;
-        color: var(--primary) !important;
+        color: white !important;
         border-radius: 4px !important;
         margin: 0.25rem 0 !important;
         transition: all 0.3s ease !important;
     }
     
     .navbar-collapse .dropdown-item:hover {
-        background-color: rgba(220, 20, 60, 0.1) !important;
-        color: var(--primary-dark) !important;
+        background-color: rgba(255, 255, 255, 0.2) !important;
+        color: white !important;
         transform: translateX(5px) !important;
     }
     
     .navbar-collapse .dropdown-divider {
         margin: 0.5rem 1rem !important;
-        border-color: rgba(220, 20, 60, 0.2) !important;
+        border-color: rgba(255, 255, 255, 0.3) !important;
     }
     
     .navbar-collapse .dropdown-toggle::after {
