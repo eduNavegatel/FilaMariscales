@@ -647,9 +647,31 @@ $documentos_socios = [
 
 <style>
 /* Socios Styles */
-.hero-section {
-    background: linear-gradient(135deg, rgba(220, 20, 60, 0.05) 0%, rgba(255, 255, 255, 0.7) 50%, rgba(220, 20, 60, 0.05) 100%);
+body {
+    background: linear-gradient(135deg, rgba(220, 20, 60, 0.05) 0%, rgba(255, 255, 255, 0.85) 50%, rgba(220, 20, 60, 0.05) 100%);
+    backdrop-filter: blur(15px);
+    min-height: 100vh;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(220, 20, 60, 0.02) 0%, rgba(255, 255, 255, 0.1) 25%, rgba(220, 20, 60, 0.02) 50%, rgba(255, 255, 255, 0.1) 75%, rgba(220, 20, 60, 0.02) 100%);
     backdrop-filter: blur(5px);
+    z-index: -1;
+    pointer-events: none;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, rgba(220, 20, 60, 0.08) 0%, rgba(255, 255, 255, 0.6) 50%, rgba(220, 20, 60, 0.08) 100%);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .socios-stats .stat-item {
@@ -663,17 +685,17 @@ $documentos_socios = [
 }
 
 .login-section {
-    background: rgba(248, 249, 250, 0.8);
-    backdrop-filter: blur(10px);
+    background: rgba(248, 249, 250, 0.6);
+    backdrop-filter: blur(15px);
 }
 
 .login-card {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.8);
     border-radius: 20px;
     padding: 2.5rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     border: 2px solid var(--primary);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
 }
 
 .login-header {
@@ -813,14 +835,14 @@ $documentos_socios = [
 }
 
 .action-card {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.7);
     border-radius: 15px;
     padding: 2rem;
     text-align: center;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     border: 2px solid transparent;
     transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
     height: 100%;
 }
 
@@ -875,11 +897,11 @@ $documentos_socios = [
 }
 
 .activity-card, .info-card {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.7);
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     border: 2px solid var(--primary);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
 }
 
 .card-header {
@@ -901,7 +923,11 @@ $documentos_socios = [
     align-items: flex-start;
     gap: 1rem;
     padding: 1rem 0;
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid rgba(233, 236, 239, 0.5);
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    backdrop-filter: blur(5px);
 }
 
 .activity-item:last-child {
@@ -939,7 +965,11 @@ $documentos_socios = [
     justify-content: space-between;
     align-items: center;
     padding: 0.75rem 0;
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid rgba(233, 236, 239, 0.5);
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    backdrop-filter: blur(5px);
 }
 
 .info-item:last-child {
@@ -965,7 +995,11 @@ $documentos_socios = [
     align-items: center;
     gap: 1rem;
     padding: 1rem 0;
-    border-bottom: 1px solid #e9ecef;
+    border-bottom: 1px solid rgba(233, 236, 239, 0.5);
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    backdrop-filter: blur(5px);
 }
 
 .notification-item:last-child {
@@ -1003,7 +1037,8 @@ $documentos_socios = [
     align-items: center;
     gap: 1rem;
     padding: 1rem;
-    background: rgba(220, 20, 60, 0.05);
+    background: rgba(220, 20, 60, 0.1);
+    backdrop-filter: blur(10px);
     border-radius: 10px;
     border: 1px solid rgba(220, 20, 60, 0.1);
 }
@@ -1057,6 +1092,10 @@ $documentos_socios = [
     position: relative;
     margin-bottom: 2rem;
     padding-left: 2rem;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    padding: 1rem;
+    backdrop-filter: blur(5px);
 }
 
 .timeline-marker {
@@ -1119,6 +1158,34 @@ $documentos_socios = [
     .timeline-actions .btn {
         width: 100%;
     }
+}
+
+/* Modales con transparencia */
+.modal-content {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    border: 2px solid var(--primary);
+    border-radius: 15px;
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    border-bottom: 1px solid rgba(220, 20, 60, 0.2);
+    border-radius: 15px 15px 0 0;
+}
+
+.modal-body {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+/* Elementos dentro de modales */
+.event-item, .achievement-item, .category-item {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(220, 20, 60, 0.1);
+    border-radius: 8px;
 }
 </style>
 

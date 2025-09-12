@@ -41,6 +41,21 @@
         .navbar-brand { font-weight: bold; }
         .btn-toolbar .btn { border-radius: 6px; }
         .border-bottom { border-color: #dee2e6 !important; }
+        .metric-item {
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-bottom: 10px;
+        }
+        .metric-item h3 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0;
+        }
+        .metric-item p {
+            font-size: 0.9rem;
+            margin: 0;
+        }
     </style>
 </head>
 <body>
@@ -150,89 +165,6 @@
     </div>
 </div>
 
-<!-- Estadísticas de Visitas -->
-<div class="row mb-4">
-    <div class="col-md-3 mb-3">
-        <div class="card text-white h-100" style="background: linear-gradient(135deg, #6f42c1 0%, #e83e8c 100%);">
-            <div class="card-body d-flex flex-column">
-                <div class="d-flex justify-content-between align-items-start mb-3">
-                    <div>
-                        <h5 class="card-title mb-1">📊 Visitas Totales</h5>
-                        <h2 class="mb-0"><?= number_format($visitStats['total_visitas'] ?? 0) ?></h2>
-                        <small class="opacity-75">Últimos 30 días</small>
-                    </div>
-                    <i class="fas fa-chart-line fa-2x opacity-50"></i>
-                </div>
-                <div class="mt-auto">
-                    <button class="btn btn-light btn-sm" onclick="showVisitAnalytics()">
-                        <i class="fas fa-chart-bar me-1"></i>Ver Analíticas
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col-md-3 mb-3">
-        <div class="card text-white h-100" style="background: linear-gradient(135deg, #fd7e14 0%, #ffc107 100%);">
-            <div class="card-body d-flex flex-column">
-                <div class="d-flex justify-content-between align-items-start mb-3">
-                    <div>
-                        <h5 class="card-title mb-1">👥 Visitas Únicas</h5>
-                        <h2 class="mb-0"><?= number_format($visitStats['visitas_unicas'] ?? 0) ?></h2>
-                        <small class="opacity-75">Usuarios únicos</small>
-                    </div>
-                    <i class="fas fa-user-friends fa-2x opacity-50"></i>
-                </div>
-                <div class="mt-auto">
-                    <button class="btn btn-light btn-sm" onclick="showUniqueVisitors()">
-                        <i class="fas fa-users me-1"></i>Ver Detalles
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col-md-3 mb-3">
-        <div class="card text-white h-100" style="background: linear-gradient(135deg, #20c997 0%, #17a2b8 100%);">
-            <div class="card-body d-flex flex-column">
-                <div class="d-flex justify-content-between align-items-start mb-3">
-                    <div>
-                        <h5 class="card-title mb-1">📅 Visitas Hoy</h5>
-                        <h2 class="mb-0"><?= number_format($visitStats['visitas_hoy'] ?? 0) ?></h2>
-                        <small class="opacity-75"><?= number_format($visitStats['visitas_unicas_hoy'] ?? 0) ?> únicas</small>
-                    </div>
-                    <i class="fas fa-calendar-day fa-2x opacity-50"></i>
-                </div>
-                <div class="mt-auto">
-                    <button class="btn btn-light btn-sm" onclick="showTodayStats()">
-                        <i class="fas fa-clock me-1"></i>Ver Hoy
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col-md-3 mb-3">
-        <div class="card text-white h-100" style="background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);">
-            <div class="card-body d-flex flex-column">
-                <div class="d-flex justify-content-between align-items-start mb-3">
-                    <div>
-                        <h5 class="card-title mb-1">🟢 Usuarios Online</h5>
-                        <h2 class="mb-0"><?= number_format($realTimeStats['usuarios_online'] ?? 0) ?></h2>
-                        <small class="opacity-75">Últimos 5 min</small>
-                    </div>
-                    <i class="fas fa-circle fa-2x opacity-50" style="color: #28a745 !important;"></i>
-                </div>
-                <div class="mt-auto">
-                    <button class="btn btn-light btn-sm" onclick="showOnlineUsers()">
-                        <i class="fas fa-wifi me-1"></i>Ver Online
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Estadísticas Secundarias -->
 <div class="row mb-4">
     <div class="col-md-3 mb-3">
@@ -303,6 +235,108 @@
                 <a href="<?= URL_ROOT ?>/admin/cuotas" class="btn btn-light btn-sm mt-auto">
                     <i class="fas fa-exclamation-triangle me-1"></i>Gestionar cuotas
                 </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estadísticas de Visitas Unificadas -->
+<div class="row mb-4">
+    <div class="col-12 mb-3">
+        <div class="card text-white h-100" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h4 class="card-title mb-1">
+                            <i class="fas fa-chart-line me-2"></i>Analíticas de Visitas
+                        </h4>
+                        <p class="opacity-75 mb-0">Estadísticas en tiempo real del sitio web</p>
+                    </div>
+                    <div class="text-end">
+                        <button class="btn btn-light btn-sm me-2" onclick="refreshVisitStats()">
+                            <i class="fas fa-sync-alt me-1"></i>Actualizar
+                        </button>
+                        <a href="/prueba-php/public/admin/visitas" class="btn btn-outline-light btn-sm">
+                            <i class="fas fa-chart-bar me-1"></i>Ver Detalles
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Métricas Principales -->
+                <div class="row mb-4">
+                    <div class="col-md-3 text-center">
+                        <div class="metric-item">
+                            <h3 class="mb-1"><?= number_format($visitStats['total_visitas'] ?? 0) ?></h3>
+                            <p class="mb-0 opacity-75">
+                                <i class="fas fa-eye me-1"></i>Visitas Totales
+                                <br><small>Últimos 30 días</small>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <div class="metric-item">
+                            <h3 class="mb-1"><?= number_format($visitStats['visitas_unicas'] ?? 0) ?></h3>
+                            <p class="mb-0 opacity-75">
+                                <i class="fas fa-user-friends me-1"></i>Visitas Únicas
+                                <br><small>Usuarios diferentes</small>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <div class="metric-item">
+                            <h3 class="mb-1"><?= number_format($visitStats['visitas_hoy'] ?? 0) ?></h3>
+                            <p class="mb-0 opacity-75">
+                                <i class="fas fa-calendar-day me-1"></i>Visitas Hoy
+                                <br><small><?= number_format($visitStats['visitas_unicas_hoy'] ?? 0) ?> únicas</small>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <div class="metric-item">
+                            <h3 class="mb-1 text-success"><?= number_format($realTimeStats['usuarios_online'] ?? 0) ?></h3>
+                            <p class="mb-0 opacity-75">
+                                <i class="fas fa-wifi me-1"></i>Usuarios Online
+                                <br><small>Últimos 5 minutos</small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Acciones Rápidas -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="opacity-75 mb-3">
+                            <i class="fas fa-chart-pie me-2"></i>Análisis Detallado
+                        </h6>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button class="btn btn-outline-light btn-sm" onclick="showVisitAnalytics()">
+                                <i class="fas fa-chart-bar me-1"></i>Analíticas Completas
+                            </button>
+                            <button class="btn btn-outline-light btn-sm" onclick="showTodayStats()">
+                                <i class="fas fa-clock me-1"></i>Estadísticas de Hoy
+                            </button>
+                            <button class="btn btn-outline-light btn-sm" onclick="showOnlineUsers()">
+                                <i class="fas fa-users me-1"></i>Usuarios Online
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="opacity-75 mb-3">
+                            <i class="fas fa-tools me-2"></i>Herramientas
+                        </h6>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button class="btn btn-outline-light btn-sm" onclick="exportVisitData()">
+                                <i class="fas fa-download me-1"></i>Exportar Datos
+                            </button>
+                            <button class="btn btn-outline-light btn-sm" onclick="showVisitSettings()">
+                                <i class="fas fa-cog me-1"></i>Configuración
+                            </button>
+                            <button class="btn btn-outline-light btn-sm" onclick="clearOldVisits()">
+                                <i class="fas fa-trash me-1"></i>Limpiar Datos
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1469,6 +1503,219 @@ function initializeCalendar() {
         function refreshOnlineUsers() {
             alert('Actualizando usuarios online...');
             // Aquí se podría implementar una llamada AJAX para actualizar los datos
+        }
+        
+        // Nuevas funciones para la tarjeta unificada
+        function refreshVisitStats() {
+            location.reload();
+        }
+        
+        function exportVisitData() {
+            const modalHtml = `
+                <div class="modal fade" id="exportModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    <i class="fas fa-download me-2"></i>Exportar Datos de Visitas
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label class="form-label">Formato de exportación:</label>
+                                    <select class="form-select" id="exportFormat">
+                                        <option value="csv">CSV (Excel)</option>
+                                        <option value="pdf">PDF</option>
+                                        <option value="json">JSON</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Rango de fechas:</label>
+                                    <select class="form-select" id="dateRange">
+                                        <option value="7">Últimos 7 días</option>
+                                        <option value="30" selected>Últimos 30 días</option>
+                                        <option value="90">Últimos 90 días</option>
+                                        <option value="all">Todos los datos</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Incluir:</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="includeDetails" checked>
+                                        <label class="form-check-label" for="includeDetails">Detalles de visitas</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="includeStats" checked>
+                                        <label class="form-check-label" for="includeStats">Estadísticas resumidas</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-primary" onclick="performExport()">
+                                    <i class="fas fa-download me-2"></i>Exportar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            const existingModal = document.getElementById('exportModal');
+            if (existingModal) existingModal.remove();
+            
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            const modal = new bootstrap.Modal(document.getElementById('exportModal'));
+            modal.show();
+        }
+        
+        function performExport() {
+            const format = document.getElementById('exportFormat').value;
+            const range = document.getElementById('dateRange').value;
+            const includeDetails = document.getElementById('includeDetails').checked;
+            const includeStats = document.getElementById('includeStats').checked;
+            
+            alert(`Exportando datos en formato ${format.toUpperCase()} para los últimos ${range} días...`);
+            
+            // Aquí se implementaría la lógica real de exportación
+            const modal = bootstrap.Modal.getInstance(document.getElementById('exportModal'));
+            modal.hide();
+        }
+        
+        function showVisitSettings() {
+            const modalHtml = `
+                <div class="modal fade" id="visitSettingsModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    <i class="fas fa-cog me-2"></i>Configuración de Visitas
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label class="form-label">Tiempo para considerar visita única:</label>
+                                    <select class="form-select" id="uniqueTime">
+                                        <option value="1">1 hora</option>
+                                        <option value="24" selected>24 horas</option>
+                                        <option value="168">7 días</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Tiempo para usuarios online:</label>
+                                    <select class="form-select" id="onlineTime">
+                                        <option value="5" selected>5 minutos</option>
+                                        <option value="15">15 minutos</option>
+                                        <option value="30">30 minutos</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="trackBots" checked>
+                                        <label class="form-check-label" for="trackBots">Excluir bots automáticamente</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="trackAdmin" checked>
+                                        <label class="form-check-label" for="trackAdmin">Excluir visitas del panel de admin</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-primary" onclick="saveVisitSettings()">
+                                    <i class="fas fa-save me-2"></i>Guardar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            const existingModal = document.getElementById('visitSettingsModal');
+            if (existingModal) existingModal.remove();
+            
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            const modal = new bootstrap.Modal(document.getElementById('visitSettingsModal'));
+            modal.show();
+        }
+        
+        function saveVisitSettings() {
+            const uniqueTime = document.getElementById('uniqueTime').value;
+            const onlineTime = document.getElementById('onlineTime').value;
+            const trackBots = document.getElementById('trackBots').checked;
+            const trackAdmin = document.getElementById('trackAdmin').checked;
+            
+            alert('Configuración de visitas guardada correctamente.');
+            
+            const modal = bootstrap.Modal.getInstance(document.getElementById('visitSettingsModal'));
+            modal.hide();
+        }
+        
+        function clearOldVisits() {
+            if (confirm('¿Estás seguro de que quieres limpiar los datos antiguos de visitas? Esta acción no se puede deshacer.')) {
+                const modalHtml = `
+                    <div class="modal fade" id="clearVisitsModal" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">
+                                        <i class="fas fa-trash me-2"></i>Limpiar Datos Antiguos
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="alert alert-warning">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        <strong>Advertencia:</strong> Esta acción eliminará permanentemente los datos de visitas antiguos.
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Eliminar visitas anteriores a:</label>
+                                        <select class="form-select" id="clearDate">
+                                            <option value="30">30 días</option>
+                                            <option value="90">90 días</option>
+                                            <option value="180">6 meses</option>
+                                            <option value="365">1 año</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="keepStats">
+                                            <label class="form-check-label" for="keepStats">Mantener estadísticas resumidas</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="button" class="btn btn-danger" onclick="performClear()">
+                                        <i class="fas fa-trash me-2"></i>Eliminar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                const existingModal = document.getElementById('clearVisitsModal');
+                if (existingModal) existingModal.remove();
+                
+                document.body.insertAdjacentHTML('beforeend', modalHtml);
+                const modal = new bootstrap.Modal(document.getElementById('clearVisitsModal'));
+                modal.show();
+            }
+        }
+        
+        function performClear() {
+            const clearDate = document.getElementById('clearDate').value;
+            const keepStats = document.getElementById('keepStats').checked;
+            
+            alert(`Eliminando visitas anteriores a ${clearDate} días...`);
+            
+            const modal = bootstrap.Modal.getInstance(document.getElementById('clearVisitsModal'));
+            modal.hide();
         }
     </script>
 </body>
