@@ -19,6 +19,7 @@ class AdminController extends Controller {
     private $securityHelper;
     private $userModel;
     private $eventModel;
+    private $newsModel;
 
     public function __construct() {
         
@@ -50,6 +51,25 @@ class AdminController extends Controller {
             }
         } catch (Exception $e) {
             $this->eventModel = null;
+        }
+        
+        try {
+            // Cargar manualmente el modelo News si existe
+            $newsModelPath = __DIR__ . '/../models/News.php';
+            if (file_exists($newsModelPath)) {
+                require_once $newsModelPath;
+                if (class_exists('News')) {
+                    $this->newsModel = $this->model('News');
+                    error_log("News model loaded successfully");
+                } else {
+                    error_log("News class not found after loading file");
+                }
+            } else {
+                error_log("News model file not found at: " . $newsModelPath);
+            }
+        } catch (Exception $e) {
+            error_log("Error loading News model: " . $e->getMessage());
+            $this->newsModel = null;
         }
         
         // Set security headers if SecurityHelper exists
@@ -120,10 +140,18 @@ class AdminController extends Controller {
         }
         
         // Obtener estadísticas de noticias
-        $newsDir = 'uploads/news/';
-        if (is_dir($newsDir)) {
-            $newsFiles = glob($newsDir . '*.{txt,md,html}', GLOB_BRACE);
-            $newsCount = count($newsFiles);
+        if ($this->newsModel) {
+            try {
+                $newsCount = $this->newsModel->getNewsCount();
+            } catch (Exception $e) {
+                $newsCount = 0;
+            }
+        } else {
+            $newsDir = 'uploads/news/';
+            if (is_dir($newsDir)) {
+                $newsFiles = glob($newsDir . '*.{txt,md,html}', GLOB_BRACE);
+                $newsCount = count($newsFiles);
+            }
         }
         
         // Obtener estadísticas de mensajes
@@ -1531,51 +1559,57 @@ class AdminController extends Controller {
     }
     
     // News management
-    public function noticias() {
-        error_log("AdminController::noticias() called");
+    public function noticias($page = 1) {
+        error_log("AdminController::noticias() called with page: " . $page);
         
-        // Get news count and list
-        $newsCount = 0;
-        $newsList = [];
-        $newsDir = 'uploads/news/';
+        $perPage = 10;
+        $news = [];
+        $totalNews = 0;
+        $newsStats = [];
         
-        if (is_dir($newsDir)) {
-            $newsFiles = glob($newsDir . '*.{txt,md,html}', GLOB_BRACE);
-            $newsCount = count($newsFiles);
-            
-            // Get file info for each news file
-            foreach ($newsFiles as $file) {
-                $newsList[] = [
-                    'filename' => basename($file),
-                    'size' => filesize($file),
-                    'modified' => date('Y-m-d H:i:s', filemtime($file)),
-                    'path' => $file
-                ];
+        // Intentar cargar el modelo si no está cargado
+        if (!$this->newsModel && class_exists('News')) {
+            try {
+                $this->newsModel = $this->model('News');
+            } catch (Exception $e) {
+                error_log("Error loading News model: " . $e->getMessage());
             }
-            
-            // Sort by modification date (newest first)
-            usort($newsList, function($a, $b) {
-                return strtotime($b['modified']) - strtotime($a['modified']);
-            });
-        } else {
-            // Create news directory if it doesn't exist
-            if (!is_dir($newsDir)) {
-                mkdir($newsDir, 0755, true);
+        }
+        
+        if ($this->newsModel) {
+            try {
+                $news = $this->newsModel->getAllNews($page, $perPage);
+                $totalNews = $this->newsModel->getNewsCount();
+                $newsStats = $this->newsModel->getNewsStats();
+            } catch (Exception $e) {
+                error_log("Error getting news data: " . $e->getMessage());
+                $news = [];
+                $totalNews = 0;
+                $newsStats = [
+                    'total' => 0,
+                    'published' => 0,
+                    'draft' => 0,
+                    'archived' => 0,
+                    'this_month' => 0
+                ];
             }
         }
         
         $data = [
             'title' => 'Gestión de Noticias',
-            'newsCount' => $newsCount,
-            'newsList' => $newsList
+            'news' => $news,
+            'currentPage' => $page,
+            'totalPages' => ceil($totalNews / $perPage),
+            'newsStats' => $newsStats,
+            'totalNews' => $totalNews
         ];
         
         try {
-            $this->view('admin/noticias', $data);
+            $this->loadViewDirectly('admin/noticias/index', $data);
         } catch (Exception $e) {
             error_log("Error loading noticias view: " . $e->getMessage());
-            // Fallback: mostrar página básica
-            $this->loadViewDirectly('admin/noticias', $data);
+            // Fallback: mostrar página básica sin errores
+            $this->loadViewDirectly('admin/noticias/index', $data);
         }
     }
     
@@ -1978,6 +2012,355 @@ class AdminController extends Controller {
             http_response_code(500);
             echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
         }
+    }
+
+    // ==================== GESTIÓN DE NOTICIAS ====================
+    
+    // Crear nueva noticia
+    public function nuevaNoticia() {
+        error_log("=== NUEVA NOTICIA DEBUG ===");
+        error_log("AdminController::nuevaNoticia() called");
+        error_log("News model available: " . ($this->newsModel ? 'YES' : 'NO'));
+        error_log("Request method: " . $_SERVER['REQUEST_METHOD']);
+        error_log("URL: " . $_SERVER['REQUEST_URI']);
+        error_log("GET params: " . print_r($_GET, true));
+        error_log("POST params: " . print_r($_POST, true));
+        
+        $newsData = ['errors' => []];
+        
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Validate CSRF token if SecurityHelper exists and token is provided
+            if ($this->securityHelper && isset($_POST['csrf_token'])) {
+                if (!$this->securityHelper->validateCsrfToken($_POST['csrf_token'])) {
+                    setFlashMessage('error', 'Token de seguridad inválido.');
+                    $this->redirect('/admin/noticias');
+                }
+            }
+            
+            // Process form data
+            $newsData = [
+                'titulo' => trim($_POST['titulo'] ?? ''),
+                'contenido' => trim($_POST['contenido'] ?? ''),
+                'estado' => trim($_POST['estado'] ?? 'borrador'),
+                'fecha_publicacion' => trim($_POST['fecha_publicacion'] ?? date('Y-m-d H:i:s')),
+                'autor_id' => $_SESSION['user_id'] ?? null,
+                'errors' => []
+            ];
+            
+            // Validate data
+            if (empty($newsData['titulo'])) {
+                $newsData['errors']['titulo'] = 'Título requerido';
+            }
+            
+            if (empty($newsData['contenido'])) {
+                $newsData['errors']['contenido'] = 'Contenido requerido';
+            }
+            
+            // Validate status
+            $validStatuses = ['publicado', 'borrador', 'archivado'];
+            if (!in_array($newsData['estado'], $validStatuses)) {
+                $newsData['errors']['estado'] = 'Estado inválido';
+            }
+            
+            // Handle image upload
+            if (isset($_FILES['imagen_portada']) && $_FILES['imagen_portada']['error'] === UPLOAD_ERR_OK) {
+                $file = $_FILES['imagen_portada'];
+                $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+                $max_size = 5 * 1024 * 1024; // 5MB
+                
+                if (in_array($file['type'], $allowed_types) && $file['size'] <= $max_size) {
+                    $upload_dir = 'uploads/news/';
+                    if (!is_dir($upload_dir)) {
+                        mkdir($upload_dir, 0755, true);
+                    }
+                    
+                    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+                    $newsData['imagen_portada'] = 'news_' . time() . '_' . rand(1000, 9999) . '.' . $extension;
+                    $filepath = $upload_dir . $newsData['imagen_portada'];
+                    
+                    if (!move_uploaded_file($file['tmp_name'], $filepath)) {
+                        $newsData['errors']['imagen'] = 'Error al subir la imagen';
+                        $newsData['imagen_portada'] = null;
+                    }
+                } else {
+                    $newsData['errors']['imagen'] = 'Tipo de archivo no permitido o archivo demasiado grande';
+                }
+            }
+            
+            if (empty($newsData['errors'])) {
+                // Crear noticia directamente con PDO
+                try {
+                    $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS);
+                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    
+                    $sql = "INSERT INTO noticias (titulo, contenido, imagen_portada, autor_id, estado, fecha_publicacion) 
+                            VALUES (:titulo, :contenido, :imagen_portada, :autor_id, :estado, :fecha_publicacion)";
+                    
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->bindParam(':titulo', $newsData['titulo']);
+                    $stmt->bindParam(':contenido', $newsData['contenido']);
+                    $stmt->bindParam(':imagen_portada', $newsData['imagen_portada']);
+                    $stmt->bindParam(':autor_id', $newsData['autor_id']);
+                    $stmt->bindParam(':estado', $newsData['estado']);
+                    $stmt->bindParam(':fecha_publicacion', $newsData['fecha_publicacion']);
+                    
+                    if ($stmt->execute()) {
+                        // Redirigir directamente
+                        header('Location: http://localhost/prueba-php/public/admin/noticias?success=1');
+                        exit;
+                    } else {
+                        $newsData['errors']['general'] = 'Error al crear la noticia';
+                    }
+                } catch (Exception $e) {
+                    $newsData['errors']['general'] = 'Error de base de datos: ' . $e->getMessage();
+                }
+            }
+        }
+        
+        $data = [
+            'title' => 'Nueva Noticia',
+            'news' => null,
+            'errors' => $newsData['errors'] ?? []
+        ];
+        
+        error_log("Loading view: admin/noticias/crear");
+        error_log("View file path: " . dirname(dirname(__DIR__)) . '/src/views/admin/noticias/crear.php');
+        error_log("View file exists: " . (file_exists(dirname(dirname(__DIR__)) . '/src/views/admin/noticias/crear.php') ? 'YES' : 'NO'));
+        error_log("Data being passed: " . print_r($data, true));
+        
+        try {
+            // Usar vista simplificada
+            $this->loadViewDirectly('admin/noticias/crear-simple', $data);
+        } catch (Exception $e) {
+            error_log("Error loading view: " . $e->getMessage());
+            error_log("Error trace: " . $e->getTraceAsString());
+            echo "Error al cargar la vista: " . $e->getMessage();
+        }
+    }
+    
+    // Editar noticia
+    public function editarNoticia($id = null) {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Validate CSRF token if SecurityHelper exists and token is provided
+            if ($this->securityHelper && isset($_POST['csrf_token'])) {
+                if (!$this->securityHelper->validateCsrfToken($_POST['csrf_token'])) {
+                    setFlashMessage('error', 'Token de seguridad inválido.');
+                    $this->redirect('/admin/noticias');
+                }
+            }
+            
+            // Process form data
+            $newsData = [
+                'id' => $id,
+                'titulo' => trim($_POST['titulo'] ?? ''),
+                'contenido' => trim($_POST['contenido'] ?? ''),
+                'estado' => trim($_POST['estado'] ?? 'borrador'),
+                'fecha_publicacion' => trim($_POST['fecha_publicacion'] ?? date('Y-m-d H:i:s')),
+                'errors' => []
+            ];
+            
+            // Validate data
+            if (empty($newsData['titulo'])) {
+                $newsData['errors']['titulo'] = 'Título requerido';
+            }
+            
+            if (empty($newsData['contenido'])) {
+                $newsData['errors']['contenido'] = 'Contenido requerido';
+            }
+            
+            // Validate status
+            $validStatuses = ['publicado', 'borrador', 'archivado'];
+            if (!in_array($newsData['estado'], $validStatuses)) {
+                $newsData['errors']['estado'] = 'Estado inválido';
+            }
+            
+            // Handle image upload
+            if (isset($_FILES['imagen_portada']) && $_FILES['imagen_portada']['error'] === UPLOAD_ERR_OK) {
+                $file = $_FILES['imagen_portada'];
+                $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+                $max_size = 5 * 1024 * 1024; // 5MB
+                
+                if (in_array($file['type'], $allowed_types) && $file['size'] <= $max_size) {
+                    $upload_dir = 'uploads/news/';
+                    if (!is_dir($upload_dir)) {
+                        mkdir($upload_dir, 0755, true);
+                    }
+                    
+                    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+                    $newsData['imagen_portada'] = 'news_' . $id . '_' . time() . '.' . $extension;
+                    $filepath = $upload_dir . $newsData['imagen_portada'];
+                    
+                    if (move_uploaded_file($file['tmp_name'], $filepath)) {
+                        // Eliminar imagen anterior si existe
+                        $currentNews = $this->newsModel->getNewsById($id);
+                        if ($currentNews && !empty($currentNews->imagen_portada) && file_exists($upload_dir . $currentNews->imagen_portada)) {
+                            unlink($upload_dir . $currentNews->imagen_portada);
+                        }
+                    } else {
+                        $newsData['errors']['imagen'] = 'Error al subir la imagen';
+                    }
+                } else {
+                    $newsData['errors']['imagen'] = 'Tipo de archivo no permitido o archivo demasiado grande';
+                }
+            }
+            
+            if (empty($newsData['errors']) && $this->newsModel) {
+                $result = $this->newsModel->updateNews($newsData);
+                
+                if ($result) {
+                    setFlashMessage('success', 'Noticia actualizada correctamente');
+                    $this->redirect('/admin/noticias');
+                } else {
+                    setFlashMessage('error', 'Error al actualizar la noticia');
+                }
+            }
+        }
+        
+        // Get news data for editing
+        $news = null;
+        if ($id && $this->newsModel) {
+            $news = $this->newsModel->getNewsById($id);
+        }
+        
+        if (!$news && $id) {
+            setFlashMessage('error', 'Noticia no encontrada');
+            $this->redirect('/admin/noticias');
+        }
+        
+        $data = [
+            'title' => $id ? 'Editar Noticia' : 'Nueva Noticia',
+            'news' => $news,
+            'errors' => $newsData['errors'] ?? []
+        ];
+        
+        $this->loadViewDirectly('admin/noticias/editar', $data);
+    }
+    
+    // Eliminar noticia
+    public function eliminarNoticia($id) {
+        if ($this->newsModel) {
+            // Get news data to delete associated image
+            $news = $this->newsModel->getNewsById($id);
+            
+            if ($news) {
+                // Delete associated image if exists
+                if (!empty($news->imagen_portada)) {
+                    $imagePath = 'uploads/news/' . $news->imagen_portada;
+                    if (file_exists($imagePath)) {
+                        unlink($imagePath);
+                    }
+                }
+                
+                // Delete news from database
+                if ($this->newsModel->deleteNews($id)) {
+                    setFlashMessage('success', 'Noticia eliminada correctamente');
+                } else {
+                    setFlashMessage('error', 'Error al eliminar la noticia');
+                }
+            } else {
+                setFlashMessage('error', 'Noticia no encontrada');
+            }
+        } else {
+            setFlashMessage('error', 'Error interno del servidor');
+        }
+        
+        $this->redirect('/admin/noticias');
+    }
+    
+    // Cambiar estado de noticia
+    public function cambiarEstadoNoticia($id, $estado) {
+        $validStatuses = ['publicado', 'borrador', 'archivado'];
+        
+        if (!in_array($estado, $validStatuses)) {
+            setFlashMessage('error', 'Estado inválido');
+            $this->redirect('/admin/noticias');
+        }
+        
+        if ($this->newsModel) {
+            if ($this->newsModel->updateNewsStatus($id, $estado)) {
+                $statusNames = [
+                    'publicado' => 'publicada',
+                    'borrador' => 'guardada como borrador',
+                    'archivado' => 'archivada'
+                ];
+                setFlashMessage('success', 'Noticia ' . $statusNames[$estado] . ' correctamente');
+            } else {
+                setFlashMessage('error', 'Error al cambiar el estado de la noticia');
+            }
+        } else {
+            setFlashMessage('error', 'Error interno del servidor');
+        }
+        
+        $this->redirect('/admin/noticias');
+    }
+    
+    // Ver noticia
+    public function verNoticia($id) {
+        if (!$this->newsModel) {
+            setFlashMessage('error', 'Error interno del servidor');
+            $this->redirect('/admin/noticias');
+        }
+        
+        $news = $this->newsModel->getNewsById($id);
+        
+        if (!$news) {
+            setFlashMessage('error', 'Noticia no encontrada');
+            $this->redirect('/admin/noticias');
+        }
+        
+        $data = [
+            'title' => 'Ver Noticia - ' . $news->titulo,
+            'news' => $news
+        ];
+        
+        $this->loadViewDirectly('admin/noticias/ver', $data);
+    }
+    
+    // Buscar noticias
+    public function buscarNoticias() {
+        $filters = [];
+        $page = $_GET['page'] ?? 1;
+        $perPage = 10;
+        
+        // Get search filters
+        if (!empty($_GET['search'])) {
+            $filters['search'] = $_GET['search'];
+        }
+        
+        if (!empty($_GET['estado'])) {
+            $filters['estado'] = $_GET['estado'];
+        }
+        
+        if (!empty($_GET['fecha_desde'])) {
+            $filters['fecha_desde'] = $_GET['fecha_desde'];
+        }
+        
+        if (!empty($_GET['fecha_hasta'])) {
+            $filters['fecha_hasta'] = $_GET['fecha_hasta'];
+        }
+        
+        $news = [];
+        $totalNews = 0;
+        
+        if ($this->newsModel) {
+            try {
+                $news = $this->newsModel->searchNews($filters, $page, $perPage);
+                $totalNews = $this->newsModel->countSearchNews($filters);
+            } catch (Exception $e) {
+                error_log("Error searching news: " . $e->getMessage());
+            }
+        }
+        
+        $data = [
+            'title' => 'Búsqueda de Noticias',
+            'news' => $news,
+            'currentPage' => $page,
+            'totalPages' => ceil($totalNews / $perPage),
+            'filters' => $filters,
+            'totalNews' => $totalNews
+        ];
+        
+        $this->loadViewDirectly('admin/noticias/buscar', $data);
     }
 }
 

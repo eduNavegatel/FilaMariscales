@@ -223,6 +223,37 @@ if (empty($url[0])) {
             } elseif ($action === 'upload-product-photo') {
                 // Manejar la subida de fotos de productos
                 $adminController->uploadProductPhoto();
+            } elseif ($action === 'nueva-noticia') {
+                // Manejar la ruta nueva-noticia
+                error_log("=== ROUTING DEBUG ===");
+                error_log("Action: nueva-noticia");
+                error_log("URL: " . print_r($url, true));
+                error_log("AdminController exists: " . (class_exists('AdminController') ? 'YES' : 'NO'));
+                error_log("Method exists: " . (method_exists($adminController, 'nuevaNoticia') ? 'YES' : 'NO'));
+                $adminController->nuevaNoticia();
+            } elseif ($action === 'noticias') {
+                // Manejar la ruta noticias
+                $adminController->noticias();
+            } elseif ($action === 'editar-noticia') {
+                // Manejar la ruta editar-noticia
+                $id = isset($url[2]) ? $url[2] : null;
+                $adminController->editarNoticia($id);
+            } elseif ($action === 'ver-noticia') {
+                // Manejar la ruta ver-noticia
+                $id = isset($url[2]) ? $url[2] : null;
+                $adminController->verNoticia($id);
+            } elseif ($action === 'eliminar-noticia') {
+                // Manejar la ruta eliminar-noticia
+                $id = isset($url[2]) ? $url[2] : null;
+                $adminController->eliminarNoticia($id);
+            } elseif ($action === 'buscar-noticias') {
+                // Manejar la ruta buscar-noticias
+                $adminController->buscarNoticias();
+            } elseif ($action === 'cambiar-estado-noticia') {
+                // Manejar la ruta cambiar-estado-noticia
+                $id = isset($url[2]) ? $url[2] : null;
+                $estado = isset($url[3]) ? $url[3] : null;
+                $adminController->cambiarEstadoNoticia($id, $estado);
             } else {
                 $adminController->dashboard();
             }

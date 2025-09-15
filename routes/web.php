@@ -84,7 +84,16 @@ $router->group('admin', function($router) {
     $router->get('export/dashboard', 'Admin\AdminController@exportDashboard');
     $router->post('eliminarUsuario/{id}', 'Admin\AdminController@eliminarUsuario');
     
-    // News management
+    // News management - orden específico para evitar conflictos
+    $router->get('nueva-noticia', 'Admin\AdminController@nuevaNoticia');
+    $router->post('nueva-noticia', 'Admin\AdminController@nuevaNoticia');
+    $router->get('buscar-noticias', 'Admin\AdminController@buscarNoticias');
+    $router->get('editar-noticia/{id}', 'Admin\AdminController@editarNoticia');
+    $router->post('editar-noticia/{id}', 'Admin\AdminController@editarNoticia');
+    $router->get('ver-noticia/{id}', 'Admin\AdminController@verNoticia');
+    $router->get('eliminar-noticia/{id}', 'Admin\AdminController@eliminarNoticia');
+    $router->get('cambiar-estado-noticia/{id}/{estado}', 'Admin\AdminController@cambiarEstadoNoticia');
+    $router->get('noticias/{page}', 'Admin\AdminController@noticias');
     $router->get('noticias', 'Admin\AdminController@noticias');
     
     // Messages management

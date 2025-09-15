@@ -9,8 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome - Múltiples CDNs como respaldo -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" onerror="this.onerror=null;this.href='https://use.fontawesome.com/releases/v6.0.0/css/all.css';">
-    <link href="https://use.fontawesome.com/releases/v6.0.0/css/all.css" rel="stylesheet" onerror="this.onerror=null;this.href='https://maxcdn.bootstrapcdn.com/font-awesome/6.0.0/css/font-awesome.min.css';">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/6.0.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Admin CSS -->
     <link href="/prueba-php/public/assets/css/admin.css" rel="stylesheet">
     <!-- Font Awesome Fallback CSS -->
@@ -654,8 +653,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const welcomeNotification = new bootstrap.Toast(document.getElementById('welcomeToast'));
     welcomeNotification.show();
     
-    // Inicializar gráficos
-    initializeCharts();
+    // Gráficos deshabilitados temporalmente
     
     // Inicializar calendario
     initializeCalendar();
@@ -751,68 +749,7 @@ function showNotification(message, type = 'info') {
     });
 }
 
-// Inicializar gráficos
-function initializeCharts() {
-    // Gráfico de visitas
-    const visitsCtx = document.getElementById('visitsChart');
-    if (visitsCtx) {
-        new Chart(visitsCtx, {
-            type: 'line',
-            data: {
-                labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
-                datasets: [{
-                    label: 'Visitas',
-                    data: [65, 59, 80, 81, 56, 55, 40],
-                    borderColor: 'rgb(75, 192, 192)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.1)',
-                    tension: 0.1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    }
-    
-    // Gráfico de eventos
-    const eventsCtx = document.getElementById('eventsChart');
-    if (eventsCtx) {
-        new Chart(eventsCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Activos', 'Completados', 'Cancelados'],
-                datasets: [{
-                    data: [12, 19, 3],
-                    backgroundColor: [
-                        'rgb(54, 162, 235)',
-                        'rgb(75, 192, 192)',
-                        'rgb(255, 99, 132)'
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }
-        });
-    }
-    
-
-}
+// Gráficos deshabilitados temporalmente
 
 // Inicializar calendario
 function initializeCalendar() {
