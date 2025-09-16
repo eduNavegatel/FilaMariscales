@@ -5,7 +5,223 @@
  */
 ?>
 
-<div class="container-fluid py-5">
+<style>
+    /* Estilos translúcidos para historia con blur de 3 */
+    body {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%), 
+                    url('/prueba-php/public/assets/images/backgrounds/knight-templar-background.jpg') center/cover fixed;
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        position: relative;
+    }
+    
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(3px);
+        z-index: -1;
+    }
+    
+    .navbar {
+        background: rgba(52, 58, 64, 0.9) !important;
+        backdrop-filter: blur(3px);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 1000 !important;
+        width: 100% !important;
+    }
+    
+    .card {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(3px);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        position: relative;
+        z-index: 2;
+    }
+    
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    
+    .btn {
+        border-radius: 10px;
+        padding: 12px 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, rgba(0, 123, 255, 0.9), rgba(0, 86, 179, 0.9));
+        border: none;
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(0, 123, 255, 0.3);
+    }
+    
+    .btn-danger {
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.9), rgba(200, 35, 51, 0.9));
+        border: none;
+    }
+    
+    .btn-danger:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(220, 53, 69, 0.3);
+    }
+    
+    .form-control, .form-select {
+        border-radius: 10px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        padding: 12px 15px;
+        background: rgba(255, 255, 255, 0.8);
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: rgba(0, 123, 255, 0.5);
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        transform: translateY(-2px);
+        background: rgba(255, 255, 255, 0.95);
+    }
+    
+    .alert {
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(3px);
+    }
+    
+    .alert-success {
+        background: rgba(40, 167, 69, 0.1);
+        border-color: rgba(40, 167, 69, 0.3);
+    }
+    
+    .alert-danger {
+        background: rgba(220, 53, 69, 0.1);
+        border-color: rgba(220, 53, 69, 0.3);
+    }
+    
+    .alert-info {
+        background: rgba(23, 162, 184, 0.1);
+        border-color: rgba(23, 162, 184, 0.3);
+    }
+    
+    .alert-warning {
+        background: rgba(255, 193, 7, 0.1);
+        border-color: rgba(255, 193, 7, 0.3);
+    }
+    
+    /* Cabeceras translúcidas */
+    .card-header {
+        background: rgba(220, 53, 69, 0.9) !important;
+        backdrop-filter: blur(3px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 12px 12px 0 0 !important;
+    }
+    
+    .bg-danger {
+        background: linear-gradient(135deg, rgba(220, 53, 69, 0.9), rgba(200, 35, 51, 0.9)) !important;
+        backdrop-filter: blur(3px);
+    }
+    
+    .bg-primary {
+        background: linear-gradient(135deg, rgba(0, 123, 255, 0.9), rgba(0, 86, 179, 0.9)) !important;
+        backdrop-filter: blur(3px);
+    }
+    
+    .bg-success {
+        background: linear-gradient(135deg, rgba(40, 167, 69, 0.9), rgba(30, 126, 52, 0.9)) !important;
+        backdrop-filter: blur(3px);
+    }
+    
+    .bg-info {
+        background: linear-gradient(135deg, rgba(23, 162, 184, 0.9), rgba(17, 122, 139, 0.9)) !important;
+        backdrop-filter: blur(3px);
+    }
+    
+    .bg-warning {
+        background: linear-gradient(135deg, rgba(255, 193, 7, 0.9), rgba(255, 152, 0, 0.9)) !important;
+        backdrop-filter: blur(3px);
+    }
+    
+    /* Fondos de imagen translúcidos con blur de 3 */
+    .hero-section, .hero, .carousel-item, .carousel-image-container {
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+    
+    .hero-section::before, .hero::before, .carousel-item::before, .carousel-image-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(3px);
+        z-index: 1;
+    }
+    
+    .hero-section > *, .hero > *, .carousel-item > *, .carousel-image-container > * {
+        position: relative;
+        z-index: 2;
+    }
+    
+    /* Secciones con fondo de imagen */
+    section[style*="background"], div[style*="background"], .bg-image {
+        position: relative;
+    }
+    
+    section[style*="background"]::before, div[style*="background"]::before, .bg-image::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(3px);
+        z-index: 1;
+    }
+    
+    section[style*="background"] > *, div[style*="background"] > *, .bg-image > * {
+        position: relative;
+        z-index: 2;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .card {
+            margin: 10px;
+            border-radius: 10px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+        }
+        
+        .hero-section, .hero, .carousel-item, .carousel-image-container {
+            background-attachment: scroll;
+        }
+    }
+</style>
+
+<div class="container-fluid py-5" style="position: relative; z-index: 1; padding-top: 100px !important;">
     <!-- Header de la página -->
     <div class="row mb-5">
         <div class="col-12 text-center">
