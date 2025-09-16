@@ -106,13 +106,13 @@ $total_paginas = count($libro_paginas);
     </div>
 </section>
 
-<!-- Flipbook Container -->
-<section class="flipbook-section py-5">
+<!-- 3D Book Container -->
+<section class="book-3d-section py-5">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-12">
-                <div class="flipbook-container">
-                    <div class="flipbook-controls">
+                <div class="book-3d-container">
+                    <div class="book-3d-controls">
                         <button id="prevPage" class="btn btn-outline-danger">
                             <i class="bi bi-chevron-left me-2"></i>Anterior
                         </button>
@@ -124,33 +124,32 @@ $total_paginas = count($libro_paginas);
                         </button>
                     </div>
                     
-                    <div class="flipbook-wrapper">
-                        <div class="flipbook" id="flipbook">
-                            <?php foreach ($libro_paginas as $index => $pagina): ?>
-                            <div class="page" data-page="<?php echo $index + 1; ?>">
+                    <div class="book-3d-wrapper">
+                        <div class="book-3d" id="book3d">
+                            <!-- Left Page (Back) -->
+                            <div class="book-page book-left">
                                 <div class="page-content">
                                     <div class="page-header">
-                                        <div class="page-number">Capítulo <?php echo $index + 1; ?></div>
-                                        <div class="page-date"><?php echo $pagina['fecha']; ?></div>
+                                        <div class="page-number">Capítulo <span id="leftPageNumber">1</span></div>
+                                        <div class="page-date" id="leftPageDate">1985</div>
                                     </div>
                                     
                                     <div class="page-body">
                                         <div class="row h-100">
                                             <div class="col-lg-8">
-                                                <h2 class="page-title"><?php echo $pagina['titulo']; ?></h2>
-                                                <h4 class="page-subtitle"><?php echo $pagina['subtitulo']; ?></h4>
+                                                <h2 class="page-title" id="leftPageTitle">Fundación de la Filá Mariscales</h2>
+                                                <h4 class="page-subtitle" id="leftPageSubtitle">Capítulo I - Los Orígenes Sagrados</h4>
                                                 
-                                                <div class="page-text">
-                                                    <?php foreach ($pagina['contenido'] as $parrafo): ?>
-                                                    <p><?php echo $parrafo; ?></p>
-                                                    <?php endforeach; ?>
+                                                <div class="page-text" id="leftPageText">
+                                                    <p>En el año de Nuestro Señor 1985, cuando las estrellas se alinearon en el firmamento de Elche, un grupo de visionarios decidió crear algo extraordinario. Nacía así la Filá Mariscales de Caballeros Templarios, una comparsa que honraría la tradición medieval y el espíritu de los templarios.</p>
+                                                    <p>Los fundadores, inspirados por la nobleza y el honor de los caballeros templarios, establecieron los cimientos de lo que hoy es una de las filaes más respetadas de las Fiestas de Moros y Cristianos.</p>
                                                 </div>
                                             </div>
                                             
                                             <div class="col-lg-4">
                                                 <div class="page-image">
-                                                    <img src="<?php echo $pagina['imagen']; ?>" 
-                                                         alt="<?php echo $pagina['titulo']; ?>" 
+                                                    <img id="leftPageImage" src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                                                         alt="Imagen del capítulo" 
                                                          class="img-fluid">
                                                 </div>
                                             </div>
@@ -172,7 +171,60 @@ $total_paginas = count($libro_paginas);
                                     </div>
                                 </div>
                             </div>
-                            <?php endforeach; ?>
+                            
+                            <!-- Right Page (Front) -->
+                            <div class="book-page book-right">
+                                <div class="page-content">
+                                    <div class="page-header">
+                                        <div class="page-number">Capítulo <span id="rightPageNumber">2</span></div>
+                                        <div class="page-date" id="rightPageDate">1986-1990</div>
+                                    </div>
+                                    
+                                    <div class="page-body">
+                                        <div class="row h-100">
+                                            <div class="col-lg-8">
+                                                <h2 class="page-title" id="rightPageTitle">Los Primeros Años</h2>
+                                                <h4 class="page-subtitle" id="rightPageSubtitle">Capítulo II - Construyendo la Tradición</h4>
+                                                
+                                                <div class="page-text" id="rightPageText">
+                                                    <p>Los primeros años fueron de aprendizaje y consolidación. Los miembros fundadores trabajaron incansablemente para establecer las bases de la filá, creando los estatutos, diseñando los trajes y organizando las primeras participaciones en las fiestas.</p>
+                                                    <p>En 1986, la Filá Mariscales participó por primera vez en las Fiestas de Moros y Cristianos de Elche, causando una gran impresión con sus trajes de caballeros templarios y su organización impecable.</p>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-lg-4">
+                                                <div class="page-image">
+                                                    <img id="rightPageImage" src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                                                         alt="Imagen del capítulo" 
+                                                         class="img-fluid">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="page-footer">
+                                        <div class="page-quote">
+                                            <blockquote>
+                                                <p>
+                                                    <i class="bi bi-quote me-2"></i>
+                                                    "La tradición no es adorar las cenizas, sino mantener viva la llama."
+                                                </p>
+                                                <footer>
+                                                    <cite>Filá Mariscales</cite>
+                                                </footer>
+                                            </blockquote>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Book Spine -->
+                            <div class="book-spine">
+                                <div class="spine-content">
+                                    <h3>Historia de la Filá Mariscales</h3>
+                                    <div class="spine-decoration"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -219,19 +271,20 @@ $total_paginas = count($libro_paginas);
     backdrop-filter: blur(10px);
 }
 
-/* Flipbook Styles */
-.flipbook-section {
+/* 3D Book Styles */
+.book-3d-section {
     background: linear-gradient(135deg, rgba(248, 249, 250, 0.8) 0%, rgba(233, 236, 239, 0.8) 100%);
     min-height: 80vh;
+    perspective: 2000px;
 }
 
-.flipbook-container {
+.book-3d-container {
     position: relative;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
 }
 
-.flipbook-controls {
+.book-3d-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -249,40 +302,136 @@ $total_paginas = count($libro_paginas);
     color: var(--primary);
 }
 
-.flipbook-wrapper {
-    perspective: 1000px;
+.book-3d-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 700px;
+    perspective: 2000px;
+}
+
+.book-3d {
+    position: relative;
+    width: 800px;
     height: 600px;
-    position: relative;
-}
-
-.flipbook {
-    width: 100%;
-    height: 100%;
-    position: relative;
     transform-style: preserve-3d;
-}
-
-.page {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    border: 3px solid var(--primary);
-    transform-origin: left center;
     transition: transform 0.8s ease-in-out;
-    backface-visibility: hidden;
-    display: none;
+    cursor: pointer;
 }
 
-.page.active {
-    display: block;
-    transform: rotateY(0deg);
+/* Efecto de hover del libro completo manejado por JavaScript */
+
+.book-page {
+    position: absolute;
+    width: 400px;
+    height: 600px;
+    background: #fff;
+    border: 2px solid #8B4513;
+    box-shadow: 
+        0 0 20px rgba(0, 0, 0, 0.3),
+        inset 0 0 20px rgba(0, 0, 0, 0.1);
+    transform-style: preserve-3d;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    z-index: 1;
 }
 
-.page.flipping {
-    transform: rotateY(-180deg);
+.book-left {
+    left: 0;
+    transform-origin: right center;
+    border-right: 1px solid #8B4513;
+}
+
+.book-left:hover {
+    transform: rotateY(20deg);
+    background: #f0f0f0;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.book-right {
+    right: 0;
+    transform-origin: left center;
+    border-left: 1px solid #8B4513;
+}
+
+.book-right:hover {
+    transform: rotateY(-20deg);
+    background: #f0f0f0;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Efecto de volteo de página */
+.page-flipping {
+    animation: pageFlip 1s ease-in-out;
+}
+
+.page-flipping .book-left {
+    transform: rotateY(45deg) !important;
+    z-index: 20 !important;
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.7), -25px 0 50px rgba(0, 0, 0, 0.5) !important;
+}
+
+.page-flipping .book-right {
+    transform: rotateY(-45deg) !important;
+    z-index: 20 !important;
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.7), 25px 0 50px rgba(0, 0, 0, 0.5) !important;
+}
+
+@keyframes pageFlip {
+    0% {
+        transform: rotateY(0deg) scale(1);
+        filter: brightness(1);
+    }
+    25% {
+        transform: rotateY(-10deg) rotateX(5deg) scale(1.05);
+        filter: brightness(1.1);
+    }
+    50% {
+        transform: rotateY(-15deg) rotateX(8deg) scale(1.1);
+        filter: brightness(1.2);
+    }
+    75% {
+        transform: rotateY(-10deg) rotateX(5deg) scale(1.05);
+        filter: brightness(1.1);
+    }
+    100% {
+        transform: rotateY(0deg) scale(1);
+        filter: brightness(1);
+    }
+}
+
+.book-spine {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 20px;
+    height: 600px;
+    background: linear-gradient(90deg, #8B4513 0%, #A0522D 50%, #8B4513 100%);
+    transform: translateX(-50%);
+    z-index: -1;
+    box-shadow: 
+        -5px 0 15px rgba(0, 0, 0, 0.3),
+        5px 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.spine-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    color: #DAA520;
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.spine-decoration {
+    width: 100%;
+    height: 2px;
+    background: #DAA520;
+    margin: 10px 0;
 }
 
 .page-content {
@@ -291,6 +440,9 @@ $total_paginas = count($libro_paginas);
     flex-direction: column;
     padding: 0;
     overflow: hidden;
+    background: 
+        linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.02) 50%, transparent 100%),
+        radial-gradient(circle at 50% 50%, rgba(0,0,0,0.05) 0%, transparent 70%);
 }
 
 .page-header {
@@ -301,70 +453,72 @@ $total_paginas = count($libro_paginas);
     justify-content: space-between;
     align-items: center;
     font-family: 'Cinzel', serif;
+    border-bottom: 2px solid #8B4513;
 }
 
 .page-number {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 700;
 }
 
 .page-date {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     opacity: 0.9;
 }
 
 .page-body {
     flex: 1;
-    padding: 2rem;
+    padding: 1.5rem;
     background: rgba(255, 255, 255, 0.95);
     overflow-y: auto;
 }
 
 .page-title {
     font-family: 'Cinzel', serif;
-    font-size: 2.2rem;
+    font-size: 1.8rem;
     font-weight: 700;
     color: var(--primary);
-    border-bottom: 3px solid var(--accent);
-    padding-bottom: 1rem;
-    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .page-subtitle {
     font-family: 'Crimson Text', serif;
     font-style: italic;
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: #666;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .page-text p {
     font-family: 'Crimson Text', serif;
-    font-size: 1.1rem;
-    line-height: 1.8;
+    font-size: 0.9rem;
+    line-height: 1.6;
     text-align: justify;
     color: #333;
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
 }
 
 .page-image {
-    height: 100%;
+    height: 200px;
     display: flex;
     align-items: center;
+    margin-top: 1rem;
 }
 
 .page-image img {
     width: 100%;
-    height: 300px;
+    height: 100%;
     object-fit: cover;
-    border-radius: 10px;
-    border: 3px solid var(--accent);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border: 2px solid var(--accent);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }
 
 .page-footer {
     background: linear-gradient(135deg, rgba(248, 249, 250, 0.9) 0%, rgba(233, 236, 239, 0.9) 100%);
-    padding: 1.5rem;
+    padding: 1rem;
     border-top: 2px solid var(--primary);
 }
 
@@ -374,19 +528,19 @@ $total_paginas = count($libro_paginas);
 }
 
 .page-quote blockquote {
-    border-left: 4px solid var(--primary);
-    padding-left: 1rem;
+    border-left: 3px solid var(--primary);
+    padding-left: 0.8rem;
     margin: 0;
 }
 
 .page-quote p {
-    font-size: 1rem;
+    font-size: 0.8rem;
     color: #555;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
 }
 
 .page-quote cite {
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     color: var(--primary);
     font-weight: 600;
 }
@@ -449,16 +603,26 @@ $total_paginas = count($libro_paginas);
 
 /* Responsive */
 @media (max-width: 768px) {
-    .flipbook-wrapper {
+    .book-3d-wrapper {
         height: 500px;
     }
     
+    .book-3d {
+        width: 600px;
+        height: 450px;
+    }
+    
+    .book-page {
+        width: 300px;
+        height: 450px;
+    }
+    
     .page-body {
-        padding: 1.5rem;
+        padding: 1rem;
     }
     
     .page-title {
-        font-size: 1.8rem;
+        font-size: 1.4rem;
     }
     
     .chapter-grid {
@@ -470,49 +634,134 @@ $total_paginas = count($libro_paginas);
         gap: 1rem;
     }
     
-    .flipbook-controls {
+    .book-3d-controls {
         flex-direction: column;
         gap: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .book-3d {
+        width: 400px;
+        height: 300px;
+    }
+    
+    .book-page {
+        width: 200px;
+        height: 300px;
+    }
+    
+    .page-header {
+        padding: 1rem;
+    }
+    
+    .page-body {
+        padding: 0.8rem;
+    }
+    
+    .page-title {
+        font-size: 1.2rem;
+    }
+    
+    .page-text p {
+        font-size: 0.8rem;
     }
 }
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const pages = document.querySelectorAll('.page');
+    // Datos del libro desde PHP
+    const libroPaginas = <?php echo json_encode($libro_paginas); ?>;
+    
     const chapterBtns = document.querySelectorAll('.chapter-btn');
     const prevBtn = document.getElementById('prevPage');
     const nextBtn = document.getElementById('nextPage');
     const currentPageSpan = document.getElementById('currentPage');
     
+    // Elementos de las páginas
+    const leftPageNumber = document.getElementById('leftPageNumber');
+    const leftPageDate = document.getElementById('leftPageDate');
+    const leftPageTitle = document.getElementById('leftPageTitle');
+    const leftPageSubtitle = document.getElementById('leftPageSubtitle');
+    const leftPageText = document.getElementById('leftPageText');
+    const leftPageImage = document.getElementById('leftPageImage');
+    
+    const rightPageNumber = document.getElementById('rightPageNumber');
+    const rightPageDate = document.getElementById('rightPageDate');
+    const rightPageTitle = document.getElementById('rightPageTitle');
+    const rightPageSubtitle = document.getElementById('rightPageSubtitle');
+    const rightPageText = document.getElementById('rightPageText');
+    const rightPageImage = document.getElementById('rightPageImage');
+    
     let currentPage = 1;
-    const totalPages = pages.length;
+    const totalPages = libroPaginas.length;
     let isFlipping = false;
     
+    function updatePageContent(pageIndex, isLeftPage) {
+        const pagina = libroPaginas[pageIndex];
+        if (!pagina) return;
+        
+        const pageNumber = pageIndex + 1;
+        const elements = isLeftPage ? {
+            number: leftPageNumber,
+            date: leftPageDate,
+            title: leftPageTitle,
+            subtitle: leftPageSubtitle,
+            text: leftPageText,
+            image: leftPageImage
+        } : {
+            number: rightPageNumber,
+            date: rightPageDate,
+            title: rightPageTitle,
+            subtitle: rightPageSubtitle,
+            text: rightPageText,
+            image: rightPageImage
+        };
+        
+        elements.number.textContent = pageNumber;
+        elements.date.textContent = pagina.fecha;
+        elements.title.textContent = pagina.titulo;
+        elements.subtitle.textContent = pagina.subtitulo;
+        
+        // Actualizar texto
+        elements.text.innerHTML = '';
+        pagina.contenido.forEach(parrafo => {
+            const p = document.createElement('p');
+            p.textContent = parrafo;
+            elements.text.appendChild(p);
+        });
+        
+        // Actualizar imagen
+        elements.image.src = pagina.imagen;
+        elements.image.alt = pagina.titulo;
+    }
+    
     function showPage(pageNumber) {
-        if (isFlipping) return;
+        if (isFlipping || pageNumber < 1 || pageNumber > totalPages) return;
         
         isFlipping = true;
         
-        // Hide current page with flip animation
-        const currentPageEl = document.querySelector('.page.active');
-        if (currentPageEl) {
-            currentPageEl.classList.add('flipping');
-            currentPageEl.classList.remove('active');
+        // Calcular qué páginas mostrar
+        const leftPageIndex = pageNumber - 1;
+        const rightPageIndex = pageNumber;
+        
+        // Actualizar contenido de las páginas
+        updatePageContent(leftPageIndex, true);
+        if (rightPageIndex < totalPages) {
+            updatePageContent(rightPageIndex, false);
+        } else {
+            // Si no hay página derecha, ocultar o mostrar mensaje
+            rightPageTitle.textContent = 'Fin del Libro';
+            rightPageSubtitle.textContent = 'La historia continúa...';
+            rightPageText.innerHTML = '<p>Gracias por leer la historia de la Filá Mariscales de Caballeros Templarios. La tradición continúa con cada nueva generación.</p>';
+            rightPageImage.src = 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
         }
         
-        // Show new page after animation
-        setTimeout(() => {
-            const targetPage = document.querySelector(`[data-page="${pageNumber}"]`);
-            if (targetPage) {
-                targetPage.classList.add('active');
-                targetPage.classList.remove('flipping');
-            }
-            
-            // Update navigation
+        // Actualizar navegación
             currentPageSpan.textContent = pageNumber;
             
-            // Update chapter buttons
+        // Actualizar botones de capítulo
             chapterBtns.forEach(btn => {
                 btn.classList.remove('active');
             });
@@ -522,12 +771,59 @@ document.addEventListener('DOMContentLoaded', function() {
                 targetBtn.classList.add('active');
             }
             
-            // Update navigation buttons
+        // Actualizar botones de navegación
             prevBtn.disabled = pageNumber === 1;
             nextBtn.disabled = pageNumber === totalPages;
             
+        // Efecto de volteo realista como un libro de verdad
+        const book3d = document.getElementById('book3d');
+        const bookLeft = document.querySelector('.book-left');
+        const bookRight = document.querySelector('.book-right');
+        
+        console.log('Aplicando efecto de volteo realista...');
+        
+        // Determinar qué página se está volteando basado en la dirección del cambio
+        const isGoingForward = pageNumber > currentPage;
+        const flippingPage = isGoingForward ? bookRight : bookLeft;
+        const staticPage = isGoingForward ? bookLeft : bookRight;
+        
+        if (flippingPage && staticPage) {
+            // La página que se voltea se coloca encima
+            flippingPage.style.zIndex = '30';
+            flippingPage.style.transform = isGoingForward ? 
+                'rotateY(-180deg) translateZ(50px)' : 
+                'rotateY(180deg) translateZ(50px)';
+            flippingPage.style.transition = 'transform 1s ease-in-out';
+            flippingPage.style.boxShadow = '0 0 80px rgba(0, 0, 0, 0.8)';
+            
+            // La página estática se mantiene abajo
+            staticPage.style.zIndex = '1';
+            staticPage.style.transform = 'rotateY(0deg)';
+            staticPage.style.transition = 'transform 1s ease-in-out';
+            
+            // El libro completo se inclina ligeramente
+            book3d.style.transform = 'rotateY(-5deg) rotateX(3deg)';
+            book3d.style.transition = 'transform 1s ease-in-out';
+        }
+        
+        setTimeout(() => {
+            // Restaurar posiciones
+            if (flippingPage) {
+                flippingPage.style.transform = 'rotateY(0deg) translateZ(0px)';
+                flippingPage.style.zIndex = '1';
+                flippingPage.style.boxShadow = '0 0 20px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.1)';
+            }
+            
+            if (staticPage) {
+                staticPage.style.transform = 'rotateY(0deg)';
+                staticPage.style.zIndex = '1';
+            }
+            
+            book3d.style.transform = 'rotateY(0deg) rotateX(0deg)';
+            
+            console.log('Efecto de volteo realista completado');
             isFlipping = false;
-        }, 400);
+        }, 1000);
     }
     
     // Event listeners
@@ -598,6 +894,70 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+    
+    // Efecto de hover con JavaScript para asegurar que funcione
+    const bookLeft = document.querySelector('.book-left');
+    const bookRight = document.querySelector('.book-right');
+    
+    if (bookLeft) {
+        console.log('Página izquierda encontrada');
+        bookLeft.addEventListener('mouseenter', function() {
+            console.log('Hover en página izquierda - preparando volteo hacia atrás');
+            this.style.transform = 'rotateY(15deg) translateZ(10px)';
+            this.style.background = '#f0f0f0';
+            this.style.boxShadow = '0 0 40px rgba(0, 0, 0, 0.6)';
+            this.style.zIndex = '15';
+            this.style.transition = 'all 0.3s ease';
+            
+            // Cambiar a la página anterior después de un breve delay
+            setTimeout(() => {
+                if (currentPage > 1 && !isFlipping) {
+                    currentPage--;
+                    showPage(currentPage);
+                }
+            }, 500);
+        });
+        
+        bookLeft.addEventListener('mouseleave', function() {
+            console.log('Salida de hover página izquierda');
+            this.style.transform = 'rotateY(0deg) translateZ(0px)';
+            this.style.background = '#fff';
+            this.style.boxShadow = '0 0 20px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.1)';
+            this.style.zIndex = '1';
+        });
+    } else {
+        console.log('Página izquierda NO encontrada');
+    }
+    
+    if (bookRight) {
+        console.log('Página derecha encontrada');
+        bookRight.addEventListener('mouseenter', function() {
+            console.log('Hover en página derecha - preparando volteo hacia adelante');
+            this.style.transform = 'rotateY(-15deg) translateZ(10px)';
+            this.style.background = '#f0f0f0';
+            this.style.boxShadow = '0 0 40px rgba(0, 0, 0, 0.6)';
+            this.style.zIndex = '15';
+            this.style.transition = 'all 0.3s ease';
+            
+            // Cambiar a la página siguiente después de un breve delay
+            setTimeout(() => {
+                if (currentPage < totalPages && !isFlipping) {
+                    currentPage++;
+                    showPage(currentPage);
+                }
+            }, 500);
+        });
+        
+        bookRight.addEventListener('mouseleave', function() {
+            console.log('Salida de hover página derecha');
+            this.style.transform = 'rotateY(0deg) translateZ(0px)';
+            this.style.background = '#fff';
+            this.style.boxShadow = '0 0 20px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.1)';
+            this.style.zIndex = '1';
+        });
+    } else {
+        console.log('Página derecha NO encontrada');
+    }
     
     // Initialize
     showPage(1);
