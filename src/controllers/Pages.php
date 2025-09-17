@@ -134,9 +134,13 @@ class Pages extends Controller {
 
     // Página de noticias
     public function noticias() {
+        // Cargar noticias reales usando el modelo News
+        $news = $this->getPublishedNews();
+        
         $data = [
             'title' => 'Noticias',
-            'description' => 'Últimas noticias y actualizaciones de la Filá Mariscales'
+            'description' => 'Últimas noticias y actualizaciones de la Filá Mariscales',
+            'news' => $news
         ];
         $this->view('pages/noticias', $data);
     }
@@ -900,5 +904,83 @@ class Pages extends Controller {
         
         // Por ahora, usar el script servidor para asegurar que funcione
         return '/prueba-php/public/serve-image.php?path=' . urlencode($filePath);
+    }
+
+    // Método para obtener noticias publicadas usando el modelo News
+    private function getPublishedNews() {
+        try {
+            // Cargar el modelo News
+            $newsModel = $this->model('News');
+            
+            if (!$newsModel) {
+                error_log("Error: No se pudo cargar el modelo News");
+                return [];
+            }
+            
+            // Obtener noticias publicadas (12 noticias)
+            $news = $newsModel->getPublishedNews(1, 12);
+            
+            error_log("Noticias obtenidas del modelo: " . count($news));
+            
+            // Formatear las noticias para la vista
+            $formattedNews = [];
+            foreach ($news as $item) {
+                $formattedNews[] = [
+                    'id' => $item->id,
+                    'titulo' => $item->titulo,
+                    'contenido' => $item->contenido,
+                    'categoria' => $item->categoria ?? 'general',
+                    'imagen_portada' => $item->imagen_portada,
+                    'autor_nombre' => $item->autor_nombre ?? 'Administrador',
+                    'autor_apellidos' => $item->autor_apellidos ?? '',
+                    'fecha_publicacion' => $item->fecha_publicacion,
+                    'estado' => $item->estado,
+                    'resumen' => $this->getNewsSummary($item->contenido),
+                    'imagen_url' => $item->imagen_portada ? 
+                        'http://localhost/prueba-php/public/serve-image.php?path=uploads/news/' . $item->imagen_portada : 
+                        'http://localhost/prueba-php/public/serve-image.php?path=assets/images/backgrounds/knight-templar-background.jpg'
+                ];
+            }
+            
+            error_log("Noticias formateadas: " . count($formattedNews));
+            return $formattedNews;
+            
+        } catch (Exception $e) {
+            error_log("Error obteniendo noticias: " . $e->getMessage());
+            error_log("Error trace: " . $e->getTraceAsString());
+            return [];
+        }
+    }
+
+    // Método para generar resumen de noticia
+    private function getNewsSummary($content, $maxLength = 150) {
+        // Limpiar HTML y obtener texto plano
+        $text = strip_tags($content);
+        
+        // Si el texto es más corto que el máximo, devolverlo completo
+        if (strlen($text) <= $maxLength) {
+            return $text;
+        }
+        
+        // Truncar y agregar puntos suspensivos
+        return substr($text, 0, $maxLength) . '...';
+    }
+
+    // Método para obtener color de categoría
+    public function getCategoryColor($category) {
+        $colors = [
+            'general' => 'secondary',
+            'evento' => 'success',
+            'novedad' => 'danger',
+            'actualidad' => 'info',
+            'ensayo' => 'warning',
+            'bienvenida' => 'primary',
+            'cultura' => 'secondary',
+            'deportes' => 'success',
+            'social' => 'info',
+            'historia' => 'dark'
+        ];
+        
+        return $colors[$category] ?? 'secondary';
     }
 }

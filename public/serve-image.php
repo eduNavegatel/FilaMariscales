@@ -7,7 +7,8 @@ $allowedDirs = [
     'uploads/carousel/',
     'uploads/gallery/', 
     'uploads/eventos/',
-    'uploads/news/'
+    'uploads/news/',
+    'assets/images/'
 ];
 
 // Verificar que la ruta esté en un directorio permitido

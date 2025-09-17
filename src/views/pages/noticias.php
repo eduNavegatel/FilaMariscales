@@ -1,5 +1,23 @@
 <?php $content = '\n';
 ob_start(); // Start output buffering
+
+// Función helper para obtener color de categoría
+function getCategoryColor($category) {
+    $colors = [
+        'general' => 'secondary',
+        'evento' => 'success',
+        'novedad' => 'danger',
+        'actualidad' => 'info',
+        'ensayo' => 'warning',
+        'bienvenida' => 'primary',
+        'cultura' => 'secondary',
+        'deportes' => 'success',
+        'social' => 'info',
+        'historia' => 'dark'
+    ];
+    
+    return $colors[$category] ?? 'secondary';
+}
 ?>
 
 <!-- Hero Section -->
@@ -30,89 +48,65 @@ ob_start(); // Start output buffering
     </div>
 </section>
 
-<!-- News Section -->
+<!-- News Section - Real News from Database -->
 <section class="py-6 py-lg-8 position-relative">
     <div class="container position-relative">
-        <div class="row g-4">
-            <!-- News Item 1 -->
-            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="0">
-                <article class="card h-100 border-0 shadow-sm hover-lift overflow-hidden">
-                    <div class="position-relative overflow-hidden" style="height: 200px;">
-                        <img src="/mariscales1-php/public/assets/images/noticia1.jpg" class="card-img-top h-100 w-100" alt="Noticia 1" style="object-fit: cover;">
-                        <div class="position-absolute top-0 end-0 m-3">
-                            <span class="badge bg-danger bg-opacity-90 px-3 py-2">Novedad</span>
-                        </div>
-                        <div class="position-absolute bottom-0 start-0 w-100 p-3 bg-gradient-dark-top">
-                            <small class="text-white-50"><i class="bi bi-calendar3 me-1"></i> 31/07/2025</small>
-                        </div>
+        <?php if (!empty($data['news'])): ?>
+            <div class="row g-4">
+                <?php foreach ($data['news'] as $index => $newsItem): ?>
+                    <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="<?= $index * 100 ?>">
+                        <article class="card h-100 border-0 shadow-sm hover-lift overflow-hidden">
+                            <div class="position-relative overflow-hidden" style="height: 200px;">
+                                <img src="<?= htmlspecialchars($newsItem['imagen_url']) ?>" class="card-img-top h-100 w-100" alt="<?= htmlspecialchars($newsItem['titulo']) ?>" style="object-fit: cover;">
+                                <div class="position-absolute top-0 end-0 m-3">
+                                    <span class="badge bg-<?= getCategoryColor($newsItem['categoria']) ?> bg-opacity-90 px-3 py-2">
+                                        <?= ucfirst($newsItem['categoria']) ?>
+                                    </span>
+                                </div>
+                                <div class="position-absolute bottom-0 start-0 w-100 p-3 bg-gradient-dark-top">
+                                    <small class="text-white-50">
+                                        <i class="bi bi-calendar3 me-1"></i> 
+                                        <?= date('d/m/Y', strtotime($newsItem['fecha_publicacion'])) ?>
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h3 class="h5 card-title fw-bold mb-3"><?= htmlspecialchars($newsItem['titulo']) ?></h3>
+                                <p class="card-text text-muted mb-4"><?= htmlspecialchars($newsItem['resumen']) ?></p>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <a href="/prueba-php/public/ver-noticia/<?= $newsItem['id'] ?>" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                        <span>Leer más</span>
+                                        <i class="bi bi-arrow-right ms-1"></i>
+                                    </a>
+                                    <small class="text-muted">
+                                        <i class="bi bi-person me-1"></i>
+                                        <?= htmlspecialchars($newsItem['autor_nombre'] . ' ' . $newsItem['autor_apellidos']) ?>
+                                    </small>
+                                </div>
+                            </div>
+                        </article>
                     </div>
-                    <div class="card-body">
-                        <h3 class="h5 card-title fw-bold mb-3">Preparativos para las Fiestas 2025</h3>
-                        <p class="card-text text-muted mb-4">La Filá Mariscales ya está trabajando en los preparativos para las próximas fiestas de Moros y Cristianos 2025. Conoce todos los detalles de lo que se está preparando.</p>
-                        <div class="d-flex align-items-center justify-content-between">
-                            <a href="#" class="btn btn-sm btn-outline-primary rounded-pill px-3">
-                                <span>Leer más</span>
-                                <i class="bi bi-arrow-right ms-1"></i>
-                            </a>
-                            <small class="text-muted"><i class="bi bi-clock me-1"></i> 5 min lectura</small>
-                        </div>
-                    </div>
-                </article>
+                <?php endforeach; ?>
             </div>
-            
-            <!-- News Item 2 -->
-            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
-                <article class="card h-100 border-0 shadow-sm hover-lift overflow-hidden">
-                    <div class="position-relative overflow-hidden" style="height: 200px;">
-                        <img src="/mariscales1-php/public/assets/images/noticia2.jpg" class="card-img-top h-100 w-100" alt="Noticia 2" style="object-fit: cover;">
-                        <div class="position-absolute top-0 end-0 m-3">
-                            <span class="badge bg-success bg-opacity-90 px-3 py-2">Evento</span>
-                        </div>
-                        <div class="position-absolute bottom-0 start-0 w-100 p-3 bg-gradient-dark-top">
-                            <small class="text-white-50"><i class="bi bi-calendar3 me-1"></i> 25/07/2025</small>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <h3 class="h5 card-title fw-bold mb-3">Éxito en la Cena de Hermandad</h3>
-                        <p class="card-text text-muted mb-4">Más de 200 personas disfrutaron de la tradicional cena de hermandad celebrada el pasado fin de semana en un ambiente festivo y familiar.</p>
-                        <div class="d-flex align-items-center justify-content-between">
-                            <a href="#" class="btn btn-sm btn-outline-primary rounded-pill px-3">
-                                <span>Leer más</span>
-                                <i class="bi bi-arrow-right ms-1"></i>
+        <?php else: ?>
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body py-5">
+                            <i class="bi bi-newspaper text-muted" style="font-size: 4rem;"></i>
+                            <h3 class="mt-3 mb-3">No hay noticias disponibles</h3>
+                            <p class="text-muted mb-4">Aún no se han publicado noticias. Vuelve pronto para estar al día con las últimas novedades de la Filá Mariscales.</p>
+                            <a href="/prueba-php/public/" class="btn btn-primary">
+                                <i class="bi bi-house me-2"></i>
+                                Volver al inicio
                             </a>
-                            <small class="text-muted"><i class="bi bi-clock me-1"></i> 4 min lectura</small>
                         </div>
                     </div>
-                </article>
+                </div>
             </div>
-            
-            <!-- News Item 3 -->
-            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
-                <article class="card h-100 border-0 shadow-sm hover-lift overflow-hidden">
-                    <div class="position-relative overflow-hidden" style="height: 200px;">
-                        <img src="/mariscales1-php/public/assets/images/noticia3.jpg" class="card-img-top h-100 w-100" alt="Noticia 3" style="object-fit: cover;">
-                        <div class="position-absolute top-0 end-0 m-3">
-                            <span class="badge bg-info bg-opacity-90 px-3 py-2">Actualidad</span>
-                        </div>
-                        <div class="position-absolute bottom-0 start-0 w-100 p-3 bg-gradient-dark-top">
-                            <small class="text-white-50"><i class="bi bi-calendar3 me-1"></i> 15/07/2025</small>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <h3 class="h5 card-title fw-bold mb-3">Nuevos Proyectos para la Sede Social</h3>
-                        <p class="card-text text-muted mb-4">Presentamos las mejoras que se implementarán en nuestra sede social durante los próximos meses para ofrecer mejores instalaciones a todos nuestros socios.</p>
-                        <div class="d-flex align-items-center justify-content-between">
-                            <a href="#" class="btn btn-sm btn-outline-primary rounded-pill px-3">
-                                <span>Leer más</span>
-                                <i class="bi bi-arrow-right ms-1"></i>
-                            </a>
-                            <small class="text-muted"><i class="bi bi-clock me-1"></i> 6 min lectura</small>
-                        </div>
-                    </div>
-                </article>
-            </div>
-        </div>
+        <?php endif; ?>
         
+        <?php if (!empty($data['news']) && count($data['news']) >= 6): ?>
         <!-- Pagination -->
         <nav aria-label="Page navigation" class="mt-6" data-aos="fade-up">
             <ul class="pagination justify-content-center">
@@ -121,20 +115,8 @@ ob_start(); // Start output buffering
                         <i class="bi bi-chevron-left me-1"></i> Anterior
                     </a>
                 </li>
-                <li class="page-item d-none d-sm-block">
+                <li class="page-item active" aria-current="page">
                     <a class="page-link rounded-circle mx-1" href="#">1</a>
-                </li>
-                <li class="page-item active d-none d-sm-block" aria-current="page">
-                    <a class="page-link rounded-circle mx-1" href="#">2</a>
-                </li>
-                <li class="page-item d-none d-sm-block">
-                    <a class="page-link rounded-circle mx-1" href="#">3</a>
-                </li>
-                <li class="page-item disabled d-none d-sm-block">
-                    <span class="page-link rounded-circle mx-1">...</span>
-                </li>
-                <li class="page-item d-none d-sm-block">
-                    <a class="page-link rounded-circle mx-1" href="#">8</a>
                 </li>
                 <li class="page-item">
                     <a class="page-link rounded-pill ms-2" href="#">
@@ -143,9 +125,10 @@ ob_start(); // Start output buffering
                 </li>
             </ul>
             <div class="text-center mt-3">
-                <small class="text-muted">Página 2 de 8</small>
+                <small class="text-muted">Mostrando <?= count($data['news']) ?> noticias</small>
             </div>
         </nav>
+        <?php endif; ?>
     </div>
     
     <!-- Background Elements -->
@@ -449,3 +432,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
+<!-- Cache buster: 2025-01-15-15:30 -->
