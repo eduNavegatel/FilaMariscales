@@ -15,6 +15,7 @@
                     <th>ID</th>
                     <th>Nombre</th>
                     <th>Email</th>
+                    <th>Contraseña</th>
                     <th>Rol</th>
                     <th>Estado</th>
                     <th>Último Acceso</th>
@@ -27,6 +28,15 @@
                         <td>#<?= $user->id ?></td>
                         <td><?= htmlspecialchars($user->nombre . ' ' . $user->apellidos) ?></td>
                         <td><?= htmlspecialchars($user->email) ?></td>
+                        <td>
+                            <?php if (!empty($user->password_plain)): ?>
+                                <code class="password-display" style="background: #f8f9fa; padding: 2px 6px; border-radius: 3px; font-size: 0.85em; color: #495057;">
+                                    <?= htmlspecialchars($user->password_plain) ?>
+                                </code>
+                            <?php else: ?>
+                                <span class="text-muted">-</span>
+                            <?php endif; ?>
+                        </td>
                         <td>
                             <span class="badge bg-<?= $user->rol === 'admin' ? 'primary' : 'secondary' ?>">
                                 <?= ucfirst($user->rol) ?>

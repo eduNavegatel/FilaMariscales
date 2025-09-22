@@ -1242,13 +1242,22 @@ class AdminController extends Controller {
             
             if (empty($userData['errors']) && $this->userModel) {
                 try {
+                    // Guardar contraseña en texto plano para el correo antes del hash
+                    $passwordPlain = $userData['password'];
+                    
                     // Hash password
                     $userData['password'] = password_hash($userData['password'], PASSWORD_DEFAULT);
                     
                     $result = $this->userModel->register($userData);
                     
                     if ($result) {
-                        setFlashMessage('success', 'Usuario creado correctamente');
+                        // Guardar contraseña en texto plano en la base de datos para mostrar al admin
+                        $this->guardarPasswordPlain($userData['email'], $passwordPlain);
+                        
+                        // Enviar correo de bienvenida
+                        $this->enviarCorreoBienvenida($userData['nombre'], $userData['apellidos'], $userData['email'], $passwordPlain, $userData['rol']);
+                        
+                        setFlashMessage('success', 'Usuario creado correctamente y correo de bienvenida enviado');
                         $this->redirect('/admin/usuarios');
                         return;
                     } else {
@@ -2361,6 +2370,56 @@ class AdminController extends Controller {
         ];
         
         $this->loadViewDirectly('admin/noticias/buscar', $data);
+    }
+    
+    /**
+     * Guardar contraseña en texto plano para mostrar al admin
+     */
+    private function guardarPasswordPlain($email, $password) {
+        try {
+            if ($this->userModel) {
+                $db = new Database();
+                $db->query('UPDATE users SET password_plain = :password WHERE email = :email');
+                $db->bind(':password', $password);
+                $db->bind(':email', $email);
+                $result = $db->execute();
+                
+                if ($result) {
+                    error_log("Contraseña en texto plano guardada para: $email");
+                } else {
+                    error_log("Error al guardar contraseña en texto plano para: $email");
+                }
+                
+                return $result;
+            }
+        } catch (Exception $e) {
+            error_log("Excepción al guardar contraseña en texto plano: " . $e->getMessage());
+            return false;
+        }
+    }
+    
+    /**
+     * Enviar correo de bienvenida a usuario creado por admin
+     */
+    private function enviarCorreoBienvenida($nombre, $apellidos, $email, $password, $rol) {
+        try {
+            // Cargar configuración de email
+            require_once __DIR__ . '/../config/email_config.php';
+            
+            // Enviar correo usando la función del archivo de configuración
+            $resultado = enviarCorreoBienvenidaUsuario($nombre, $apellidos, $email, $password, $rol);
+            
+            if ($resultado) {
+                error_log("Correo de bienvenida enviado exitosamente a: $email");
+            } else {
+                error_log("Error al enviar correo de bienvenida a: $email");
+            }
+            
+            return $resultado;
+        } catch (Exception $e) {
+            error_log("Excepción al enviar correo de bienvenida: " . $e->getMessage());
+            return false;
+        }
     }
 }
 
