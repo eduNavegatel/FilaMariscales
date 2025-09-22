@@ -135,29 +135,60 @@ $total_paginas = count($libro_paginas);
                         <!-- Book Cover (Closed State) -->
                         <div class="book-cover" id="bookCover">
                             <div class="cover-front">
-                                <div class="cover-title">
-                                    <h2>Historia de la</h2>
-                                    <h1>Filá Mariscales</h1>
-                                    <h3>Caballeros Templarios</h3>
-                                    <div class="cover-subtitle">Elche - 1985-2024</div>
+                                <div class="cover-background">
+                                    <div class="cover-pattern"></div>
                                 </div>
-                                <div class="cover-decoration">
-                                    <div class="templar-cross">⚔️</div>
+                                <div class="cover-content">
+                                    <div class="cover-logo">
+                                        <div class="templar-shield">🛡️</div>
+                                    </div>
+                                    <div class="cover-title">
+                                        <h2 class="cover-subtitle">Historia de la</h2>
+                                        <h1 class="cover-main-title">Filá Mariscales</h1>
+                                        <h3 class="cover-subtitle-2">Caballeros Templarios</h3>
+                                    </div>
+                                    <div class="cover-details">
+                                        <div class="cover-location">Elche, Alicante</div>
+                                        <div class="cover-years">1985 - 2024</div>
+                                    </div>
+                                    <div class="cover-decoration">
+                                        <div class="decorative-line"></div>
+                                        <div class="templar-cross">⚔️</div>
+                                        <div class="decorative-line"></div>
+                                    </div>
+                                    <div class="cover-footer">
+                                        <div class="cover-author">Crónicas Oficiales</div>
+                                        <div class="cover-edition">Primera Edición</div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="cover-spine">
-                                <div class="spine-text">Historia Filá Mariscales</div>
+                                <div class="spine-pattern"></div>
+                                <div class="spine-content">
+                                    <div class="spine-title">Historia</div>
+                                    <div class="spine-subtitle">Filá Mariscales</div>
+                                    <div class="spine-decoration">⚔️</div>
+                                </div>
                             </div>
                             <div class="cover-back">
+                                <div class="back-pattern"></div>
                                 <div class="back-content">
+                                    <div class="back-logo">🛡️</div>
                                     <div class="back-title">Crónicas Templarias</div>
                                     <div class="back-description">
-                                        Una historia de honor, tradición y hermandad que perdura a través de los siglos.
+                                        Una historia de honor, tradición y hermandad que perdura a través de los siglos. 
+                                        Desde su fundación en 1985 hasta nuestros días, la Filá Mariscales ha mantenido 
+                                        viva la llama de la tradición templaria en las Fiestas de Moros y Cristianos de Elche.
                                     </div>
                                     <div class="back-symbols">
-                                        <span>🛡️</span>
-                                        <span>⚔️</span>
-                                        <span>🏰</span>
+                                        <span class="symbol">🛡️</span>
+                                        <span class="symbol">⚔️</span>
+                                        <span class="symbol">🏰</span>
+                                        <span class="symbol">👑</span>
+                                    </div>
+                                    <div class="back-footer">
+                                        <div class="back-isbn">ISBN: 978-84-XXXX-XXX-X</div>
+                                        <div class="back-publisher">Ediciones Templarias</div>
                                     </div>
                                 </div>
                             </div>
@@ -344,29 +375,137 @@ $total_paginas = count($libro_paginas);
         0 20px 40px rgba(0, 0, 0, 0.3),
         0 0 0 1px rgba(0, 0, 0, 0.1),
         inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    overflow: hidden;
 }
 
 .cover-front {
-    background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #8B4513 100%);
+    background: linear-gradient(135deg, #8B4513 0%, #A0522D 30%, #CD853F 50%, #A0522D 70%, #8B4513 100%);
+    position: relative;
+}
+
+.cover-back {
+    background: linear-gradient(135deg, #654321 0%, #8B4513 30%, #A0522D 50%, #8B4513 70%, #654321 100%);
+    transform: rotateY(180deg);
+    position: relative;
+}
+
+/* Cover Background Patterns */
+.cover-background, .back-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.1;
+    background-image: 
+        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 30px 30px;
+}
+
+.cover-pattern, .spine-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.05) 50%, transparent 60%),
+        linear-gradient(-45deg, transparent 40%, rgba(255, 255, 255, 0.05) 50%, transparent 60%);
+    background-size: 20px 20px;
+}
+
+/* Cover Content */
+.cover-content, .back-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     text-align: center;
     color: #DAA520;
     padding: 2rem;
 }
 
-.cover-back {
-    background: linear-gradient(135deg, #654321 0%, #8B4513 50%, #654321 100%);
-    transform: rotateY(180deg);
+.cover-logo {
+    margin-bottom: 1rem;
+}
+
+.templar-shield, .back-logo {
+    font-size: 3rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+.cover-title {
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    text-align: center;
-    color: #DAA520;
-    padding: 2rem;
+}
+
+.cover-main-title {
+    font-family: 'Cinzel', serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+    letter-spacing: 2px;
+}
+
+.cover-subtitle, .cover-subtitle-2 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0.2rem 0;
+    opacity: 0.9;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.cover-details {
+    margin: 1rem 0;
+    font-family: 'Crimson Text', serif;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.cover-location, .cover-years {
+    margin: 0.2rem 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.cover-decoration {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.decorative-line {
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #DAA520, transparent);
+    box-shadow: 0 0 5px rgba(218, 165, 32, 0.5);
+}
+
+.templar-cross {
+    font-size: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.cover-footer {
+    margin-top: 1rem;
+    font-family: 'Crimson Text', serif;
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+.cover-author, .cover-edition {
+    margin: 0.2rem 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .cover-title h1 {
@@ -414,7 +553,7 @@ $total_paginas = count($libro_paginas);
     top: 0;
     width: 30px;
     height: 100%;
-    background: linear-gradient(90deg, #654321 0%, #8B4513 50%, #654321 100%);
+    background: linear-gradient(90deg, #654321 0%, #8B4513 30%, #A0522D 50%, #8B4513 70%, #654321 100%);
     transform: rotateY(-90deg);
     transform-origin: left center;
     display: flex;
@@ -423,6 +562,35 @@ $total_paginas = count($libro_paginas);
     box-shadow: 
         -5px 0 15px rgba(0, 0, 0, 0.3),
         5px 0 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.spine-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    color: #DAA520;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.spine-title, .spine-subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.spine-decoration {
+    font-size: 1rem;
+    margin-top: 0.5rem;
 }
 
 .spine-text {
@@ -437,6 +605,16 @@ $total_paginas = count($libro_paginas);
 
 .back-content {
     text-align: center;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.back-logo {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
 }
 
 .back-title {
@@ -445,21 +623,52 @@ $total_paginas = count($libro_paginas);
     font-weight: 700;
     margin-bottom: 1rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    color: #DAA520;
 }
 
 .back-description {
     font-family: 'Crimson Text', serif;
-    font-size: 1rem;
+    font-size: 0.85rem;
     line-height: 1.6;
     margin-bottom: 1.5rem;
     opacity: 0.9;
+    max-width: 80%;
+    text-align: justify;
 }
 
 .back-symbols {
     display: flex;
     justify-content: center;
     gap: 1rem;
-    font-size: 2rem;
+    margin: 1rem 0;
+}
+
+.symbol {
+    font-size: 1.5rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    animation: float 3s ease-in-out infinite;
+}
+
+.symbol:nth-child(2) { animation-delay: 0.5s; }
+.symbol:nth-child(3) { animation-delay: 1s; }
+.symbol:nth-child(4) { animation-delay: 1.5s; }
+
+.back-footer {
+    margin-top: auto;
+    font-family: 'Crimson Text', serif;
+    font-size: 0.7rem;
+    opacity: 0.7;
+    text-align: center;
+}
+
+.back-isbn, .back-publisher {
+    margin: 0.2rem 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
 }
 
 /* Book Pages Styles */
@@ -795,7 +1004,7 @@ document.addEventListener('DOMContentLoaded', function() {
             number: leftPageNumber,
             date: leftPageDate,
             title: leftPageTitle,
-            subtitle: leftPagePageSubtitle,
+            subtitle: leftPageSubtitle,
             text: leftPageText,
             image: leftPageImage
         } : {
@@ -823,6 +1032,32 @@ document.addEventListener('DOMContentLoaded', function() {
         // Actualizar imagen
         elements.image.src = pagina.imagen;
         elements.image.alt = pagina.titulo;
+    }
+    
+    // Función para cerrar el libro
+    function closeBook() {
+        if (!isBookOpen) return;
+        
+        console.log('Cerrando libro...');
+        
+        // Ocultar páginas y controles
+        bookPages.style.display = 'none';
+        pageInfo.style.display = 'none';
+        bookNav.style.display = 'none';
+        chapterNav.style.display = 'none';
+        
+        // Mostrar tapa y botón de abrir
+        bookCover.style.display = 'block';
+        openBookBtn.style.display = 'block';
+        
+        // Resetear estado
+        isBookOpen = false;
+        currentPage = 1;
+        
+        // Animación de cierre
+        bookCover.classList.remove('opened');
+        
+        console.log('Libro cerrado');
     }
     
     // Función para mostrar una página específica
@@ -894,6 +1129,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentPage < totalPages && !isFlipping) {
             currentPage++;
             showPage(currentPage);
+        } else if (currentPage === totalPages && !isFlipping) {
+            // Si estamos en la última página, cerrar el libro
+            closeBook();
         }
     });
     
@@ -917,6 +1155,9 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (e.key === 'ArrowRight' && currentPage < totalPages) {
             currentPage++;
             showPage(currentPage);
+        } else if (e.key === 'ArrowRight' && currentPage === totalPages) {
+            // Si estamos en la última página, cerrar el libro
+            closeBook();
         }
     });
     
@@ -944,6 +1185,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Deslizar izquierda - página siguiente
                 currentPage++;
                 showPage(currentPage);
+            } else if (diffX > 0 && currentPage === totalPages) {
+                // Deslizar izquierda en la última página - cerrar libro
+                closeBook();
             } else if (diffX < 0 && currentPage > 1) {
                 // Deslizar derecha - página anterior
                 currentPage--;
@@ -964,7 +1208,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (currentPage < totalPages && !isFlipping) {
                     currentPage++;
                     showPage(currentPage);
-                }
+        } else if (currentPage === totalPages && !isFlipping) {
+            // Si estamos en la última página, cerrar el libro
+            closeBook();
+        }
     });
     
     console.log('Libro interactivo inicializado');

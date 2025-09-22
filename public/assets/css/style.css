@@ -780,11 +780,18 @@ section {
     .navbar-collapse .nav-item {
         margin-bottom: 0.5rem !important;
         width: 100% !important;
+        position: relative !important;
+    }
+    
+    .navbar-collapse .dropdown {
+        margin-bottom: 0.5rem !important;
+        width: 100% !important;
+        position: relative !important;
     }
     
     /* Estilos para dropdowns en móviles */
     .navbar-collapse .dropdown-menu {
-        position: static !important;
+        position: relative !important;
         float: none !important;
         width: calc(100% - 2rem) !important;
         margin: 0.5rem 1rem !important;
@@ -799,12 +806,26 @@ section {
         padding: 0.5rem 0 !important;
         max-height: 300px !important;
         overflow-y: auto !important;
-        z-index: 1050 !important;
+        z-index: 1060 !important;
+        clear: both !important;
+        margin-top: 0.5rem !important;
+        margin-bottom: 1rem !important;
     }
     
     .navbar-collapse .dropdown-menu.show {
         display: block !important;
         animation: slideDown 0.3s ease-out !important;
+        position: relative !important;
+        z-index: 1060 !important;
+    }
+    
+    /* Asegurar que los dropdowns no se solapen */
+    .navbar-collapse .dropdown:has(.dropdown-menu.show) {
+        margin-bottom: 1.5rem !important;
+    }
+    
+    .navbar-collapse .dropdown-menu.show + .nav-item {
+        margin-top: 1rem !important;
     }
     
     @keyframes slideDown {

@@ -668,19 +668,21 @@ if (!function_exists('isLoggedIn')) {
                 const menu = dropdown.querySelector('.dropdown-menu');
                 const isOpen = menu && menu.classList.contains('show');
                 
-                // Cerrar todos los dropdowns abiertos
+                // Cerrar TODOS los dropdowns primero
                 document.querySelectorAll('.navbar-collapse .dropdown-menu.show').forEach(function(otherMenu) {
                     otherMenu.classList.remove('show');
+                    otherMenu.style.display = 'none';
                 });
                 
-                // Abrir/cerrar el dropdown actual
-                if (menu) {
-                    if (!isOpen) {
+                // Si el dropdown actual estaba cerrado, abrirlo
+                if (menu && !isOpen) {
+                    setTimeout(() => {
                         menu.classList.add('show');
+                        menu.style.display = 'block';
                         console.log('Dropdown abierto:', dropdown);
-                    } else {
-                        console.log('Dropdown cerrado:', dropdown);
-                    }
+                    }, 50);
+                } else {
+                    console.log('Dropdown cerrado:', dropdown);
                 }
                 
                 return false;
@@ -689,8 +691,9 @@ if (!function_exists('isLoggedIn')) {
         
         // Función para cerrar todos los dropdowns
         function closeAllDropdowns() {
-            document.querySelectorAll('.navbar-collapse .dropdown-menu.show').forEach(function(menu) {
+            document.querySelectorAll('.navbar-collapse .dropdown-menu').forEach(function(menu) {
                 menu.classList.remove('show');
+                menu.style.display = 'none';
             });
         }
         
@@ -707,8 +710,14 @@ if (!function_exists('isLoggedIn')) {
                     // Remover listeners anteriores para evitar duplicados
                     toggle.removeEventListener('click', handleDropdownClick);
                     
-                    // Agregar nuestro event listener
-                    toggle.addEventListener('click', handleDropdownClick);
+                    // Agregar nuestro event listener con capture para que se ejecute antes
+                    toggle.addEventListener('click', handleDropdownClick, true);
+                    
+                    // Prevenir el comportamiento por defecto
+                    toggle.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    });
                 });
             }
         }
@@ -757,6 +766,13 @@ if (!function_exists('isLoggedIn')) {
         document.addEventListener('click', function(e) {
             if (isMobile() && !e.target.closest('.navbar-collapse')) {
                 closeAllDropdowns();
+            }
+        });
+        
+        // Prevenir que los clicks en dropdowns cierren el menú hamburguesa
+        document.addEventListener('click', function(e) {
+            if (isMobile() && e.target.closest('.dropdown')) {
+                e.stopPropagation();
             }
         });
         

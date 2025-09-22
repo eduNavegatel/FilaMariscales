@@ -8,69 +8,155 @@
 </div>
 
 <?php if (!empty($data['users'])): ?>
-    <div class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Email</th>
-                    <th>Contraseña</th>
-                    <th>Rol</th>
-                    <th>Estado</th>
-                    <th>Último Acceso</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($data['users'] as $user): ?>
+    <!-- Vista responsive actualizada - <?= date('Y-m-d H:i:s') ?> -->
+    
+    <!-- Indicador de vista responsive -->
+    <div class="alert alert-info d-xl-none mb-3">
+        <i class="fas fa-mobile-alt me-2"></i>
+        <strong>Vista móvil activada</strong> - Los usuarios se muestran en tarjetas para mejor visualización
+    </div>
+    
+    <!-- Vista de escritorio - Tabla -->
+    <div class="d-none d-xl-block">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
                     <tr>
-                        <td>#<?= $user->id ?></td>
-                        <td><?= htmlspecialchars($user->nombre . ' ' . $user->apellidos) ?></td>
-                        <td><?= htmlspecialchars($user->email) ?></td>
-                        <td>
-                            <?php if (!empty($user->password_plain)): ?>
-                                <code class="password-display" style="background: #f8f9fa; padding: 2px 6px; border-radius: 3px; font-size: 0.85em; color: #495057;">
-                                    <?= htmlspecialchars($user->password_plain) ?>
-                                </code>
-                            <?php else: ?>
-                                <span class="text-muted">-</span>
-                            <?php endif; ?>
-                        </td>
-                        <td>
-                            <span class="badge bg-<?= $user->rol === 'admin' ? 'primary' : 'secondary' ?>">
-                                <?= ucfirst($user->rol) ?>
-                            </span>
-                        </td>
-                        <td>
-                            <span class="badge bg-<?= $user->activo ? 'success' : 'danger' ?>">
-                                <?= $user->activo ? 'Activo' : 'Inactivo' ?>
-                            </span>
-                        </td>
-                        <td>
-                            <?= $user->ultimo_acceso ? date('d/m/Y H:i', strtotime($user->ultimo_acceso)) : 'Nunca' ?>
-                        </td>
-                        <td>
-                            <div class="btn-group btn-group-sm">
-                                <a href="/prueba-php/public/admin/editarUsuario/<?= $user->id ?>" class="btn btn-outline-primary" title="Editar">
-                                    <i class="fas fa-edit"></i>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Contraseña</th>
+                        <th>Rol</th>
+                        <th>Estado</th>
+                        <th>Último Acceso</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($data['users'] as $user): ?>
+                        <tr>
+                            <td>#<?= $user->id ?></td>
+                            <td><?= htmlspecialchars($user->nombre . ' ' . $user->apellidos) ?></td>
+                            <td><?= htmlspecialchars($user->email) ?></td>
+                            <td>
+                                <?php if (!empty($user->password_plain)): ?>
+                                    <code class="password-display" style="background: #f8f9fa; padding: 2px 6px; border-radius: 3px; font-size: 0.85em; color: #495057;">
+                                        <?= htmlspecialchars($user->password_plain) ?>
+                                    </code>
+                                <?php else: ?>
+                                    <span class="text-muted">-</span>
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <span class="badge bg-<?= $user->rol === 'admin' ? 'primary' : 'secondary' ?>">
+                                    <?= ucfirst($user->rol) ?>
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge bg-<?= $user->activo ? 'success' : 'danger' ?>">
+                                    <?= $user->activo ? 'Activo' : 'Inactivo' ?>
+                                </span>
+                            </td>
+                            <td>
+                                <?= $user->ultimo_acceso ? date('d/m/Y H:i', strtotime($user->ultimo_acceso)) : 'Nunca' ?>
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    <a href="/prueba-php/public/admin/editarUsuario/<?= $user->id ?>" class="btn btn-outline-primary" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button type="button" class="btn btn-outline-<?= $user->activo ? 'warning' : 'success' ?>" 
+                                            onclick="toggleUserStatus(<?= $user->id ?>, <?= $user->activo ? 0 : 1 ?>, '<?= htmlspecialchars($user->nombre) ?>')"
+                                            title="<?= $user->activo ? 'Desactivar' : 'Activar' ?>">
+                                        <i class="fas fa-<?= $user->activo ? 'ban' : 'check' ?>"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger" 
+                                            onclick="confirmDelete('usuario', <?= $user->id ?>, '<?= htmlspecialchars($user->nombre) ?>')"
+                                            title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Vista móvil - Tarjetas -->
+    <div class="d-xl-none">
+        <div class="row g-3">
+            <?php foreach ($data['users'] as $user): ?>
+                <div class="col-12">
+                    <div class="card user-card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="card-title mb-0">
+                                    <strong><?= htmlspecialchars($user->nombre . ' ' . $user->apellidos) ?></strong>
+                                </h6>
+                                <span class="badge bg-<?= $user->activo ? 'success' : 'danger' ?>">
+                                    <?= $user->activo ? 'Activo' : 'Inactivo' ?>
+                                </span>
+                            </div>
+                            
+                            <div class="row g-2 mb-3">
+                                <div class="col-6">
+                                    <small class="text-muted">ID:</small>
+                                    <div class="fw-bold">#<?= $user->id ?></div>
+                                </div>
+                                <div class="col-6">
+                                    <small class="text-muted">Rol:</small>
+                                    <div>
+                                        <span class="badge bg-<?= $user->rol === 'admin' ? 'primary' : 'secondary' ?>">
+                                            <?= ucfirst($user->rol) ?>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <small class="text-muted">Email:</small>
+                                <div class="text-break"><?= htmlspecialchars($user->email) ?></div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <small class="text-muted">Contraseña:</small>
+                                <div>
+                                    <?php if (!empty($user->password_plain)): ?>
+                                        <code class="password-display" style="background: #f8f9fa; padding: 4px 8px; border-radius: 4px; font-size: 0.9em; color: #495057; word-break: break-all;">
+                                            <?= htmlspecialchars($user->password_plain) ?>
+                                        </code>
+                                    <?php else: ?>
+                                        <span class="text-muted">-</span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <small class="text-muted">Último Acceso:</small>
+                                <div><?= $user->ultimo_acceso ? date('d/m/Y H:i', strtotime($user->ultimo_acceso)) : 'Nunca' ?></div>
+                            </div>
+                            
+                            <div class="d-flex gap-2">
+                                <a href="/prueba-php/public/admin/editarUsuario/<?= $user->id ?>" class="btn btn-outline-primary btn-sm flex-fill">
+                                    <i class="fas fa-edit me-1"></i> Editar
                                 </a>
-                                <button type="button" class="btn btn-outline-<?= $user->activo ? 'warning' : 'success' ?>" 
-                                        onclick="toggleUserStatus(<?= $user->id ?>, <?= $user->activo ? 0 : 1 ?>, '<?= htmlspecialchars($user->nombre) ?>')"
-                                        title="<?= $user->activo ? 'Desactivar' : 'Activar' ?>">
-                                    <i class="fas fa-<?= $user->activo ? 'ban' : 'check' ?>"></i>
+                                <button type="button" class="btn btn-outline-<?= $user->activo ? 'warning' : 'success' ?> btn-sm flex-fill" 
+                                        onclick="toggleUserStatus(<?= $user->id ?>, <?= $user->activo ? 0 : 1 ?>, '<?= htmlspecialchars($user->nombre) ?>')">
+                                    <i class="fas fa-<?= $user->activo ? 'ban' : 'check' ?> me-1"></i>
+                                    <?= $user->activo ? 'Desactivar' : 'Activar' ?>
                                 </button>
-                                <button type="button" class="btn btn-outline-danger" 
-                                        onclick="confirmDelete('usuario', <?= $user->id ?>, '<?= htmlspecialchars($user->nombre) ?>')"
-                                        title="Eliminar">
-                                    <i class="fas fa-trash"></i>
+                                <button type="button" class="btn btn-outline-danger btn-sm flex-fill" 
+                                        onclick="confirmDelete('usuario', <?= $user->id ?>, '<?= htmlspecialchars($user->nombre) ?>')">
+                                    <i class="fas fa-trash me-1"></i> Eliminar
                                 </button>
                             </div>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
     </div>
     
     <?php if ($data['totalPages'] > 1): ?>
@@ -233,4 +319,149 @@ function showToast(type, message) {
         toastElement.remove();
     });
 }
+</script>
+
+<style>
+/* Forzar la vista responsive - Actualizado <?= date('Y-m-d H:i:s') ?> */
+@media (max-width: 1199px) {
+    .d-xl-block {
+        display: none !important;
+    }
+    .d-xl-none {
+        display: block !important;
+    }
+}
+
+/* Estilos para las tarjetas de usuario en móviles */
+.user-card {
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s ease;
+    margin-bottom: 1rem;
+}
+
+.user-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.user-card .card-body {
+    padding: 1rem;
+}
+
+.user-card .card-title {
+    font-size: 1rem;
+    color: #212529;
+}
+
+.user-card .text-muted {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.user-card .password-display {
+    font-family: 'Courier New', monospace;
+    background: #f8f9fa !important;
+    border: 1px solid #e9ecef;
+    padding: 4px 8px !important;
+    border-radius: 4px;
+    font-size: 0.85rem !important;
+    color: #495057 !important;
+    word-break: break-all;
+    display: inline-block;
+    max-width: 100%;
+}
+
+.user-card .btn {
+    font-size: 0.8rem;
+    padding: 0.375rem 0.5rem;
+}
+
+.user-card .btn i {
+    font-size: 0.75rem;
+}
+
+/* Mejorar la responsividad de la tabla en pantallas medianas */
+@media (max-width: 1199px) and (min-width: 992px) {
+    .table-responsive {
+        font-size: 0.9rem;
+    }
+    
+    .table th, .table td {
+        padding: 0.5rem 0.3rem;
+    }
+    
+    .btn-group-sm .btn {
+        padding: 0.25rem 0.4rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* Ajustes para pantallas muy pequeñas */
+@media (max-width: 575px) {
+    .user-card .d-flex.gap-2 {
+        flex-direction: column;
+        gap: 0.5rem !important;
+    }
+    
+    .user-card .btn {
+        width: 100%;
+        margin-bottom: 0.25rem;
+    }
+    
+    .user-card .row.g-2 {
+        margin-bottom: 1rem !important;
+    }
+}
+</style>
+
+<script>
+// Forzar recarga de estilos responsive
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Vista responsive cargada - <?= date('Y-m-d H:i:s') ?>');
+    
+    // Verificar si estamos en vista móvil
+    if (window.innerWidth < 1200) {
+        console.log('Vista móvil detectada - Mostrando tarjetas');
+        // Forzar visibilidad de las tarjetas
+        const mobileView = document.querySelector('.d-xl-none');
+        const desktopView = document.querySelector('.d-xl-block');
+        
+        if (mobileView) {
+            mobileView.style.display = 'block';
+        }
+        if (desktopView) {
+            desktopView.style.display = 'none';
+        }
+    } else {
+        console.log('Vista de escritorio detectada - Mostrando tabla');
+    }
+    
+    // Escuchar cambios de tamaño de ventana
+    window.addEventListener('resize', function() {
+        if (window.innerWidth < 1200) {
+            const mobileView = document.querySelector('.d-xl-none');
+            const desktopView = document.querySelector('.d-xl-block');
+            
+            if (mobileView) {
+                mobileView.style.display = 'block';
+            }
+            if (desktopView) {
+                desktopView.style.display = 'none';
+            }
+        } else {
+            const mobileView = document.querySelector('.d-xl-none');
+            const desktopView = document.querySelector('.d-xl-block');
+            
+            if (mobileView) {
+                mobileView.style.display = 'none';
+            }
+            if (desktopView) {
+                desktopView.style.display = 'block';
+            }
+        }
+    });
+});
 </script>
