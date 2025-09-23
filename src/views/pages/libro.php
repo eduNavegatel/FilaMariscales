@@ -150,27 +150,27 @@ $carta_menu = [
                         <i class="bi bi-shield-check me-3"></i>Servicios y Actividades
                     </h2>
                     <p class="lead mb-4">Descubre todo lo que ofrece la Filá Mariscales de Caballeros Templarios</p>
-                        </div>
-
+                    </div>
+                    
                 <!-- Libro Interactivo -->
                 <div class="book-container" id="bookContainer">
                     <!-- Portada del Libro -->
-                    <div class="book-cover" id="bookCover">
-                        <div class="cover-content">
+                        <div class="book-cover" id="bookCover">
+                                <div class="cover-content">
                             <h1 class="book-title">Filá Mariscales</h1>
                             <h2 class="book-subtitle">Caballeros Templarios</h2>
-                            <div class="cover-decoration">
-                                <div class="templar-cross">⚔️</div>
-                            </div>
+                                    <div class="cover-decoration">
+                                        <div class="templar-cross">⚔️</div>
+                                    </div>
                             <p class="cover-description">Tradición, Honor y Hermandad</p>
-                        </div>
+                                    </div>
                         <div class="page-corner" id="pageCorner"></div>
-                    </div>
+                                </div>
                     
                     <!-- Páginas del Libro -->
                     <div class="book-pages" id="bookPages">
-                        <!-- Página 1: Tradiciones -->
-                        <div class="book-page page-1" id="page1">
+                        <!-- Página 1: Tradiciones (Hoja Izquierda) -->
+                        <div class="book-page page-left page-1" id="page1">
                             <div class="page-content">
                                 <h2 class="page-title">Tradiciones</h2>
                                 <div class="page-items">
@@ -178,15 +178,14 @@ $carta_menu = [
                                     <div class="page-item">
                                         <h3 class="item-title"><?php echo $plato['nombre']; ?></h3>
                                         <p class="item-desc"><?php echo $plato['descripcion']; ?></p>
-                                    </div>
+                            </div>
                                     <?php endforeach; ?>
                                 </div>
-                                <div class="page-corner next-page" data-page="2">→</div>
                             </div>
-                        </div>
+                                    </div>
                         
-                        <!-- Página 2: Actividades -->
-                        <div class="book-page page-2" id="page2">
+                        <!-- Página 2: Actividades (Hoja Derecha) -->
+                        <div class="book-page page-right page-2" id="page2">
                             <div class="page-content">
                                 <h2 class="page-title">Actividades</h2>
                                 <div class="page-items">
@@ -196,15 +195,14 @@ $carta_menu = [
                                         <p class="item-desc"><?php echo $plato['descripcion']; ?></p>
                                     </div>
                                     <?php endforeach; ?>
-                                </div>
+                                    </div>
                                 <div class="page-corner next-page" data-page="3">→</div>
-                                <div class="page-corner prev-page" data-page="1">←</div>
                             </div>
                         </div>
                         
-                        <!-- Página 3: Servicios -->
-                        <div class="book-page page-3" id="page3">
-                            <div class="page-content">
+                        <!-- Página 3: Servicios (Hoja Izquierda) -->
+                        <div class="book-page page-left page-3" id="page3">
+                                <div class="page-content">
                                 <h2 class="page-title">Servicios</h2>
                                 <div class="page-items">
                                     <?php foreach ($carta_menu['servicios']['platos'] as $plato): ?>
@@ -213,15 +211,13 @@ $carta_menu = [
                                         <p class="item-desc"><?php echo $plato['descripcion']; ?></p>
                                     </div>
                                     <?php endforeach; ?>
+                                    </div>
                                 </div>
-                                <div class="page-corner next-page" data-page="4">→</div>
-                                <div class="page-corner prev-page" data-page="2">←</div>
                             </div>
-                        </div>
-                        
-                        <!-- Página 4: Información -->
-                        <div class="book-page page-4" id="page4">
-                            <div class="page-content">
+                            
+                        <!-- Página 4: Información (Hoja Derecha) -->
+                        <div class="book-page page-right page-4" id="page4">
+                                <div class="page-content">
                                 <h2 class="page-title">Información</h2>
                                 <div class="page-items">
                                     <?php foreach ($carta_menu['informacion']['platos'] as $plato): ?>
@@ -230,16 +226,16 @@ $carta_menu = [
                                         <p class="item-desc"><?php echo $plato['descripcion']; ?></p>
                                     </div>
                                     <?php endforeach; ?>
-                                </div>
-                                <div class="page-corner prev-page" data-page="3">←</div>
+                                                </div>
+                                <div class="page-corner prev-page" data-page="1">←</div>
                                 <div class="book-footer">
                                     <p class="footer-text">Muchas gracias</p>
                                     <p class="footer-subtitle">Por su interés en la Filá Mariscales</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                     
                         <!-- Menu Footer -->
                         <div class="menu-footer mt-5">
@@ -249,22 +245,22 @@ $carta_menu = [
                                         <h5><i class="bi bi-shield-check me-2"></i>Nuestra Misión</h5>
                                         <p class="mb-1">Mantener viva la tradición templaria y el honor caballeresco</p>
                                         <p class="mb-0">Promover la cultura y las tradiciones de Elche</p>
-                                    </div>
-                                </div>
+                            </div>
+                        </div>
                                 <div class="col-md-6">
                                     <div class="menu-contact">
                                         <h5><i class="bi bi-telephone me-2"></i>Contacto</h5>
                                         <p class="mb-1">Teléfono: 965 123 456</p>
                                         <p class="mb-0">Email: info@filamariscales.com</p>
-                            </div>
-                        </div>
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
-                                </div>
-                            </div>
-                                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
 
@@ -311,10 +307,10 @@ $carta_menu = [
 .book-container {
     position: relative;
     width: 100%;
-    max-width: 800px;
-    height: 600px;
+    max-width: 600px;
+    height: 450px;
     margin: 0 auto;
-    perspective: 1000px;
+    perspective: 1200px;
     transform-style: preserve-3d;
 }
 
@@ -329,7 +325,7 @@ $carta_menu = [
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     transform-origin: left center;
-    transition: transform 0.8s ease-in-out;
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 10;
     cursor: pointer;
     border: 3px solid #654321;
@@ -428,16 +424,30 @@ $carta_menu = [
 .book-page {
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
+    width: 50%;
     height: 100%;
     background: #f4e4c1;
     border-radius: 10px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
     transform-origin: left center;
-    transition: transform 0.8s ease-in-out;
+    transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
     display: none;
     border: 2px solid #d4af37;
+    overflow: hidden;
+}
+
+/* Hoja izquierda */
+.book-page.page-left {
+    left: 0;
+    border-radius: 10px 0 0 10px;
+    border-right: 1px solid #d4af37;
+}
+
+/* Hoja derecha */
+.book-page.page-right {
+    right: 0;
+    border-radius: 0 10px 10px 0;
+    border-left: 1px solid #d4af37;
 }
 
 .book-page.active {
@@ -539,34 +549,83 @@ $carta_menu = [
 /* Responsive Design para el Libro */
 @media (max-width: 768px) {
     .book-container {
-        height: 500px;
+        height: 400px;
         max-width: 90%;
     }
     
     .book-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
     }
     
     .book-subtitle {
-        font-size: 1.2rem;
+        font-size: 1rem;
     }
     
     .templar-cross {
-        font-size: 3rem;
+        font-size: 2.5rem;
     }
     
     .page-title {
-        font-size: 2rem;
+        font-size: 1.5rem;
     }
     
     .item-title {
-        font-size: 1.1rem;
+        font-size: 1rem;
+    }
+    
+    .item-desc {
+        font-size: 0.85rem;
     }
     
     .page-corner {
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    .page-content {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .book-container {
+        height: 350px;
+        max-width: 95%;
+    }
+    
+    .book-title {
+        font-size: 1.5rem;
+    }
+    
+    .book-subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .templar-cross {
+        font-size: 2rem;
+    }
+    
+    .page-title {
         font-size: 1.2rem;
+    }
+    
+    .item-title {
+        font-size: 0.9rem;
+    }
+    
+    .item-desc {
+        font-size: 0.8rem;
+    }
+    
+    .page-corner {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+    }
+    
+    .page-content {
+        padding: 0.8rem;
     }
 }
 
@@ -691,7 +750,7 @@ $carta_menu = [
     }
     
     .item-header {
-    flex-direction: column;
+        flex-direction: column;
     gap: 0.5rem;
     }
     
@@ -733,8 +792,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Variables del libro
     let isBookOpen = false;
-    let currentPage = 1;
-    const totalPages = 4;
+    let currentSpread = 1; // Cada "spread" tiene 2 páginas (izquierda y derecha)
+    const totalSpreads = 2; // 2 spreads: (1,2) y (3,4)
     
     // Elementos del DOM
     const bookCover = document.getElementById('bookCover');
@@ -746,10 +805,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!isBookOpen) {
             // Abrir el libro
             bookCover.classList.add('open');
-            setTimeout(() => {
-                bookCover.style.display = 'none';
-                showPage(1);
-            }, 400);
+        setTimeout(() => {
+            bookCover.style.display = 'none';
+                showSpread(1);
+            }, 600);
             isBookOpen = true;
         } else {
             // Cerrar el libro
@@ -757,23 +816,30 @@ document.addEventListener('DOMContentLoaded', function() {
             bookCover.classList.remove('open');
             hideAllPages();
             isBookOpen = false;
-            currentPage = 1;
+            currentSpread = 1;
         }
     }
     
-    // Función para mostrar una página específica
-    function showPage(pageNumber) {
+    // Función para mostrar un spread específico (dos páginas)
+    function showSpread(spreadNumber) {
         hideAllPages();
-        const page = document.getElementById(`page${pageNumber}`);
-        if (page) {
-            page.classList.add('active');
-            currentPage = pageNumber;
+        
+        if (spreadNumber === 1) {
+            // Mostrar páginas 1 y 2
+            document.getElementById('page1').classList.add('active');
+            document.getElementById('page2').classList.add('active');
+        } else if (spreadNumber === 2) {
+            // Mostrar páginas 3 y 4
+            document.getElementById('page3').classList.add('active');
+            document.getElementById('page4').classList.add('active');
         }
+        
+        currentSpread = spreadNumber;
     }
     
     // Función para ocultar todas las páginas
     function hideAllPages() {
-        for (let i = 1; i <= totalPages; i++) {
+        for (let i = 1; i <= 4; i++) {
             const page = document.getElementById(`page${i}`);
             if (page) {
                 page.classList.remove('active');
@@ -783,28 +849,40 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Función para ir a la siguiente página
     function nextPage() {
-        if (currentPage < totalPages) {
-            const currentPageElement = document.getElementById(`page${currentPage}`);
-            if (currentPageElement) {
-                currentPageElement.classList.add('flip');
+        if (currentSpread < totalSpreads) {
+            // Voltear páginas actuales
+            const leftPage = document.getElementById(`page${currentSpread * 2 - 1}`);
+            const rightPage = document.getElementById(`page${currentSpread * 2}`);
+            
+            if (leftPage && rightPage) {
+                leftPage.classList.add('flip');
+                rightPage.classList.add('flip');
+                
                 setTimeout(() => {
-                    currentPageElement.classList.remove('active', 'flip');
-                    showPage(currentPage + 1);
-                }, 400);
+                    leftPage.classList.remove('active', 'flip');
+                    rightPage.classList.remove('active', 'flip');
+                    showSpread(currentSpread + 1);
+                }, 750);
             }
         }
     }
     
     // Función para ir a la página anterior
     function prevPage() {
-        if (currentPage > 1) {
-            const currentPageElement = document.getElementById(`page${currentPage}`);
-            if (currentPageElement) {
-                currentPageElement.classList.add('flip');
+        if (currentSpread > 1) {
+            // Voltear páginas actuales
+            const leftPage = document.getElementById(`page${currentSpread * 2 - 1}`);
+            const rightPage = document.getElementById(`page${currentSpread * 2}`);
+            
+            if (leftPage && rightPage) {
+                leftPage.classList.add('flip');
+                rightPage.classList.add('flip');
+                
                 setTimeout(() => {
-                    currentPageElement.classList.remove('active', 'flip');
-                    showPage(currentPage - 1);
-                }, 400);
+                    leftPage.classList.remove('active', 'flip');
+                    rightPage.classList.remove('active', 'flip');
+                    showSpread(currentSpread - 1);
+                }, 750);
             }
         }
     }
