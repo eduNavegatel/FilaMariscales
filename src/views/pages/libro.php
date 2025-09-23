@@ -155,17 +155,17 @@ $carta_menu = [
                 <!-- Libro Interactivo -->
                 <div class="book-container" id="bookContainer">
                     <!-- Portada del Libro -->
-                        <div class="book-cover" id="bookCover">
-                                <div class="cover-content">
+                    <div class="book-cover" id="bookCover">
+                        <div class="cover-content">
                             <h1 class="book-title">Filá Mariscales</h1>
                             <h2 class="book-subtitle">Caballeros Templarios</h2>
-                                    <div class="cover-decoration">
-                                        <div class="templar-cross">⚔️</div>
-                                    </div>
+                            <div class="cover-decoration">
+                                <div class="templar-cross">⚔️</div>
+                            </div>
                             <p class="cover-description">Tradición, Honor y Hermandad</p>
-                                    </div>
+                        </div>
                         <div class="page-corner" id="pageCorner"></div>
-                                </div>
+                    </div>
                     
                     <!-- Páginas del Libro -->
                     <div class="book-pages" id="bookPages">
@@ -178,11 +178,11 @@ $carta_menu = [
                                     <div class="page-item">
                                         <h3 class="item-title"><?php echo $plato['nombre']; ?></h3>
                                         <p class="item-desc"><?php echo $plato['descripcion']; ?></p>
-                            </div>
+                                    </div>
                                     <?php endforeach; ?>
                                 </div>
                             </div>
-                                    </div>
+                        </div>
                         
                         <!-- Página 2: Actividades (Hoja Derecha) -->
                         <div class="book-page page-right page-2" id="page2">
@@ -195,14 +195,14 @@ $carta_menu = [
                                         <p class="item-desc"><?php echo $plato['descripcion']; ?></p>
                                     </div>
                                     <?php endforeach; ?>
-                                    </div>
+                                </div>
                                 <div class="page-corner next-page" data-page="3">→</div>
                             </div>
                         </div>
                         
                         <!-- Página 3: Servicios (Hoja Izquierda) -->
                         <div class="book-page page-left page-3" id="page3">
-                                <div class="page-content">
+                            <div class="page-content">
                                 <h2 class="page-title">Servicios</h2>
                                 <div class="page-items">
                                     <?php foreach ($carta_menu['servicios']['platos'] as $plato): ?>
@@ -211,13 +211,13 @@ $carta_menu = [
                                         <p class="item-desc"><?php echo $plato['descripcion']; ?></p>
                                     </div>
                                     <?php endforeach; ?>
-                                    </div>
                                 </div>
                             </div>
-                            
+                        </div>
+                        
                         <!-- Página 4: Información (Hoja Derecha) -->
                         <div class="book-page page-right page-4" id="page4">
-                                <div class="page-content">
+                            <div class="page-content">
                                 <h2 class="page-title">Información</h2>
                                 <div class="page-items">
                                     <?php foreach ($carta_menu['informacion']['platos'] as $plato): ?>
@@ -226,16 +226,16 @@ $carta_menu = [
                                         <p class="item-desc"><?php echo $plato['descripcion']; ?></p>
                                     </div>
                                     <?php endforeach; ?>
-                                                </div>
+                                </div>
                                 <div class="page-corner prev-page" data-page="1">←</div>
                                 <div class="book-footer">
                                     <p class="footer-text">Muchas gracias</p>
                                     <p class="footer-subtitle">Por su interés en la Filá Mariscales</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                     
                         <!-- Menu Footer -->
                         <div class="menu-footer mt-5">
@@ -310,7 +310,7 @@ $carta_menu = [
     max-width: 600px;
     height: 450px;
     margin: 0 auto;
-    perspective: 1200px;
+    perspective: 1000px;
     transform-style: preserve-3d;
 }
 
@@ -325,7 +325,7 @@ $carta_menu = [
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     transform-origin: left center;
-    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 1.5s ease-in-out;
     z-index: 10;
     cursor: pointer;
     border: 3px solid #654321;
@@ -430,7 +430,7 @@ $carta_menu = [
     border-radius: 10px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
     transform-origin: left center;
-    transition: transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 1.5s ease-in-out;
     display: none;
     border: 2px solid #d4af37;
     overflow: hidden;
@@ -792,12 +792,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Variables del libro
     let isBookOpen = false;
-    let currentSpread = 1; // Cada "spread" tiene 2 páginas (izquierda y derecha)
-    const totalSpreads = 2; // 2 spreads: (1,2) y (3,4)
+    let currentSpread = 1;
+    const totalSpreads = 2;
     
     // Elementos del DOM
     const bookCover = document.getElementById('bookCover');
-    const bookPages = document.getElementById('bookPages');
     const pageCorner = document.getElementById('pageCorner');
     
     // Función para abrir/cerrar el libro
@@ -805,10 +804,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!isBookOpen) {
             // Abrir el libro
             bookCover.classList.add('open');
-        setTimeout(() => {
-            bookCover.style.display = 'none';
+            setTimeout(() => {
+                bookCover.style.display = 'none';
                 showSpread(1);
-            }, 600);
+            }, 800);
             isBookOpen = true;
         } else {
             // Cerrar el libro
@@ -820,16 +819,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Función para mostrar un spread específico (dos páginas)
+    // Función para mostrar un spread específico
     function showSpread(spreadNumber) {
         hideAllPages();
         
         if (spreadNumber === 1) {
-            // Mostrar páginas 1 y 2
             document.getElementById('page1').classList.add('active');
             document.getElementById('page2').classList.add('active');
         } else if (spreadNumber === 2) {
-            // Mostrar páginas 3 y 4
             document.getElementById('page3').classList.add('active');
             document.getElementById('page4').classList.add('active');
         }
@@ -842,7 +839,7 @@ document.addEventListener('DOMContentLoaded', function() {
         for (let i = 1; i <= 4; i++) {
             const page = document.getElementById(`page${i}`);
             if (page) {
-                page.classList.remove('active');
+                page.classList.remove('active', 'flip');
             }
         }
     }
@@ -850,7 +847,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Función para ir a la siguiente página
     function nextPage() {
         if (currentSpread < totalSpreads) {
-            // Voltear páginas actuales
             const leftPage = document.getElementById(`page${currentSpread * 2 - 1}`);
             const rightPage = document.getElementById(`page${currentSpread * 2}`);
             
@@ -862,7 +858,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     leftPage.classList.remove('active', 'flip');
                     rightPage.classList.remove('active', 'flip');
                     showSpread(currentSpread + 1);
-                }, 750);
+                }, 800);
             }
         }
     }
@@ -870,7 +866,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Función para ir a la página anterior
     function prevPage() {
         if (currentSpread > 1) {
-            // Voltear páginas actuales
             const leftPage = document.getElementById(`page${currentSpread * 2 - 1}`);
             const rightPage = document.getElementById(`page${currentSpread * 2}`);
             
@@ -882,7 +877,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     leftPage.classList.remove('active', 'flip');
                     rightPage.classList.remove('active', 'flip');
                     showSpread(currentSpread - 1);
-                }, 750);
+                }, 800);
             }
         }
     }
