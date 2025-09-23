@@ -123,6 +123,15 @@ class Pages extends Controller {
         $this->view('pages/libro', $data);
     }
 
+    // Página de galería multimedia
+    public function galeriaMultimedia() {
+        $data = [
+            'title' => 'Galería Multimedia',
+            'description' => 'Videos de actuaciones y eventos de la Filá Mariscales'
+        ];
+        $this->view('pages/galeria-multimedia', $data);
+    }
+
     // Página de música
     public function musica() {
         $data = [

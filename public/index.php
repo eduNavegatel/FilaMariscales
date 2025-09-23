@@ -68,6 +68,8 @@ if (empty($url[0])) {
     $controller->musica();
 } elseif ($url[0] === 'libro') {
     $controller->libro();
+} elseif ($url[0] === 'galeria-multimedia') {
+    $controller->galeriaMultimedia();
 } elseif ($url[0] === 'descargas') {
     $controller->descargas();
 } elseif ($url[0] === 'tienda') {
@@ -254,12 +256,12 @@ if (empty($url[0])) {
                 $id = isset($url[2]) ? $url[2] : null;
                 $estado = isset($url[3]) ? $url[3] : null;
                 $adminController->cambiarEstadoNoticia($id, $estado);
-            } elseif ($action === 'videos') {
-                // Manejar la ruta videos
-                if (file_exists('src/views/admin/videos.php')) {
-                    require 'src/views/admin/videos.php';
+            } elseif ($action === 'gestion-galeria') {
+                // Manejar la ruta gestión de galería
+                if (file_exists('src/views/admin/gestion-galeria.php')) {
+                    require 'src/views/admin/gestion-galeria.php';
                 } else {
-                    echo "Error: No se encuentra la vista de gestión de videos";
+                    echo "Error: No se encuentra la vista de gestión de galería";
                 }
                 return;
             } else {

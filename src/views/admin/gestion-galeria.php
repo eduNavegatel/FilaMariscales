@@ -177,7 +177,7 @@ if (file_exists($videosFile)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Videos - Filá Mariscales</title>
+    <title>Gestión de Galería - Filá Mariscales</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
     <style>
@@ -240,8 +240,8 @@ if (file_exists($videosFile)) {
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <h1><i class="bi bi-play-circle me-2"></i>Gestión de Videos</h1>
-                    <p class="mb-0">Administra los videos de actuaciones de la Filá Mariscales</p>
+                    <h1><i class="bi bi-images me-2"></i>Gestión de Galería</h1>
+                    <p class="mb-0">Administra carrusel, galería general y videos de la Filá Mariscales</p>
                 </div>
                 <div class="col-md-6 text-end">
                     <a href="/prueba-php/public/admin" class="btn btn-light">
@@ -268,14 +268,80 @@ if (file_exists($videosFile)) {
             </div>
         <?php endif; ?>
 
-        <!-- Botón para subir nuevo video -->
+        <!-- Navegación por pestañas -->
         <div class="row mb-4">
             <div class="col-12">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadModal">
-                    <i class="bi bi-plus-circle me-2"></i>Subir Nuevo Video
-                </button>
+                <ul class="nav nav-tabs" id="galleryTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="carrusel-tab" data-bs-toggle="tab" data-bs-target="#carrusel" type="button" role="tab">
+                            <i class="bi bi-collection-play me-2"></i>Carrusel
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="galeria-tab" data-bs-toggle="tab" data-bs-target="#galeria" type="button" role="tab">
+                            <i class="bi bi-images me-2"></i>Galería General
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="videos-tab" data-bs-toggle="tab" data-bs-target="#videos" type="button" role="tab">
+                            <i class="bi bi-play-circle me-2"></i>Videos
+                        </button>
+                    </li>
+                </ul>
             </div>
         </div>
+
+        <!-- Contenido de las pestañas -->
+        <div class="tab-content" id="galleryTabContent">
+            <!-- Pestaña Carrusel -->
+            <div class="tab-pane fade show active" id="carrusel" role="tabpanel">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadCarruselModal">
+                            <i class="bi bi-plus-circle me-2"></i>Subir Imagen al Carrusel
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="text-center py-5">
+                            <i class="bi bi-collection-play display-1 text-muted"></i>
+                            <h3 class="text-muted mt-3">Gestión de Carrusel</h3>
+                            <p class="text-muted">Aquí podrás gestionar las imágenes del carrusel principal</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pestaña Galería General -->
+            <div class="tab-pane fade" id="galeria" role="tabpanel">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadGaleriaModal">
+                            <i class="bi bi-plus-circle me-2"></i>Subir Imagen a la Galería
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="text-center py-5">
+                            <i class="bi bi-images display-1 text-muted"></i>
+                            <h3 class="text-muted mt-3">Gestión de Galería General</h3>
+                            <p class="text-muted">Aquí podrás gestionar las imágenes de la galería general</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pestaña Videos -->
+            <div class="tab-pane fade" id="videos" role="tabpanel">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#uploadModal">
+                            <i class="bi bi-plus-circle me-2"></i>Subir Nuevo Video
+                        </button>
+                    </div>
+                </div>
 
         <!-- Grid de videos -->
         <div class="row">
@@ -321,6 +387,8 @@ if (file_exists($videosFile)) {
                     </div>
                 <?php endforeach; ?>
             <?php endif; ?>
+                </div>
+            </div>
         </div>
     </div>
 
