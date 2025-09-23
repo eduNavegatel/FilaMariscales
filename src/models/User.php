@@ -232,32 +232,18 @@ class User {
 
     // Update user
     public function updateUser($data) {
-        // Debug logging
-        error_log("User::updateUser called with data: " . print_r($data, true));
-        
         $query = 'UPDATE ' . $this->table . ' SET nombre = :nombre, apellidos = :apellidos, email = :email, rol = :rol, activo = :activo';
         
         // Add password to query if provided
         if (!empty($data['password'])) {
-            $query .= ', password = :password';
+            $query .= ', password = :password, password_plain = :password_plain';
         }
         
         $query .= ' WHERE id = :id';
         
-        error_log("SQL Query: " . $query);
-        error_log("Table name: " . $this->table);
-        error_log("Data types:");
-        error_log("  - ID: " . gettype($data['id']) . " = " . $data['id']);
-        error_log("  - Nombre: " . gettype($data['nombre']) . " = " . $data['nombre']);
-        error_log("  - Apellidos: " . gettype($data['apellidos']) . " = " . $data['apellidos']);
-        error_log("  - Email: " . gettype($data['email']) . " = " . $data['email']);
-        error_log("  - Rol: " . gettype($data['rol']) . " = " . $data['rol']);
-        error_log("  - Activo: " . gettype($data['activo']) . " = " . $data['activo']);
-        
         $this->db->query($query);
         
         // Bind values
-        error_log("Binding values to query...");
         $this->db->bind(':id', $data['id']);
         $this->db->bind(':nombre', $data['nombre']);
         $this->db->bind(':apellidos', $data['apellidos']);
@@ -266,21 +252,13 @@ class User {
         $this->db->bind(':activo', $data['activo']);
 
         if (!empty($data['password'])) {
-            error_log("Binding password field");
-            $this->db->bind(':password', $data['password']);
+            $this->db->bind(':password', password_hash($data['password'], PASSWORD_DEFAULT));
+            $this->db->bind(':password_plain', $data['password']);
         }
 
-        // Execute
-        try {
-            $result = $this->db->execute();
-            error_log("Database execute result: " . ($result ? 'true' : 'false'));
-            error_log("Rows affected: " . $this->db->rowCount());
-            return $result;
-        } catch (Exception $e) {
-            error_log("Database error in updateUser: " . $e->getMessage());
-            return false;
-        }
+        return $this->db->execute();
     }
+
 
     // Update user status (activate/deactivate)
     public function updateUserStatus($id, $status) {
