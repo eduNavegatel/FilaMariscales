@@ -256,14 +256,22 @@ if (empty($url[0])) {
                 $id = isset($url[2]) ? $url[2] : null;
                 $estado = isset($url[3]) ? $url[3] : null;
                 $adminController->cambiarEstadoNoticia($id, $estado);
-            } elseif ($action === 'gestion-galeria') {
-                // Manejar la ruta gestión de galería
-                if (file_exists('src/views/admin/gestion-galeria.php')) {
-                    require 'src/views/admin/gestion-galeria.php';
-                } else {
-                    echo "Error: No se encuentra la vista de gestión de galería";
-                }
-                return;
+        } elseif ($action === 'gestion-galeria') {
+            // Manejar la ruta gestión de galería
+            if (file_exists('src/views/admin/gestion-galeria.php')) {
+                require 'src/views/admin/gestion-galeria.php';
+            } else {
+                echo "Error: No se encuentra la vista de gestión de galería";
+            }
+            return;
+        } elseif ($action === 'flipbooks') {
+            // Manejar la ruta gestión de flipbooks
+            if (file_exists('src/views/admin/flipbooks.php')) {
+                require 'src/views/admin/flipbooks.php';
+            } else {
+                echo "Error: No se encuentra la vista de gestión de flipbooks";
+            }
+            return;
             } else {
                 $adminController->dashboard();
             }
