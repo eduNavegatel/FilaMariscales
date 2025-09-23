@@ -254,6 +254,14 @@ if (empty($url[0])) {
                 $id = isset($url[2]) ? $url[2] : null;
                 $estado = isset($url[3]) ? $url[3] : null;
                 $adminController->cambiarEstadoNoticia($id, $estado);
+            } elseif ($action === 'videos') {
+                // Manejar la ruta videos
+                if (file_exists('src/views/admin/videos.php')) {
+                    require 'src/views/admin/videos.php';
+                } else {
+                    echo "Error: No se encuentra la vista de gestión de videos";
+                }
+                return;
             } else {
                 $adminController->dashboard();
             }

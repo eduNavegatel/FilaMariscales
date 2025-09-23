@@ -150,68 +150,78 @@ $carta_menu = [
                         <i class="bi bi-shield-check me-3"></i>Servicios y Actividades
                     </h2>
                     <p class="lead mb-4">Descubre todo lo que ofrece la Filá Mariscales de Caballeros Templarios</p>
-                </div>
+                        </div>
 
                 <!-- Menu Content -->
                 <div class="menu-content" id="menuContent">
                     <div class="menu-container">
-                        <!-- Menu Navigation -->
-                        <div class="menu-nav mb-4">
-                            <div class="nav nav-pills justify-content-center" id="menuTabs" role="tablist">
-                                <?php foreach ($carta_menu as $key => $categoria): ?>
-                                <button class="nav-link menu-tab-btn" 
-                                        id="<?php echo $key; ?>-tab" 
-                                        data-bs-toggle="pill" 
-                                        data-bs-target="#<?php echo $key; ?>" 
-                                        type="button" 
-                                        role="tab">
-                                    <i class="bi bi-<?php echo $key === 'tradiciones' ? 'book' : ($key === 'actividades' ? 'calendar-event' : ($key === 'servicios' ? 'tools' : 'info-circle')); ?> me-2"></i>
-                                    <?php echo $categoria['titulo']; ?>
-                                </button>
-                                <?php endforeach; ?>
+                        <!-- Carta de Servicios - Estilo La Yedra -->
+                        <div class="carta-container">
+                            <div class="carta-header">
+                                <h2 class="carta-title">Carta de Servicios</h2>
+                                <div class="carta-subtitle">Filá Mariscales de Caballeros Templarios</div>
                             </div>
-                        </div>
-
-                        <!-- Menu Categories -->
-                        <div class="tab-content" id="menuTabContent">
-                            <?php foreach ($carta_menu as $key => $categoria): ?>
-                            <div class="tab-pane fade <?php echo $key === 'tradiciones' ? 'show active' : ''; ?>" 
-                                 id="<?php echo $key; ?>" 
-                                 role="tabpanel">
-                                <div class="menu-category">
-                                    <div class="category-header">
-                                        <h3 class="category-title">
-                                            <i class="bi bi-<?php echo $key === 'tradiciones' ? 'book' : ($key === 'actividades' ? 'calendar-event' : ($key === 'servicios' ? 'tools' : 'info-circle')); ?> me-3"></i>
-                                            <?php echo $categoria['titulo']; ?>
-                                        </h3>
-                                        <div class="category-decoration"></div>
-                                    </div>
-                                    
+                            
+                            <div class="carta-content">
+                                <!-- Tradiciones -->
+                                <div class="carta-section">
+                                    <h3 class="section-title">Tradiciones</h3>
                                     <div class="menu-items">
-                                        <?php foreach ($categoria['platos'] as $plato): ?>
+                                        <?php foreach ($carta_menu['tradiciones']['platos'] as $plato): ?>
                                         <div class="menu-item">
-                                            <div class="item-content">
-                                                <div class="item-header">
-                                                    <h4 class="item-name"><?php echo $plato['nombre']; ?></h4>
-                                                    <span class="item-price"><?php echo $plato['precio']; ?>€</span>
-                                                </div>
-                                                <p class="item-description"><?php echo $plato['descripcion']; ?></p>
-                                            </div>
-                                            <div class="item-actions">
-                                                <button class="btn btn-outline-primary btn-sm add-to-cart" 
-                                                        data-item="<?php echo htmlspecialchars($plato['nombre']); ?>" 
-                                                        data-price="<?php echo $plato['precio']; ?>">
-                                                    <i class="bi bi-info-circle me-1"></i>Más Info
-                                                </button>
-                                            </div>
+                                            <div class="item-name"><?php echo $plato['nombre']; ?></div>
+                                            <div class="item-description"><?php echo $plato['descripcion']; ?></div>
                                         </div>
                                         <?php endforeach; ?>
+                        </div>
+                    </div>
+                    
+                                <!-- Actividades -->
+                                <div class="carta-section">
+                                    <h3 class="section-title">Actividades</h3>
+                                    <div class="menu-items">
+                                        <?php foreach ($carta_menu['actividades']['platos'] as $plato): ?>
+                                        <div class="menu-item">
+                                            <div class="item-name"><?php echo $plato['nombre']; ?></div>
+                                            <div class="item-description"><?php echo $plato['descripcion']; ?></div>
+                                </div>
+                                        <?php endforeach; ?>
                                     </div>
+                                    </div>
+                                
+                                <!-- Servicios -->
+                                <div class="carta-section">
+                                    <h3 class="section-title">Servicios</h3>
+                                    <div class="menu-items">
+                                        <?php foreach ($carta_menu['servicios']['platos'] as $plato): ?>
+                                        <div class="menu-item">
+                                            <div class="item-name"><?php echo $plato['nombre']; ?></div>
+                                            <div class="item-description"><?php echo $plato['descripcion']; ?></div>
+                                    </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    </div>
+                                
+                                <!-- Información -->
+                                <div class="carta-section">
+                                    <h3 class="section-title">Información</h3>
+                                    <div class="menu-items">
+                                        <?php foreach ($carta_menu['informacion']['platos'] as $plato): ?>
+                                        <div class="menu-item">
+                                            <div class="item-name"><?php echo $plato['nombre']; ?></div>
+                                            <div class="item-description"><?php echo $plato['descripcion']; ?></div>
+                                </div>
+                                        <?php endforeach; ?>
+                            </div>
                                 </div>
                             </div>
-                            <?php endforeach; ?>
-                        </div>
-
+                            
+                            <div class="carta-footer">
+                                <div class="footer-text">Muchas gracias</div>
+                                <div class="footer-subtitle">Por su interés en la Filá Mariscales</div>
+                                    </div>
+                                    </div>
+                    
                         <!-- Menu Footer -->
                         <div class="menu-footer mt-5">
                             <div class="row">
@@ -227,6 +237,160 @@ $carta_menu = [
                                         <h5><i class="bi bi-telephone me-2"></i>Contacto</h5>
                                         <p class="mb-1">Teléfono: 965 123 456</p>
                                         <p class="mb-0">Email: info@filamariscales.com</p>
+                            </div>
+                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                                </div>
+                            </div>
+                                    </div>
+</section>
+
+<!-- Videos Section -->
+<section class="videos-section py-5" style="background: linear-gradient(135deg, rgba(220, 20, 60, 0.05) 0%, rgba(255, 255, 255, 0.9) 50%, rgba(220, 20, 60, 0.05) 100%);">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <!-- Videos Header -->
+                <div class="videos-header text-center mb-5">
+                    <h2 class="display-5 fw-bold text-gradient mb-3">
+                        <i class="bi bi-play-circle me-3"></i>Videos de Actuaciones
+                    </h2>
+                    <p class="lead mb-4">Revive los mejores momentos de la Filá Mariscales en acción</p>
+                                    </div>
+
+                <!-- Videos Grid -->
+                <div class="videos-grid">
+                    <div class="row">
+                        <!-- Video 1 -->
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="video-card">
+                                <div class="video-thumbnail">
+                                    <div class="video-overlay">
+                                        <button class="play-btn" data-video="video1">
+                                            <i class="bi bi-play-fill"></i>
+                                        </button>
+                                                </div>
+                                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Desfile 2023">
+                                                </div>
+                                <div class="video-info">
+                                    <h4 class="video-title">Desfile de Moros y Cristianos 2023</h4>
+                                    <p class="video-description">Participación completa de la Filá Mariscales en las fiestas patronales</p>
+                                    <div class="video-meta">
+                                        <span class="video-date"><i class="bi bi-calendar me-1"></i>Agosto 2023</span>
+                                        <span class="video-duration"><i class="bi bi-clock me-1"></i>15:30</span>
+                                            </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Video 2 -->
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="video-card">
+                                <div class="video-thumbnail">
+                                    <div class="video-overlay">
+                                        <button class="play-btn" data-video="video2">
+                                            <i class="bi bi-play-fill"></i>
+                                        </button>
+                                    </div>
+                                    <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Ensayo General">
+                                                </div>
+                                <div class="video-info">
+                                    <h4 class="video-title">Ensayo General 2023</h4>
+                                    <p class="video-description">Preparación y ensayo previo a las fiestas principales</p>
+                                    <div class="video-meta">
+                                        <span class="video-date"><i class="bi bi-calendar me-1"></i>Julio 2023</span>
+                                        <span class="video-duration"><i class="bi bi-clock me-1"></i>8:45</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        <!-- Video 3 -->
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="video-card">
+                                <div class="video-thumbnail">
+                                    <div class="video-overlay">
+                                        <button class="play-btn" data-video="video3">
+                                            <i class="bi bi-play-fill"></i>
+                                        </button>
+                                    </div>
+                                    <img src="https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Ceremonia de Iniciación">
+                                                </div>
+                                <div class="video-info">
+                                    <h4 class="video-title">Ceremonia de Iniciación</h4>
+                                    <p class="video-description">Ritual de bienvenida para nuevos caballeros templarios</p>
+                                    <div class="video-meta">
+                                        <span class="video-date"><i class="bi bi-calendar me-1"></i>Junio 2023</span>
+                                        <span class="video-duration"><i class="bi bi-clock me-1"></i>12:20</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            
+                        <!-- Video 4 -->
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="video-card">
+                                <div class="video-thumbnail">
+                                    <div class="video-overlay">
+                                        <button class="play-btn" data-video="video4">
+                                            <i class="bi bi-play-fill"></i>
+                                        </button>
+                                </div>
+                                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Hermanamiento">
+                            </div>
+                                <div class="video-info">
+                                    <h4 class="video-title">Hermanamiento con Filá Templaria</h4>
+                                    <p class="video-description">Intercambio cultural con otra filá templaria de Valencia</p>
+                                    <div class="video-meta">
+                                        <span class="video-date"><i class="bi bi-calendar me-1"></i>Mayo 2023</span>
+                                        <span class="video-duration"><i class="bi bi-clock me-1"></i>22:15</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                        <!-- Video 5 -->
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="video-card">
+                                <div class="video-thumbnail">
+                                    <div class="video-overlay">
+                                        <button class="play-btn" data-video="video5">
+                                            <i class="bi bi-play-fill"></i>
+                                        </button>
+        </div>
+                                    <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Evento Cultural">
+    </div>
+                                <div class="video-info">
+                                    <h4 class="video-title">Conferencia Historia Templaria</h4>
+                                    <p class="video-description">Charla educativa sobre la historia de los caballeros templarios</p>
+                                    <div class="video-meta">
+                                        <span class="video-date"><i class="bi bi-calendar me-1"></i>Abril 2023</span>
+                                        <span class="video-duration"><i class="bi bi-clock me-1"></i>45:30</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                        <!-- Video 6 -->
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="video-card">
+                                <div class="video-thumbnail">
+                                    <div class="video-overlay">
+                                        <button class="play-btn" data-video="video6">
+                                            <i class="bi bi-play-fill"></i>
+                    </button>
+                </div>
+                                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Actividad Social">
+                                </div>
+                                <div class="video-info">
+                                    <h4 class="video-title">Comida de Hermandad</h4>
+                                    <p class="video-description">Momento de convivencia entre todos los miembros de la filá</p>
+                                    <div class="video-meta">
+                                        <span class="video-date"><i class="bi bi-calendar me-1"></i>Marzo 2023</span>
+                                        <span class="video-duration"><i class="bi bi-clock me-1"></i>18:45</span>
                                     </div>
                                 </div>
                             </div>
@@ -237,6 +401,26 @@ $carta_menu = [
         </div>
     </div>
 </section>
+
+<!-- Video Modal -->
+<div class="video-modal" id="videoModal">
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal-content">
+        <button class="modal-close" id="modalClose">
+            <i class="bi bi-x-lg"></i>
+                    </button>
+        <div class="video-container">
+            <video id="modalVideo" controls>
+                <source src="" type="video/mp4">
+                Tu navegador no soporta el elemento video.
+            </video>
+                </div>
+        <div class="video-details">
+            <h3 id="modalTitle"></h3>
+            <p id="modalDescription"></p>
+            </div>
+        </div>
+    </div>
 
 <style>
 /* Hero Section */
@@ -270,149 +454,195 @@ $carta_menu = [
 
 
 .menu-container {
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 20px;
-    padding: 2rem;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: transparent;
+    padding: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    border: none;
+}
+
+/* Carta Container - Estilo La Yedra */
+.carta-container {
+    background: #2c1810;
+    color: #f4e4c1;
+    border-radius: 15px;
+    padding: 3rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: 'Crimson Text', serif;
+}
+
+.carta-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 20%, rgba(244, 228, 193, 0.1) 1px, transparent 1px),
+        radial-gradient(circle at 80% 80%, rgba(244, 228, 193, 0.1) 1px, transparent 1px);
+    background-size: 30px 30px;
+    border-radius: 15px;
+    pointer-events: none;
+}
+
+/* Carta Header */
+.carta-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    position: relative;
+    z-index: 2;
+}
+
+.carta-title {
+    font-family: 'Cinzel', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #f4e4c1;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.carta-subtitle {
+    font-family: 'Crimson Text', serif;
+    font-size: 1.1rem;
+    color: #d4af37;
+    font-style: italic;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Carta Content */
+.carta-content {
+    position: relative;
+    z-index: 2;
+}
+
+.carta-section {
+    margin-bottom: 2.5rem;
+}
+
+.section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #d4af37;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #d4af37, transparent);
+}
+
+.menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.menu-item {
+    background: rgba(244, 228, 193, 0.05);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.menu-item:hover {
+    background: rgba(244, 228, 193, 0.1);
+    border-color: rgba(212, 175, 55, 0.4);
+    transform: translateX(5px);
+}
+
+.item-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #f4e4c1;
+    margin-bottom: 0.5rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.item-description {
+    font-family: 'Crimson Text', serif;
+    font-size: 0.9rem;
+    color: #d4af37;
+    line-height: 1.4;
+    font-style: italic;
+    opacity: 0.9;
+}
+
+/* Carta Footer */
+.carta-footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(212, 175, 55, 0.3);
+    position: relative;
+    z-index: 2;
+}
+
+.footer-text {
+    font-family: 'Cinzel', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #d4af37;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-style: italic;
+}
+
+.footer-subtitle {
+    font-family: 'Crimson Text', serif;
+    font-size: 1rem;
+    color: #f4e4c1;
+    opacity: 0.8;
+    font-style: italic;
 }
 
 .menu-nav {
     margin-bottom: 2rem;
 }
 
-.menu-tab-btn {
-    background: rgba(255, 255, 255, 0.8);
-    border: 2px solid var(--primary);
-    color: var(--primary);
-    font-weight: 600;
-    padding: 0.8rem 1.5rem;
-    margin: 0 0.5rem;
-    border-radius: 25px;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(5px);
-}
-
-.menu-tab-btn:hover,
-.menu-tab-btn.active {
-    background: var(--primary);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(220, 20, 60, 0.3);
-}
-
-.menu-category {
-    margin-bottom: 2rem;
-}
-
-.category-header {
-    text-align: center;
-    margin-bottom: 2rem;
-    position: relative;
-}
-
-.category-title {
-    font-family: 'Cinzel', serif;
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--primary);
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.category-decoration {
-    width: 100px;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, var(--primary), transparent);
-    margin: 0 auto;
-    border-radius: 2px;
-}
-
-.menu-items {
-    display: grid;
-    gap: 1.5rem;
-}
-
-.menu-item {
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(220, 20, 60, 0.1);
-    border-radius: 15px;
-    padding: 1.5rem;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(5px);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-}
-
-.menu-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(220, 20, 60, 0.15);
-    border-color: var(--primary);
-}
-
-.item-content {
-    flex: 1;
-    margin-right: 1rem;
-}
-
-.item-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
-}
-
-.item-name {
-    font-family: 'Cinzel', serif;
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: var(--primary);
-    margin: 0;
-}
-
-.item-price {
-    font-family: 'Cinzel', serif;
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--accent);
-    background: rgba(220, 20, 60, 0.1);
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    border: 1px solid var(--primary);
-}
-
-.item-description {
-    font-family: 'Crimson Text', serif;
-    font-size: 0.95rem;
-    color: #666;
-    line-height: 1.5;
-    margin: 0;
-    font-style: italic;
-}
-
-.item-actions {
-    flex-shrink: 0;
-}
-
-.add-to-cart {
-    background: rgba(220, 20, 60, 0.1);
-    border: 2px solid var(--primary);
-    color: var(--primary);
-    font-weight: 600;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    transition: all 0.3s ease;
-}
-
-.add-to-cart:hover {
-    background: var(--primary);
-    color: white;
-    transform: scale(1.05);
+/* Responsive Design for Carta */
+@media (max-width: 768px) {
+    .carta-container {
+        padding: 2rem 1.5rem;
+        margin: 0 1rem;
+    }
+    
+    .carta-title {
+        font-size: 2rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .item-name {
+        font-size: 1rem;
+    }
+    
+    .item-description {
+        font-size: 0.85rem;
+    }
+    
+    .footer-text {
+        font-size: 1.5rem;
+    }
 }
 
 .menu-footer {
@@ -479,12 +709,12 @@ $carta_menu = [
 /* Responsive Design */
 @media (max-width: 768px) {
     .menu-stats {
-        flex-direction: column;
+    flex-direction: column;
         gap: 1rem;
-    }
-    
+}
+
     .menu-container {
-        padding: 1rem;
+    padding: 1rem;
     }
     
     .menu-tab-btn {
@@ -504,8 +734,8 @@ $carta_menu = [
     }
     
     .item-header {
-        flex-direction: column;
-        gap: 0.5rem;
+    flex-direction: column;
+    gap: 0.5rem;
     }
     
     .category-title {
@@ -519,11 +749,11 @@ $carta_menu = [
     }
     
     .menu-item {
-        padding: 1rem;
+    padding: 1rem;
     }
     
     .item-name {
-        font-size: 1rem;
+    font-size: 1rem;
     }
     
     .item-price {
@@ -531,7 +761,7 @@ $carta_menu = [
     }
     
     .item-description {
-        font-size: 0.85rem;
+    font-size: 0.85rem;
     }
     
     .category-title {
@@ -544,34 +774,8 @@ $carta_menu = [
 document.addEventListener('DOMContentLoaded', function() {
     // ===== FUNCIONALIDAD DE LA CARTA DE MENÚ =====
     
-    // Función para inicializar las pestañas del menú
-    function initializeMenuTabs() {
-        const menuTabs = document.querySelectorAll('.menu-tab-btn');
-        
-        menuTabs.forEach(tab => {
-            tab.addEventListener('click', function() {
-                // Remover clase active de todas las pestañas
-                menuTabs.forEach(t => t.classList.remove('active'));
-                
-                // Añadir clase active a la pestaña clickeada
-                this.classList.add('active');
-                
-                // Obtener el target del tab
-                const targetId = this.getAttribute('data-bs-target');
-                const targetPane = document.querySelector(targetId);
-                
-                // Ocultar todos los paneles
-                document.querySelectorAll('.tab-pane').forEach(pane => {
-                    pane.classList.remove('show', 'active');
-                });
-                
-                // Mostrar el panel seleccionado
-                if (targetPane) {
-                    targetPane.classList.add('show', 'active');
-                }
-            });
-        });
-    }
+    // La carta ahora es estática, no necesita pestañas
+    console.log('Carta de servicios cargada');
     
     // Función para mostrar información (simulación)
     function showInfo(itemName, price) {
@@ -592,11 +796,11 @@ document.addEventListener('DOMContentLoaded', function() {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: var(--primary);
-            color: white;
+    background: var(--primary);
+    color: white;
             padding: 1rem 1.5rem;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(220, 20, 60, 0.3);
+    box-shadow: 0 5px 15px rgba(220, 20, 60, 0.3);
             z-index: 1000;
             animation: slideInRight 0.3s ease-out;
         `;
@@ -643,10 +847,168 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Inicializar las pestañas del menú
-    initializeMenuTabs();
+    // Carta estática - no necesita inicialización
     
-    console.log('Sistema de menú inicializado');
+    // ===== FUNCIONALIDAD DE VIDEOS =====
+    
+    // Datos de los videos (simulados)
+    const videosData = {
+        video1: {
+            title: 'Desfile de Moros y Cristianos 2023',
+            description: 'Participación completa de la Filá Mariscales en las fiestas patronales de Elche. Un espectáculo lleno de tradición, honor y hermandad.',
+            src: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4'
+        },
+        video2: {
+            title: 'Ensayo General 2023',
+            description: 'Preparación y ensayo previo a las fiestas principales. Los caballeros templarios perfeccionan cada movimiento y coreografía.',
+            src: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4'
+        },
+        video3: {
+            title: 'Ceremonia de Iniciación',
+            description: 'Ritual de bienvenida para nuevos caballeros templarios. Una ceremonia llena de simbolismo y tradición medieval.',
+            src: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_5mb.mp4'
+        },
+        video4: {
+            title: 'Hermanamiento con Filá Templaria',
+            description: 'Intercambio cultural con otra filá templaria de Valencia. Un momento de unión entre hermandades templarias.',
+            src: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4'
+        },
+        video5: {
+            title: 'Conferencia Historia Templaria',
+            description: 'Charla educativa sobre la historia de los caballeros templarios. Conocimiento y tradición se unen en esta conferencia.',
+            src: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4'
+        },
+        video6: {
+            title: 'Comida de Hermandad',
+            description: 'Momento de convivencia entre todos los miembros de la filá. La hermandad se fortalece en estos encuentros.',
+            src: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_5mb.mp4'
+        }
+    };
+    
+    // Elementos del modal de video
+    const videoModal = document.getElementById('videoModal');
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalClose = document.getElementById('modalClose');
+    const modalVideo = document.getElementById('modalVideo');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDescription = document.getElementById('modalDescription');
+    
+    // Función para abrir el modal de video
+    function openVideoModal(videoId) {
+        const videoData = videosData[videoId];
+        if (!videoData) return;
+        
+        // Actualizar contenido del modal
+        modalTitle.textContent = videoData.title;
+        modalDescription.textContent = videoData.description;
+        modalVideo.src = videoData.src;
+        
+        // Mostrar modal
+        videoModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        
+        // Reproducir video automáticamente
+        modalVideo.play().catch(e => {
+            console.log('Autoplay no permitido:', e);
+        });
+    }
+    
+    // Función para cerrar el modal de video
+    function closeVideoModal() {
+        videoModal.classList.remove('active');
+        document.body.style.overflow = '';
+        
+        // Pausar video
+        modalVideo.pause();
+        modalVideo.currentTime = 0;
+    }
+    
+    // Event listeners para los botones de play
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.play-btn')) {
+            const playBtn = e.target.closest('.play-btn');
+            const videoId = playBtn.getAttribute('data-video');
+            openVideoModal(videoId);
+        }
+    });
+    
+    // Event listeners para cerrar el modal
+    modalClose.addEventListener('click', closeVideoModal);
+    modalOverlay.addEventListener('click', closeVideoModal);
+    
+    // Cerrar modal con tecla Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && videoModal.classList.contains('active')) {
+            closeVideoModal();
+        }
+    });
+    
+    // Efectos de partículas adicionales
+    function createFloatingParticles() {
+        const particlesContainer = document.createElement('div');
+        particlesContainer.className = 'floating-particles';
+        particlesContainer.style.cssText = `
+            position: absolute;
+            top: 0;
+            left: 0;
+    width: 100%;
+    height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        `;
+        
+        // Crear partículas flotantes
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.style.cssText = `
+                position: absolute;
+                width: 4px;
+                height: 4px;
+                background: rgba(220, 20, 60, 0.3);
+                border-radius: 50%;
+                animation: floatParticle ${5 + Math.random() * 10}s ease-in-out infinite;
+                left: ${Math.random() * 100}%;
+                top: ${Math.random() * 100}%;
+                animation-delay: ${Math.random() * 5}s;
+            `;
+            particlesContainer.appendChild(particle);
+        }
+        
+        // Añadir estilos de animación
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes floatParticle {
+                0%, 100% { 
+                    transform: translateY(0px) translateX(0px) scale(1);
+                    opacity: 0.3;
+                }
+                25% { 
+                    transform: translateY(-20px) translateX(10px) scale(1.2);
+                    opacity: 0.6;
+                }
+                50% { 
+                    transform: translateY(-10px) translateX(-15px) scale(0.8);
+                    opacity: 0.4;
+                }
+                75% { 
+                    transform: translateY(-30px) translateX(5px) scale(1.1);
+                    opacity: 0.7;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Añadir al contenedor de videos
+        const videosSection = document.querySelector('.videos-section');
+        if (videosSection) {
+            videosSection.appendChild(particlesContainer);
+        }
+    }
+    
+    // Inicializar partículas flotantes
+    createFloatingParticles();
+    
+    console.log('Sistema de menú y videos inicializado');
 });
 </script>
 
@@ -687,5 +1049,365 @@ document.addEventListener('DOMContentLoaded', function() {
 /* Variables CSS para colores */
 :root {
     --success: #28a745;
+}
+
+/* Videos Section Styles */
+.videos-section {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(220, 20, 60, 0.05) 0%, rgba(255, 255, 255, 0.9) 50%, rgba(220, 20, 60, 0.05) 100%);
+}
+
+/* Particle Background */
+.videos-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 20%, rgba(220, 20, 60, 0.1) 2px, transparent 2px),
+        radial-gradient(circle at 80% 80%, rgba(220, 20, 60, 0.1) 2px, transparent 2px),
+        radial-gradient(circle at 40% 60%, rgba(220, 20, 60, 0.05) 1px, transparent 1px);
+    background-size: 100px 100px, 150px 150px, 200px 200px;
+    animation: particleFloat 20s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes particleFloat {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-10px) rotate(1deg); }
+    50% { transform: translateY(-5px) rotate(-1deg); }
+    75% { transform: translateY(-15px) rotate(0.5deg); }
+}
+
+.videos-header {
+    position: relative;
+    z-index: 2;
+}
+
+.videos-grid {
+    position: relative;
+    z-index: 2;
+}
+
+/* Video Cards */
+.video-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(220, 20, 60, 0.1);
+    animation: cardSlideIn 0.6s ease-out;
+    animation-fill-mode: both;
+}
+
+.video-card:nth-child(1) { animation-delay: 0.1s; }
+.video-card:nth-child(2) { animation-delay: 0.2s; }
+.video-card:nth-child(3) { animation-delay: 0.3s; }
+.video-card:nth-child(4) { animation-delay: 0.4s; }
+.video-card:nth-child(5) { animation-delay: 0.5s; }
+.video-card:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes cardSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.video-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(220, 20, 60, 0.2);
+    border-color: var(--primary);
+}
+
+/* Video Thumbnail */
+.video-thumbnail {
+    position: relative;
+    overflow: hidden;
+    height: 200px;
+    background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+}
+
+.video-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.video-card:hover .video-thumbnail img {
+    transform: scale(1.1);
+}
+
+/* Video Overlay */
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(220, 20, 60, 0.8) 0%, rgba(139, 0, 0, 0.8) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.video-card:hover .video-overlay {
+    opacity: 1;
+}
+
+/* Play Button */
+.play-btn {
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: var(--primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.play-btn:hover {
+    transform: scale(1.1);
+    background: white;
+    box-shadow: 0 8px 25px rgba(220, 20, 60, 0.3);
+}
+
+.play-btn i {
+    margin-left: 4px; /* Ajuste visual para centrar el icono */
+}
+
+/* Video Info */
+.video-info {
+    padding: 1.5rem;
+}
+
+.video-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.video-description {
+    font-family: 'Crimson Text', serif;
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+.video-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.video-date,
+.video-duration {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+/* Video Modal */
+.video-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.video-modal.active {
+    display: flex;
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    position: relative;
+    background: white;
+    border-radius: 20px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(0, 0, 0, 0.7);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+    background: rgba(220, 20, 60, 0.8);
+    transform: scale(1.1);
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    background: #000;
+}
+
+.video-container video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.video-details {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(248, 249, 250, 0.9) 0%, rgba(233, 236, 239, 0.9) 100%);
+}
+
+.video-details h3 {
+    font-family: 'Cinzel', serif;
+    color: var(--primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.video-details p {
+    font-family: 'Crimson Text', serif;
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Responsive Design for Videos */
+@media (max-width: 768px) {
+    .video-modal {
+        padding: 1rem;
+    }
+    
+    .modal-content {
+        max-height: 95vh;
+    }
+    
+    .video-container {
+        padding-bottom: 60%;
+    }
+    
+    .video-details {
+        padding: 1rem;
+    }
+    
+    .video-details h3 {
+        font-size: 1.2rem;
+    }
+    
+    .play-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+    
+    .video-thumbnail {
+        height: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    .video-card {
+        margin-bottom: 1rem;
+    }
+    
+    .video-info {
+        padding: 1rem;
+    }
+    
+    .video-title {
+        font-size: 1rem;
+    }
+    
+    .video-description {
+        font-size: 0.8rem;
+    }
+    
+    .video-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+    }
 }
 </style>
