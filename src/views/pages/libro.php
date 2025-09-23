@@ -1,6 +1,6 @@
 <?php
-require_once '../src/config/config.php';
-require_once '../src/helpers/FlipbookHelper.php';
+require_once __DIR__ . '/../../../src/config/config.php';
+require_once __DIR__ . '/../../../src/helpers/FlipbookHelper.php';
 
 // Inicializar el helper de flipbook
 $flipbookHelper = new FlipbookHelper();
