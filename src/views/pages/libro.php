@@ -152,75 +152,94 @@ $carta_menu = [
                     <p class="lead mb-4">Descubre todo lo que ofrece la Filá Mariscales de Caballeros Templarios</p>
                         </div>
 
-                <!-- Menu Content -->
-                <div class="menu-content" id="menuContent">
-                    <div class="menu-container">
-                        <!-- Carta de Servicios - Estilo La Yedra -->
-                        <div class="carta-container">
-                            <div class="carta-header">
-                                <h2 class="carta-title">Carta de Servicios</h2>
-                                <div class="carta-subtitle">Filá Mariscales de Caballeros Templarios</div>
+                <!-- Libro Interactivo -->
+                <div class="book-container" id="bookContainer">
+                    <!-- Portada del Libro -->
+                    <div class="book-cover" id="bookCover">
+                        <div class="cover-content">
+                            <h1 class="book-title">Filá Mariscales</h1>
+                            <h2 class="book-subtitle">Caballeros Templarios</h2>
+                            <div class="cover-decoration">
+                                <div class="templar-cross">⚔️</div>
                             </div>
-                            
-                            <div class="carta-content">
-                                <!-- Tradiciones -->
-                                <div class="carta-section">
-                                    <h3 class="section-title">Tradiciones</h3>
-                                    <div class="menu-items">
-                                        <?php foreach ($carta_menu['tradiciones']['platos'] as $plato): ?>
-                                        <div class="menu-item">
-                                            <div class="item-name"><?php echo $plato['nombre']; ?></div>
-                                            <div class="item-description"><?php echo $plato['descripcion']; ?></div>
-                                        </div>
-                                        <?php endforeach; ?>
+                            <p class="cover-description">Tradición, Honor y Hermandad</p>
                         </div>
+                        <div class="page-corner" id="pageCorner"></div>
                     </div>
                     
-                                <!-- Actividades -->
-                                <div class="carta-section">
-                                    <h3 class="section-title">Actividades</h3>
-                                    <div class="menu-items">
-                                        <?php foreach ($carta_menu['actividades']['platos'] as $plato): ?>
-                                        <div class="menu-item">
-                                            <div class="item-name"><?php echo $plato['nombre']; ?></div>
-                                            <div class="item-description"><?php echo $plato['descripcion']; ?></div>
+                    <!-- Páginas del Libro -->
+                    <div class="book-pages" id="bookPages">
+                        <!-- Página 1: Tradiciones -->
+                        <div class="book-page page-1" id="page1">
+                            <div class="page-content">
+                                <h2 class="page-title">Tradiciones</h2>
+                                <div class="page-items">
+                                    <?php foreach ($carta_menu['tradiciones']['platos'] as $plato): ?>
+                                    <div class="page-item">
+                                        <h3 class="item-title"><?php echo $plato['nombre']; ?></h3>
+                                        <p class="item-desc"><?php echo $plato['descripcion']; ?></p>
+                                    </div>
+                                    <?php endforeach; ?>
                                 </div>
-                                        <?php endforeach; ?>
-                                    </div>
-                                    </div>
-                                
-                                <!-- Servicios -->
-                                <div class="carta-section">
-                                    <h3 class="section-title">Servicios</h3>
-                                    <div class="menu-items">
-                                        <?php foreach ($carta_menu['servicios']['platos'] as $plato): ?>
-                                        <div class="menu-item">
-                                            <div class="item-name"><?php echo $plato['nombre']; ?></div>
-                                            <div class="item-description"><?php echo $plato['descripcion']; ?></div>
-                                    </div>
-                                        <?php endforeach; ?>
-                                    </div>
-                                    </div>
-                                
-                                <!-- Información -->
-                                <div class="carta-section">
-                                    <h3 class="section-title">Información</h3>
-                                    <div class="menu-items">
-                                        <?php foreach ($carta_menu['informacion']['platos'] as $plato): ?>
-                                        <div class="menu-item">
-                                            <div class="item-name"><?php echo $plato['nombre']; ?></div>
-                                            <div class="item-description"><?php echo $plato['descripcion']; ?></div>
-                                </div>
-                                        <?php endforeach; ?>
+                                <div class="page-corner next-page" data-page="2">→</div>
                             </div>
+                        </div>
+                        
+                        <!-- Página 2: Actividades -->
+                        <div class="book-page page-2" id="page2">
+                            <div class="page-content">
+                                <h2 class="page-title">Actividades</h2>
+                                <div class="page-items">
+                                    <?php foreach ($carta_menu['actividades']['platos'] as $plato): ?>
+                                    <div class="page-item">
+                                        <h3 class="item-title"><?php echo $plato['nombre']; ?></h3>
+                                        <p class="item-desc"><?php echo $plato['descripcion']; ?></p>
+                                    </div>
+                                    <?php endforeach; ?>
+                                </div>
+                                <div class="page-corner next-page" data-page="3">→</div>
+                                <div class="page-corner prev-page" data-page="1">←</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Página 3: Servicios -->
+                        <div class="book-page page-3" id="page3">
+                            <div class="page-content">
+                                <h2 class="page-title">Servicios</h2>
+                                <div class="page-items">
+                                    <?php foreach ($carta_menu['servicios']['platos'] as $plato): ?>
+                                    <div class="page-item">
+                                        <h3 class="item-title"><?php echo $plato['nombre']; ?></h3>
+                                        <p class="item-desc"><?php echo $plato['descripcion']; ?></p>
+                                    </div>
+                                    <?php endforeach; ?>
+                                </div>
+                                <div class="page-corner next-page" data-page="4">→</div>
+                                <div class="page-corner prev-page" data-page="2">←</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Página 4: Información -->
+                        <div class="book-page page-4" id="page4">
+                            <div class="page-content">
+                                <h2 class="page-title">Información</h2>
+                                <div class="page-items">
+                                    <?php foreach ($carta_menu['informacion']['platos'] as $plato): ?>
+                                    <div class="page-item">
+                                        <h3 class="item-title"><?php echo $plato['nombre']; ?></h3>
+                                        <p class="item-desc"><?php echo $plato['descripcion']; ?></p>
+                                    </div>
+                                    <?php endforeach; ?>
+                                </div>
+                                <div class="page-corner prev-page" data-page="3">←</div>
+                                <div class="book-footer">
+                                    <p class="footer-text">Muchas gracias</p>
+                                    <p class="footer-subtitle">Por su interés en la Filá Mariscales</p>
                                 </div>
                             </div>
-                            
-                            <div class="carta-footer">
-                                <div class="footer-text">Muchas gracias</div>
-                                <div class="footer-subtitle">Por su interés en la Filá Mariscales</div>
-                                    </div>
-                                    </div>
+                        </div>
+                    </div>
+                </div>
                     
                         <!-- Menu Footer -->
                         <div class="menu-footer mt-5">
@@ -461,156 +480,267 @@ $carta_menu = [
     border: none;
 }
 
-/* Carta Container - Estilo La Yedra */
-.carta-container {
-    background: #2c1810;
-    color: #f4e4c1;
-    border-radius: 15px;
-    padding: 3rem;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+/* Libro Interactivo */
+.book-container {
     position: relative;
+    width: 100%;
     max-width: 800px;
+    height: 600px;
     margin: 0 auto;
-    font-family: 'Crimson Text', serif;
+    perspective: 1000px;
+    transform-style: preserve-3d;
 }
 
-.carta-container::before {
-    content: '';
+/* Portada del Libro */
+.book-cover {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: 
-        radial-gradient(circle at 20% 20%, rgba(244, 228, 193, 0.1) 1px, transparent 1px),
-        radial-gradient(circle at 80% 80%, rgba(244, 228, 193, 0.1) 1px, transparent 1px);
-    background-size: 30px 30px;
-    border-radius: 15px;
-    pointer-events: none;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #8B4513 100%);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transform-origin: left center;
+    transition: transform 0.8s ease-in-out;
+    z-index: 10;
+    cursor: pointer;
+    border: 3px solid #654321;
 }
 
-/* Carta Header */
-.carta-header {
+.book-cover:hover {
+    transform: rotateY(-15deg);
+}
+
+.book-cover.open {
+    transform: rotateY(-180deg);
+}
+
+.cover-content {
+    padding: 3rem;
     text-align: center;
-    margin-bottom: 3rem;
-    position: relative;
-    z-index: 2;
-}
-
-.carta-title {
-    font-family: 'Cinzel', serif;
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #f4e4c1;
-    margin-bottom: 0.5rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.carta-subtitle {
-    font-family: 'Crimson Text', serif;
-    font-size: 1.1rem;
-    color: #d4af37;
-    font-style: italic;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-}
-
-/* Carta Content */
-.carta-content {
-    position: relative;
-    z-index: 2;
-}
-
-.carta-section {
-    margin-bottom: 2.5rem;
-}
-
-.section-title {
-    font-family: 'Cinzel', serif;
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: #d4af37;
-    margin-bottom: 1.5rem;
-    text-align: center;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-    position: relative;
-}
-
-.section-title::after {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #d4af37, transparent);
-}
-
-.menu-items {
+    height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-}
-
-.menu-item {
-    background: rgba(244, 228, 193, 0.05);
-    border: 1px solid rgba(212, 175, 55, 0.2);
-    border-radius: 8px;
-    padding: 1rem 1.5rem;
-    transition: all 0.3s ease;
+    justify-content: center;
+    align-items: center;
+    color: #f4e4c1;
     position: relative;
 }
 
-.menu-item:hover {
-    background: rgba(244, 228, 193, 0.1);
-    border-color: rgba(212, 175, 55, 0.4);
+.book-title {
+    font-family: 'Cinzel', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: #d4af37;
+    margin-bottom: 0.5rem;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+}
+
+.book-subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    color: #f4e4c1;
+    margin-bottom: 2rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.cover-decoration {
+    margin: 2rem 0;
+}
+
+.templar-cross {
+    font-size: 4rem;
+    color: #d4af37;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.cover-description {
+    font-family: 'Crimson Text', serif;
+    font-size: 1.2rem;
+    color: #d4af37;
+    font-style: italic;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* Esquina de la página */
+.page-corner {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(45deg, #f4e4c1 0%, #d4af37 100%);
+    border-radius: 0 0 0 100%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #8B4513;
+    font-weight: bold;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.page-corner:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* Páginas del Libro */
+.book-pages {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+}
+
+.book-page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #f4e4c1;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    transform-origin: left center;
+    transition: transform 0.8s ease-in-out;
+    display: none;
+    border: 2px solid #d4af37;
+}
+
+.book-page.active {
+    display: block;
+}
+
+.book-page.flip {
+    transform: rotateY(-180deg);
+}
+
+.page-content {
+    padding: 2rem;
+    height: 100%;
+    overflow-y: auto;
+    color: #8B4513;
+}
+
+.page-title {
+    font-family: 'Cinzel', serif;
+    font-size: 2.5rem;
+    color: #8B4513;
+    text-align: center;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #d4af37;
+    padding-bottom: 1rem;
+}
+
+.page-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.page-item {
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 8px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+}
+
+.page-item:hover {
+    background: rgba(212, 175, 55, 0.2);
     transform: translateX(5px);
 }
 
-.item-name {
+.item-title {
     font-family: 'Cinzel', serif;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #f4e4c1;
+    font-size: 1.3rem;
+    color: #8B4513;
     margin-bottom: 0.5rem;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    font-weight: 600;
 }
 
-.item-description {
+.item-desc {
     font-family: 'Crimson Text', serif;
-    font-size: 0.9rem;
-    color: #d4af37;
-    line-height: 1.4;
+    font-size: 1rem;
+    color: #654321;
+    line-height: 1.5;
+    margin: 0;
     font-style: italic;
-    opacity: 0.9;
 }
 
-/* Carta Footer */
-.carta-footer {
+/* Esquinas de navegación */
+.next-page {
+    bottom: 20px;
+    right: 20px;
+}
+
+.prev-page {
+    bottom: 20px;
+    left: 20px;
+    border-radius: 0 0 100% 0;
+}
+
+/* Footer del libro */
+.book-footer {
     text-align: center;
     margin-top: 3rem;
     padding-top: 2rem;
-    border-top: 1px solid rgba(212, 175, 55, 0.3);
-    position: relative;
-    z-index: 2;
+    border-top: 2px solid #d4af37;
 }
 
 .footer-text {
     font-family: 'Cinzel', serif;
     font-size: 2rem;
-    font-weight: 700;
-    color: #d4af37;
+    color: #8B4513;
     margin-bottom: 0.5rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     font-style: italic;
 }
 
 .footer-subtitle {
     font-family: 'Crimson Text', serif;
-    font-size: 1rem;
-    color: #f4e4c1;
-    opacity: 0.8;
+    font-size: 1.1rem;
+    color: #654321;
     font-style: italic;
+}
+
+/* Responsive Design para el Libro */
+@media (max-width: 768px) {
+    .book-container {
+        height: 500px;
+        max-width: 90%;
+    }
+    
+    .book-title {
+        font-size: 2rem;
+    }
+    
+    .book-subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .templar-cross {
+        font-size: 3rem;
+    }
+    
+    .page-title {
+        font-size: 2rem;
+    }
+    
+    .item-title {
+        font-size: 1.1rem;
+    }
+    
+    .page-corner {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
 }
 
 .menu-nav {
@@ -772,10 +902,128 @@ $carta_menu = [
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // ===== FUNCIONALIDAD DE LA CARTA DE MENÚ =====
+    // ===== FUNCIONALIDAD DEL LIBRO INTERACTIVO =====
     
-    // La carta ahora es estática, no necesita pestañas
-    console.log('Carta de servicios cargada');
+    // Variables del libro
+    let isBookOpen = false;
+    let currentPage = 1;
+    const totalPages = 4;
+    
+    // Elementos del DOM
+    const bookCover = document.getElementById('bookCover');
+    const bookPages = document.getElementById('bookPages');
+    const pageCorner = document.getElementById('pageCorner');
+    
+    // Función para abrir/cerrar el libro
+    function toggleBook() {
+        if (!isBookOpen) {
+            // Abrir el libro
+            bookCover.classList.add('open');
+            setTimeout(() => {
+                bookCover.style.display = 'none';
+                showPage(1);
+            }, 400);
+            isBookOpen = true;
+        } else {
+            // Cerrar el libro
+            bookCover.style.display = 'block';
+            bookCover.classList.remove('open');
+            hideAllPages();
+            isBookOpen = false;
+            currentPage = 1;
+        }
+    }
+    
+    // Función para mostrar una página específica
+    function showPage(pageNumber) {
+        hideAllPages();
+        const page = document.getElementById(`page${pageNumber}`);
+        if (page) {
+            page.classList.add('active');
+            currentPage = pageNumber;
+        }
+    }
+    
+    // Función para ocultar todas las páginas
+    function hideAllPages() {
+        for (let i = 1; i <= totalPages; i++) {
+            const page = document.getElementById(`page${i}`);
+            if (page) {
+                page.classList.remove('active');
+            }
+        }
+    }
+    
+    // Función para ir a la siguiente página
+    function nextPage() {
+        if (currentPage < totalPages) {
+            const currentPageElement = document.getElementById(`page${currentPage}`);
+            if (currentPageElement) {
+                currentPageElement.classList.add('flip');
+                setTimeout(() => {
+                    currentPageElement.classList.remove('active', 'flip');
+                    showPage(currentPage + 1);
+                }, 400);
+            }
+        }
+    }
+    
+    // Función para ir a la página anterior
+    function prevPage() {
+        if (currentPage > 1) {
+            const currentPageElement = document.getElementById(`page${currentPage}`);
+            if (currentPageElement) {
+                currentPageElement.classList.add('flip');
+                setTimeout(() => {
+                    currentPageElement.classList.remove('active', 'flip');
+                    showPage(currentPage - 1);
+                }, 400);
+            }
+        }
+    }
+    
+    // Event listeners
+    bookCover.addEventListener('click', toggleBook);
+    pageCorner.addEventListener('click', toggleBook);
+    
+    // Event listeners para las esquinas de navegación
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('next-page')) {
+            e.preventDefault();
+            nextPage();
+        } else if (e.target.classList.contains('prev-page')) {
+            e.preventDefault();
+            prevPage();
+        }
+    });
+    
+    // Efecto hover en la portada
+    bookCover.addEventListener('mouseenter', function() {
+        if (!isBookOpen) {
+            this.style.transform = 'rotateY(-15deg)';
+        }
+    });
+    
+    bookCover.addEventListener('mouseleave', function() {
+        if (!isBookOpen) {
+            this.style.transform = 'rotateY(0deg)';
+        }
+    });
+    
+    // Efecto hover en las esquinas de las páginas
+    document.addEventListener('mouseenter', function(e) {
+        if (e.target.classList.contains('page-corner')) {
+            e.target.style.transform = 'scale(1.1)';
+        }
+    }, true);
+    
+    document.addEventListener('mouseleave', function(e) {
+        if (e.target.classList.contains('page-corner')) {
+            e.target.style.transform = 'scale(1)';
+        }
+    }, true);
+    
+    console.log('Libro interactivo inicializado');
     
     // Función para mostrar información (simulación)
     function showInfo(itemName, price) {
