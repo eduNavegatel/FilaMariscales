@@ -380,94 +380,20 @@ $currentFlipbook = !empty($flipbooks) ? $flipbooks[0] : null;
 
     <!-- Flipbook Container -->
     <div class="flipbook-container">
-        <?php if ($currentFlipbook): ?>
-            <div class="flipbook" id="flipbook">
-                <!-- Las páginas se cargarán dinámicamente -->
-            </div>
-            
-            <!-- Navigation Controls -->
-            <div class="flipbook-controls">
-                <button class="btn btn-primary" id="prevBtn">
-                    <i class="bi bi-chevron-left me-2"></i>Anterior
-                </button>
-                <span class="mx-3" id="pageInfo">Página 1 de <?php echo $currentFlipbook['total_pages']; ?></span>
-                <button class="btn btn-primary" id="nextBtn">
-                    Siguiente<i class="bi bi-chevron-right ms-2"></i>
-                </button>
-            </div>
-        <?php else: ?>
-            <div class="loading">
-                <div class="spinner"></div>
-                Cargando flipbook...
-            </div>
-        <?php endif; ?>
+        <!-- Flipbook de Heyzine embebido -->
+        <div class="heyzine-flipbook">
+            <iframe 
+                allowfullscreen="allowfullscreen" 
+                allow="clipboard-write" 
+                scrolling="no" 
+                class="fp-iframe" 
+                src="https://heyzine.com/flip-book/7bec4c3ff6.html" 
+                style="border: 1px solid lightgray; width: 100%; height: 700px; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+            </iframe>
+        </div>
     </div>
-
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/flipbook/turn.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            <?php if ($currentFlipbook): ?>
-                // Cargar páginas del flipbook
-                loadFlipbookPages();
-                
-                // Inicializar turn.js
-                const flipbook = turn({
-                    container: '#flipbook',
-                    pages: <?php echo $currentFlipbook['total_pages']; ?>,
-                    pageWidth: 500,
-                    pageHeight: 600,
-                    autoCenter: true,
-                    gradients: true,
-                    acceleration: true,
-                    elevation: 50,
-                    when: {
-                        turning: function(event, page, view) {
-                            updatePageInfo(page);
-                        },
-                        turned: function(event, page, view) {
-                            updatePageInfo(page);
-                        }
-                    }
-                });
-                
-                // Event listeners para controles
-                document.getElementById('prevBtn').addEventListener('click', function() {
-                    flipbook.turn('previous');
-                });
-                
-                document.getElementById('nextBtn').addEventListener('click', function() {
-                    flipbook.turn('next');
-                });
-                
-                // Función para cargar páginas
-                function loadFlipbookPages() {
-                    const flipbookElement = document.getElementById('flipbook');
-                    
-                    // Cargar páginas desde el servidor
-                    for (let i = 1; i <= <?php echo $currentFlipbook['total_pages']; ?>; i++) {
-                        fetch(`/prueba-php/public/serve-flipbook-page.php?flipbook=<?php echo $currentFlipbook['name']; ?>&page=${i}`)
-                            .then(response => response.text())
-                            .then(html => {
-                                const pageElement = document.createElement('div');
-                                pageElement.className = 'page';
-                                pageElement.innerHTML = html;
-                                flipbookElement.appendChild(pageElement);
-                            })
-                            .catch(error => {
-                                console.error('Error loading page:', error);
-                            });
-                    }
-                }
-                
-                // Función para actualizar información de página
-                function updatePageInfo(page) {
-                    const pageInfo = document.getElementById('pageInfo');
-                    pageInfo.textContent = `Página ${page} de <?php echo $currentFlipbook['total_pages']; ?>`;
-                }
-            <?php endif; ?>
-        });
-    </script>
 </body>
 </html>
+
