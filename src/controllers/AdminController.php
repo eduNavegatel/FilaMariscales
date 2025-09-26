@@ -97,6 +97,7 @@ class AdminController extends Controller {
         $galleryCount = 0;
         $newsCount = 0;
         $messagesCount = 0;
+        $documentCount = 0;
         $recentUsers = [];
         $recentEvents = [];
         
@@ -137,6 +138,17 @@ class AdminController extends Controller {
         if (is_dir($uploadDir)) {
             $files = glob($uploadDir . '*');
             $galleryCount = count($files);
+        }
+        
+        // Obtener estadísticas de documentos
+        try {
+            if (class_exists('Document')) {
+                $documentModel = new Document();
+                $documentModel->createTable(); // Crear tabla si no existe
+                $documentCount = $documentModel->countDocuments();
+            }
+        } catch (Exception $e) {
+            $documentCount = 0;
         }
         
         // Obtener estadísticas de noticias
@@ -199,6 +211,7 @@ class AdminController extends Controller {
             'galleryCount' => $galleryCount,
             'newsCount' => $newsCount,
             'messagesCount' => $messagesCount,
+            'documentCount' => $documentCount,
             'recentUsers' => $recentUsers,
             'recentEvents' => $recentEvents,
             'visitStats' => $visitStats,
@@ -2420,6 +2433,258 @@ class AdminController extends Controller {
             error_log("Excepción al enviar correo de bienvenida: " . $e->getMessage());
             return false;
         }
+    }
+    
+    // ==================== GESTIÓN DE DOCUMENTOS ====================
+    
+    /**
+     * Página de gestión de documentos
+     */
+    public function documentos() {
+        try {
+            // Cargar modelo de documentos
+            if (class_exists('Document')) {
+                $documentModel = new Document();
+                $documentModel->createTable(); // Crear tabla si no existe
+                
+                $page = $_GET['page'] ?? 1;
+                $perPage = 12;
+                
+                $documents = $documentModel->getAllDocuments($page, $perPage);
+                $totalDocuments = $documentModel->countDocuments();
+                $totalPages = ceil($totalDocuments / $perPage);
+                
+                $data = [
+                    'title' => 'Gestión de Documentos',
+                    'documents' => $documents,
+                    'currentPage' => $page,
+                    'totalPages' => $totalPages,
+                    'totalDocuments' => $totalDocuments,
+                    'categories' => $documentModel->getCategories()
+                ];
+            } else {
+                $data = [
+                    'title' => 'Gestión de Documentos',
+                    'documents' => [],
+                    'currentPage' => 1,
+                    'totalPages' => 0,
+                    'totalDocuments' => 0,
+                    'categories' => []
+                ];
+            }
+            
+            $this->loadViewDirectly('admin/documentos/index', $data);
+        } catch (Exception $e) {
+            error_log("Error en documentos: " . $e->getMessage());
+            $this->loadViewDirectly('admin/documentos/index', [
+                'title' => 'Gestión de Documentos',
+                'documents' => [],
+                'error' => 'Error al cargar los documentos'
+            ]);
+        }
+    }
+    
+    /**
+     * Subir nuevo documento
+     */
+    public function subirDocumento() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->redirect('/admin/documentos');
+            return;
+        }
+        
+        try {
+            // Validar archivo
+            if (!isset($_FILES['documentFile']) || $_FILES['documentFile']['error'] !== UPLOAD_ERR_OK) {
+                $_SESSION['error'] = 'Error al subir el archivo';
+                $this->redirect('/admin/documentos');
+                return;
+            }
+            
+            $file = $_FILES['documentFile'];
+            $maxSize = 20 * 1024 * 1024; // 20MB
+            
+            // Validar tamaño
+            if ($file['size'] > $maxSize) {
+                $_SESSION['error'] = 'El archivo es demasiado grande. Máximo 20MB';
+                $this->redirect('/admin/documentos');
+                return;
+            }
+            
+            // Cargar modelo de documentos
+            if (!class_exists('Document')) {
+                $_SESSION['error'] = 'Modelo de documentos no disponible';
+                $this->redirect('/admin/documentos');
+                return;
+            }
+            
+            $documentModel = new Document();
+            
+            // Validar tipo de archivo
+            if (!$documentModel->validateFileType($file['type'])) {
+                $_SESSION['error'] = 'Tipo de archivo no permitido';
+                $this->redirect('/admin/documentos');
+                return;
+            }
+            
+            // Crear directorio de uploads si no existe
+            $uploadDir = 'uploads/documents/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+            
+            // Generar nombre único para el archivo
+            $extension = $documentModel->getFileExtension($file['type']);
+            $fileName = uniqid() . '_' . time() . '.' . $extension;
+            $filePath = $uploadDir . $fileName;
+            
+            // Mover archivo
+            if (!move_uploaded_file($file['tmp_name'], $filePath)) {
+                $_SESSION['error'] = 'Error al guardar el archivo';
+                $this->redirect('/admin/documentos');
+                return;
+            }
+            
+            // Guardar en base de datos
+            $documentData = [
+                'titulo' => $_POST['documentTitle'],
+                'descripcion' => $_POST['documentDescription'] ?? '',
+                'categoria' => $_POST['documentCategory'],
+                'archivo_nombre' => $file['name'],
+                'archivo_ruta' => $filePath,
+                'archivo_tipo' => $file['type'],
+                'archivo_tamaño' => $file['size'],
+                'usuario_id' => $_SESSION['admin_id'] ?? 1
+            ];
+            
+            if ($documentModel->createDocument($documentData)) {
+                $_SESSION['success'] = 'Documento subido exitosamente';
+            } else {
+                $_SESSION['error'] = 'Error al guardar el documento en la base de datos';
+                // Eliminar archivo si falló la BD
+                unlink($filePath);
+            }
+            
+        } catch (Exception $e) {
+            error_log("Error al subir documento: " . $e->getMessage());
+            $_SESSION['error'] = 'Error interno del servidor';
+        }
+        
+        $this->redirect('/admin/documentos');
+    }
+    
+    /**
+     * Editar documento
+     */
+    public function editarDocumento($id) {
+        try {
+            if (!class_exists('Document')) {
+                $this->redirect('/admin/documentos');
+                return;
+            }
+            
+            $documentModel = new Document();
+            $document = $documentModel->getDocumentById($id);
+            
+            if (!$document) {
+                $_SESSION['error'] = 'Documento no encontrado';
+                $this->redirect('/admin/documentos');
+                return;
+            }
+            
+            $data = [
+                'title' => 'Editar Documento',
+                'document' => $document,
+                'categories' => $documentModel->getCategories()
+            ];
+            
+            $this->loadViewDirectly('admin/documentos/editar', $data);
+        } catch (Exception $e) {
+            error_log("Error al editar documento: " . $e->getMessage());
+            $_SESSION['error'] = 'Error al cargar el documento';
+            $this->redirect('/admin/documentos');
+        }
+    }
+    
+    /**
+     * Actualizar documento
+     */
+    public function actualizarDocumento($id) {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->redirect('/admin/documentos');
+            return;
+        }
+        
+        try {
+            if (!class_exists('Document')) {
+                $_SESSION['error'] = 'Modelo de documentos no disponible';
+                $this->redirect('/admin/documentos');
+                return;
+            }
+            
+            $documentModel = new Document();
+            
+            $data = [
+                'titulo' => $_POST['documentTitle'],
+                'descripcion' => $_POST['documentDescription'] ?? '',
+                'categoria' => $_POST['documentCategory']
+            ];
+            
+            if ($documentModel->updateDocument($id, $data)) {
+                $_SESSION['success'] = 'Documento actualizado exitosamente';
+            } else {
+                $_SESSION['error'] = 'Error al actualizar el documento';
+            }
+            
+        } catch (Exception $e) {
+            error_log("Error al actualizar documento: " . $e->getMessage());
+            $_SESSION['error'] = 'Error interno del servidor';
+        }
+        
+        $this->redirect('/admin/documentos');
+    }
+    
+    /**
+     * Eliminar documento
+     */
+    public function eliminarDocumento($id) {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $this->redirect('/admin/documentos');
+            return;
+        }
+        
+        try {
+            if (!class_exists('Document')) {
+                $_SESSION['error'] = 'Modelo de documentos no disponible';
+                $this->redirect('/admin/documentos');
+                return;
+            }
+            
+            $documentModel = new Document();
+            $document = $documentModel->getDocumentById($id);
+            
+            if ($document) {
+                // Eliminar archivo físico
+                if (file_exists($document->archivo_ruta)) {
+                    unlink($document->archivo_ruta);
+                }
+                
+                // Eliminar de base de datos
+                if ($documentModel->deleteDocument($id)) {
+                    $_SESSION['success'] = 'Documento eliminado exitosamente';
+                } else {
+                    $_SESSION['error'] = 'Error al eliminar el documento';
+                }
+            } else {
+                $_SESSION['error'] = 'Documento no encontrado';
+            }
+            
+        } catch (Exception $e) {
+            error_log("Error al eliminar documento: " . $e->getMessage());
+            $_SESSION['error'] = 'Error interno del servidor';
+        }
+        
+        $this->redirect('/admin/documentos');
     }
 }
 

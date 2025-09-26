@@ -23,6 +23,8 @@ $router->get('tienda', 'Pages@tienda');
 $router->get('patrocinadores', 'Pages@patrocinadores');
 $router->get('hermanamientos', 'Pages@hermanamientos');
 $router->get('socios', 'Pages@socios');
+$router->get('eventos', 'Pages@eventos');
+$router->get('descargar/{id}', 'Pages@descargarDocumento');
 $router->get('login', 'Pages@login');
 $router->post('login', 'Pages@login');
 $router->get('logout', 'Pages@logout');
@@ -122,6 +124,13 @@ $router->group('admin', function($router) {
     $router->get('eliminarCarousel/{fileName}', 'Admin\AdminController@eliminarCarousel');
     $router->post('actualizarDescripcionGaleria', 'Admin\AdminController@actualizarDescripcionGaleria');
     $router->post('actualizarDescripcionCarousel', 'Admin\AdminController@actualizarDescripcionCarousel');
+    
+    // Documents management
+    $router->get('documentos', 'Admin\AdminController@documentos');
+    $router->post('documentos/subir', 'Admin\AdminController@subirDocumento');
+    $router->get('documentos/{id}/editar', 'Admin\AdminController@editarDocumento');
+    $router->post('documentos/{id}/actualizar', 'Admin\AdminController@actualizarDocumento');
+    $router->post('documentos/{id}/eliminar', 'Admin\AdminController@eliminarDocumento');
     
     // Store management
     $router->get('productos', 'Admin\AdminController@productos');

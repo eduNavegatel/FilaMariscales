@@ -131,7 +131,7 @@
         </div>
         
         <div class="text-center mt-6" data-aos="fade-up" data-aos-delay="100">
-            <a href="/prueba-php/public/calendario" class="btn btn-primary btn-lg px-5 py-3 hover-lift">
+            <a href="/prueba-php/public/eventos" class="btn btn-primary btn-lg px-5 py-3 hover-lift">
                 <span class="d-flex align-items-center">
                     <span>Ver todos los eventos</span>
                     <i class="bi bi-arrow-right ms-2"></i>

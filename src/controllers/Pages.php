@@ -76,11 +76,77 @@ class Pages extends Controller {
 
     // Página de descargas
     public function descargas() {
+        // Cargar documentos dinámicamente
+        $documents = [];
+        $categories = [];
+        
+        try {
+            if (class_exists('Document')) {
+                $documentModel = new Document();
+                $documentModel->createTable(); // Crear tabla si no existe
+                
+                $page = $_GET['page'] ?? 1;
+                $perPage = 12;
+                $category = $_GET['category'] ?? null;
+                $search = $_GET['search'] ?? null;
+                
+                if ($search) {
+                    $documents = $documentModel->searchDocuments($search, $page, $perPage);
+                } elseif ($category) {
+                    $documents = $documentModel->getDocumentsByCategory($category, $page, $perPage);
+                } else {
+                    $documents = $documentModel->getAllDocuments($page, $perPage);
+                }
+                
+                $categories = $documentModel->getCategories();
+            }
+        } catch (Exception $e) {
+            error_log("Error al cargar documentos: " . $e->getMessage());
+        }
+        
         $data = [
             'title' => 'Descargas',
-            'description' => 'Documentos y archivos para descargar'
+            'description' => 'Documentos y archivos para descargar',
+            'documents' => $documents,
+            'categories' => $categories
         ];
         $this->view('pages/descargas', $data);
+    }
+
+    // Descargar documento
+    public function descargarDocumento($id) {
+        try {
+            if (!class_exists('Document')) {
+                $this->redirect('/descargas');
+                return;
+            }
+            
+            $documentModel = new Document();
+            $document = $documentModel->getDocumentById($id);
+            
+            if (!$document || !file_exists($document->archivo_ruta)) {
+                $this->redirect('/descargas');
+                return;
+            }
+            
+            // Incrementar contador de descargas
+            $documentModel->incrementDownloads($id);
+            
+            // Configurar headers para descarga
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="' . $document->archivo_nombre . '"');
+            header('Content-Length: ' . filesize($document->archivo_ruta));
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            
+            // Leer y enviar el archivo
+            readfile($document->archivo_ruta);
+            exit;
+            
+        } catch (Exception $e) {
+            error_log("Error al descargar documento: " . $e->getMessage());
+            $this->redirect('/descargas');
+        }
     }
 
     // Página de directiva
@@ -112,6 +178,19 @@ class Pages extends Controller {
             'description' => 'Nuestras relaciones con otras filás y entidades'
         ];
         $this->view('pages/hermanamientos', $data);
+    }
+
+    // Página de eventos
+    public function eventos() {
+        // Cargar eventos dinámicamente
+        $events = $this->getAllEvents();
+        
+        $data = [
+            'title' => 'Eventos',
+            'description' => 'Todos los eventos y actividades de la Filá Mariscales',
+            'events' => $events
+        ];
+        $this->view('pages/eventos', $data);
     }
 
     // Página del libro de la filá

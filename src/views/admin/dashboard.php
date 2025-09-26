@@ -69,6 +69,7 @@
                 <a class="nav-link" href="/prueba-php/public/admin/usuarios">Usuarios</a>
                 <a class="nav-link" href="/prueba-php/public/admin/eventos">Eventos</a>
                 <a class="nav-link" href="/prueba-php/public/admin/galeria">Galería</a>
+                <a class="nav-link" href="/prueba-php/public/admin/documentos">Documentos</a>
                 <a class="nav-link" href="/prueba-php/public/admin/visitas">Analíticas</a>
                 <a class="nav-link" href="/prueba-php/public/admin/logout">Cerrar Sesión</a>
             </div>
@@ -143,6 +144,23 @@
         </div>
     </div>
     <div class="col-md-3 mb-3">
+        <div class="card text-white bg-secondary h-100">
+            <div class="card-body d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h5 class="card-title mb-1">Documentos</h5>
+                        <h2 class="mb-0"><?= isset($documentCount) ? $documentCount : 0 ?></h2>
+                        <small class="opacity-75">Archivos para descarga</small>
+                    </div>
+                    <i class="fas fa-file-alt fa-2x opacity-50"></i>
+                </div>
+                <a href="<?= URL_ROOT ?>/admin/documentos" class="btn btn-light btn-sm mt-auto">
+                    <i class="fas fa-file-alt me-1"></i>Gestionar documentos
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
         <div class="card text-white bg-warning h-100">
             <div class="card-body d-flex flex-column">
                 <div class="d-flex justify-content-between align-items-start mb-3">
@@ -157,6 +175,7 @@
                     <a href="/prueba-php/public/admin/crearUsuario" class="text-white d-block small">Nuevo usuario</a>
                     <a href="/prueba-php/public/admin/nuevoEvento" class="text-white d-block small">Nuevo evento</a>
                     <a href="/prueba-php/public/admin/galeria" class="text-white d-block small">Subir archivos</a>
+                    <a href="/prueba-php/public/admin/documentos" class="text-white d-block small">Gestionar documentos</a>
                     <a href="/prueba-php/public/admin/noticias/nueva" class="text-white d-block small">Nueva noticia</a>
                 </div>
             </div>
