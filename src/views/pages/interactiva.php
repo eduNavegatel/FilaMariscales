@@ -124,48 +124,325 @@
     </div>
 </section>
 
-<!-- Sección de Timeline Interactivo -->
-<section class="timeline-section py-5 bg-light">
+<!-- Sección de Actividades Divertidas -->
+<section class="fun-activities-section py-5 bg-light">
     <div class="container">
         <div class="row">
             <div class="col-12 text-center mb-5 scroll-reveal">
                 <h2 class="display-5 fw-bold text-gradient animate-fadeInUp">
-                    <i class="bi bi-clock-history me-3 animate-pulse"></i>
-                    Nuestra Historia
+                    <i class="bi bi-emoji-smile me-3 animate-bounce"></i>
+                    ¡Diviértete con Nosotros!
                 </h2>
+                <p class="lead">Descubre actividades interactivas y juegos relacionados con la Filá Mariscales</p>
             </div>
         </div>
         
-        <div class="timeline">
-            <div class="timeline-item scroll-reveal">
-                <div class="timeline-marker animate-glow"></div>
-                <div class="timeline-content card-animated">
-                    <h5>1975 - Fundación</h5>
-                    <p>Se funda la Filá Mariscales de Caballeros Templarios en Elche.</p>
+        <div class="row g-4">
+            <!-- Generador de Nombres Templarios -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-person-badge display-4 text-danger"></i>
+                        </div>
+                        <h5 class="card-title">Generador de Nombres Templarios</h5>
+                        <p class="card-text">¡Genera tu nombre de caballero templario personalizado!</p>
+                        <button class="btn btn-outline-danger" onclick="generateTemplarName()">
+                            <i class="bi bi-shuffle me-2"></i>Generar Nombre
+                        </button>
+                        <div id="templarName" class="mt-3 p-3 bg-light rounded" style="display: none;">
+                            <h6 class="text-danger mb-0"></h6>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <div class="timeline-item scroll-reveal">
-                <div class="timeline-marker animate-glow"></div>
-                <div class="timeline-content card-animated">
-                    <h5>1980 - Primer Desfile</h5>
-                    <p>Participamos por primera vez en las Fiestas de Moros y Cristianos.</p>
+            <!-- Constructor de Castillos -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-building display-4 text-warning"></i>
+                        </div>
+                        <h5 class="card-title">Constructor de Castillos</h5>
+                        <p class="card-text">Construye tu propio castillo templario</p>
+                        <button class="btn btn-outline-warning" onclick="startCastleBuilder()">
+                            <i class="bi bi-hammer me-2"></i>Construir
+                        </button>
+                        <div id="castleContainer" class="mt-3" style="display: none;">
+                            <div class="castle-preview mb-3">
+                                <div id="castlePreview" class="mx-auto" style="width: 200px; height: 150px; background: linear-gradient(45deg, #8B4513, #A0522D); border-radius: 10px; position: relative; border: 3px solid #654321;">
+                                    <div class="castle-tower" style="position: absolute; top: -20px; left: 20px; width: 30px; height: 40px; background: #8B4513; border-radius: 5px;"></div>
+                                    <div class="castle-tower" style="position: absolute; top: -20px; right: 20px; width: 30px; height: 40px; background: #8B4513; border-radius: 5px;"></div>
+                                    <div class="castle-flag" style="position: absolute; top: -25px; left: 50%; transform: translateX(-50%); width: 20px; height: 15px; background: #dc143c; border-radius: 2px;"></div>
+                                </div>
+                            </div>
+                            <div class="castle-controls">
+                                <div class="mb-2">
+                                    <label class="form-label small">Color del Castillo:</label>
+                                    <input type="color" id="castleColor" class="form-control form-control-color" value="#8B4513" onchange="updateCastle()">
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label small">Tipo de Bandera:</label>
+                                    <select id="flagType" class="form-select form-select-sm" onchange="updateCastle()">
+                                        <option value="🏰">Castillo</option>
+                                        <option value="⚔️">Espada</option>
+                                        <option value="🛡️">Escudo</option>
+                                        <option value="⚜️">Flor de Lis</option>
+                                        <option value="👑">Corona</option>
+                                    </select>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label small">Tamaño:</label>
+                                    <input type="range" id="castleSize" class="form-range" min="150" max="250" value="200" onchange="updateCastle()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <div class="timeline-item scroll-reveal">
-                <div class="timeline-marker animate-glow"></div>
-                <div class="timeline-content card-animated">
-                    <h5>1995 - Expansión</h5>
-                    <p>Ampliamos nuestras actividades y creamos nuevas secciones.</p>
+            <!-- Simulador de Batalla -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-shield-check display-4 text-success"></i>
+                        </div>
+                        <h5 class="card-title">Simulador de Batalla</h5>
+                        <p class="card-text">¡Lucha como un verdadero caballero templario!</p>
+                        <button class="btn btn-outline-success" onclick="startBattle()">
+                            <i class="bi bi-sword me-2"></i>Iniciar Batalla
+                        </button>
+                        <div id="battleContainer" class="mt-3" style="display: none;">
+                            <div class="battle-arena p-3 bg-dark text-white rounded mb-3">
+                                <div class="row">
+                                    <div class="col-6 text-center">
+                                        <h6 class="text-danger">Templario</h6>
+                                        <div class="progress mb-2">
+                                            <div id="templarHealth" class="progress-bar bg-danger" style="width: 100%"></div>
+                                        </div>
+                                        <small>Vida: <span id="templarHealthText">100</span></small>
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <h6 class="text-warning">Enemigo</h6>
+                                        <div class="progress mb-2">
+                                            <div id="enemyHealth" class="progress-bar bg-warning" style="width: 100%"></div>
+                                        </div>
+                                        <small>Vida: <span id="enemyHealthText">100</span></small>
+                                    </div>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <button class="btn btn-danger btn-sm" onclick="attack()">
+                                        <i class="bi bi-lightning me-1"></i>Atacar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <div class="timeline-item scroll-reveal">
-                <div class="timeline-marker animate-glow"></div>
-                <div class="timeline-content card-animated">
-                    <h5>2020 - Modernización</h5>
-                    <p>Incorporamos nuevas tecnologías y mejoramos nuestra presencia digital.</p>
+            <!-- Simulador de Torneo -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-trophy display-4 text-info"></i>
+                        </div>
+                        <h5 class="card-title">Simulador de Torneo</h5>
+                        <p class="card-text">Participa en un torneo de caballería</p>
+                        <button class="btn btn-outline-info" onclick="startTournament()">
+                            <i class="bi bi-sword me-2"></i>Iniciar Torneo
+                        </button>
+                        <div id="tournamentContainer" class="mt-3" style="display: none;">
+                            <div class="tournament-bracket p-3 bg-light rounded mb-3">
+                                <h6 class="text-center mb-3">Torneo de Caballería</h6>
+                                <div class="tournament-rounds">
+                                    <div class="round mb-3">
+                                        <h6 class="small">Ronda 1</h6>
+                                        <div class="match mb-2">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span id="player1">Tú</span>
+                                                <span class="badge bg-primary" id="score1">0</span>
+                                                <span class="text-muted">vs</span>
+                                                <span class="badge bg-primary" id="score2">0</span>
+                                                <span id="opponent1">Sir Lancelot</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="round mb-3">
+                                        <h6 class="small">Final</h6>
+                                        <div class="match mb-2">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span id="finalPlayer">Ganador Ronda 1</span>
+                                                <span class="badge bg-warning" id="finalScore1">0</span>
+                                                <span class="text-muted">vs</span>
+                                                <span class="badge bg-warning" id="finalScore2">0</span>
+                                                <span id="finalOpponent">Sir Galahad</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button class="btn btn-success btn-sm" onclick="playMatch()" id="playBtn">
+                                        <i class="bi bi-play me-1"></i>Jugar Partida
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="tournament-results" style="display: none;">
+                                <div class="alert alert-success text-center">
+                                    <h6 id="tournamentResult"></h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Creador de Escudos -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-palette display-4 text-purple"></i>
+                        </div>
+                        <h5 class="card-title">Creador de Escudos</h5>
+                        <p class="card-text">Diseña tu propio escudo templario</p>
+                        <button class="btn btn-outline-secondary" onclick="startShieldCreator()">
+                            <i class="bi bi-paint-bucket me-2"></i>Crear Escudo
+                        </button>
+                        <div id="shieldContainer" class="mt-3" style="display: none;">
+                            <div class="shield-preview mb-3">
+                                <div id="shieldPreview" class="mx-auto" style="width: 100px; height: 120px; border: 3px solid #8B4513; background: linear-gradient(45deg, #dc143c, #8b0000); border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; position: relative;">
+                                    <div class="shield-symbol" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 2rem;">⚔️</div>
+                                </div>
+                            </div>
+                            <div class="shield-controls">
+                                <div class="mb-2">
+                                    <label class="form-label small">Color Principal:</label>
+                                    <input type="color" id="primaryColor" class="form-control form-control-color" value="#dc143c" onchange="updateShield()">
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label small">Símbolo:</label>
+                                    <select id="shieldSymbol" class="form-select form-select-sm" onchange="updateShield()">
+                                        <option value="⚔️">Espada</option>
+                                        <option value="🛡️">Escudo</option>
+                                        <option value="⚜️">Flor de Lis</option>
+                                        <option value="✠">Cruz</option>
+                                        <option value="👑">Corona</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Creador de Armaduras -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-shield-fill display-4 text-primary"></i>
+                        </div>
+                        <h5 class="card-title">Creador de Armaduras</h5>
+                        <p class="card-text">Diseña tu armadura de caballero</p>
+                        <button class="btn btn-outline-primary" onclick="startArmorCreator()">
+                            <i class="bi bi-gear me-2"></i>Crear Armadura
+                        </button>
+                        <div id="armorContainer" class="mt-3" style="display: none;">
+                            <div class="armor-preview mb-3">
+                                <div id="armorPreview" class="mx-auto" style="width: 120px; height: 160px; background: linear-gradient(45deg, #C0C0C0, #A8A8A8); border-radius: 10px; position: relative; border: 3px solid #808080;">
+                                    <div class="armor-helmet" style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 60px; height: 40px; background: #C0C0C0; border-radius: 50% 50% 0 0;"></div>
+                                    <div class="armor-body" style="position: absolute; top: 35px; left: 50%; transform: translateX(-50%); width: 80px; height: 80px; background: #C0C0C0; border-radius: 5px;"></div>
+                                    <div class="armor-symbol" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #dc143c; font-size: 1.5rem;">⚔️</div>
+                                </div>
+                            </div>
+                            <div class="armor-controls">
+                                <div class="mb-2">
+                                    <label class="form-label small">Material:</label>
+                                    <select id="armorMaterial" class="form-select form-select-sm" onchange="updateArmor()">
+                                        <option value="#C0C0C0">Acero</option>
+                                        <option value="#FFD700">Oro</option>
+                                        <option value="#8B4513">Bronce</option>
+                                        <option value="#2F4F4F">Hierro</option>
+                                        <option value="#B87333">Cobre</option>
+                                    </select>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label small">Símbolo:</label>
+                                    <select id="armorSymbol" class="form-select form-select-sm" onchange="updateArmor()">
+                                        <option value="⚔️">Espada</option>
+                                        <option value="🛡️">Escudo</option>
+                                        <option value="⚜️">Flor de Lis</option>
+                                        <option value="✠">Cruz</option>
+                                        <option value="👑">Corona</option>
+                                        <option value="🏰">Castillo</option>
+                                    </select>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label small">Nivel de Protección:</label>
+                                    <input type="range" id="armorLevel" class="form-range" min="1" max="5" value="3" onchange="updateArmor()">
+                                    <small class="text-muted">Nivel: <span id="armorLevelText">3</span>/5</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Simulador de Misiones -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm hover-lift">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-map display-4 text-success"></i>
+                        </div>
+                        <h5 class="card-title">Simulador de Misiones</h5>
+                        <p class="card-text">Embárcate en aventuras épicas</p>
+                        <button class="btn btn-outline-success" onclick="startMission()">
+                            <i class="bi bi-compass me-2"></i>Iniciar Misión
+                        </button>
+                        <div id="missionContainer" class="mt-3" style="display: none;">
+                            <div class="mission-details p-3 bg-light rounded mb-3">
+                                <h6 id="missionTitle" class="text-center mb-3">Misión Seleccionada</h6>
+                                <div class="mission-info mb-3">
+                                    <div class="row text-center">
+                                        <div class="col-4">
+                                            <small class="text-muted">Dificultad</small>
+                                            <div id="missionDifficulty" class="fw-bold">Media</div>
+                                        </div>
+                                        <div class="col-4">
+                                            <small class="text-muted">Recompensa</small>
+                                            <div id="missionReward" class="fw-bold">100 oro</div>
+                                        </div>
+                                        <div class="col-4">
+                                            <small class="text-muted">Duración</small>
+                                            <div id="missionDuration" class="fw-bold">3 días</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mission-progress mb-3">
+                                    <div class="progress">
+                                        <div id="missionProgress" class="progress-bar bg-success" style="width: 0%"></div>
+                                    </div>
+                                    <small class="text-muted">Progreso: <span id="missionProgressText">0%</span></small>
+                                </div>
+                                <div class="text-center">
+                                    <button class="btn btn-success btn-sm" onclick="advanceMission()" id="missionBtn">
+                                        <i class="bi bi-play me-1"></i>Avanzar
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mission-results" style="display: none;">
+                                <div class="alert alert-success text-center">
+                                    <h6 id="missionResult"></h6>
+                                    <p class="mb-0">Recompensa obtenida: <span id="finalReward"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -831,6 +1108,237 @@
         width: 120px;
         height: 120px;
         font-size: 2.5rem;
+    }
+}
+
+/* Estilos para las actividades divertidas */
+.text-purple {
+    color: #6f42c1 !important;
+}
+
+.fun-activities-section .card {
+    transition: all 0.3s ease;
+    border-radius: 15px;
+}
+
+.fun-activities-section .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+}
+
+.memory-card {
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.memory-card:hover {
+    transform: scale(1.05);
+}
+
+.memory-card.flipped {
+    background: #28a745 !important;
+    transform: rotateY(180deg);
+}
+
+.battle-arena {
+    border-radius: 15px;
+    background: linear-gradient(135deg, #2c3e50, #34495e) !important;
+}
+
+.shield-preview {
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.shield-preview:hover {
+    transform: scale(1.1);
+}
+
+.quiz-question {
+    border-radius: 10px;
+    border-left: 4px solid #dc143c;
+}
+
+.alert {
+    border-radius: 10px;
+    border: none;
+}
+
+.progress {
+    height: 8px;
+    border-radius: 10px;
+    background-color: rgba(255,255,255,0.2);
+}
+
+.progress-bar {
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+/* Animaciones personalizadas */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+.animate-bounce {
+    animation: bounce 2s infinite;
+}
+
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(220, 20, 60, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(220, 20, 60, 0.8);
+    }
+}
+
+.animate-glow {
+    animation: glow 2s ease-in-out infinite;
+}
+
+/* Efectos de hover mejorados */
+.hover-lift {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+/* Estilos para formularios */
+.form-control-color {
+    width: 50px;
+    height: 38px;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.form-select-sm {
+    font-size: 0.875rem;
+    padding: 0.375rem 0.75rem;
+}
+
+/* Estilos para nuevas actividades */
+.castle-preview {
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.castle-preview:hover {
+    transform: scale(1.05);
+}
+
+.tournament-bracket {
+    border-radius: 15px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef) !important;
+}
+
+.match {
+    padding: 0.5rem;
+    border-radius: 8px;
+    background: white;
+    border: 1px solid #dee2e6;
+}
+
+.armor-preview {
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.armor-preview:hover {
+    transform: scale(1.05);
+}
+
+.mission-details {
+    border-radius: 15px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef) !important;
+}
+
+.mission-info .col-4 {
+    border-right: 1px solid #dee2e6;
+}
+
+.mission-info .col-4:last-child {
+    border-right: none;
+}
+
+.form-range {
+    height: 6px;
+    background: #dee2e6;
+    border-radius: 3px;
+}
+
+.form-range::-webkit-slider-thumb {
+    background: #dc143c;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.form-range::-moz-range-thumb {
+    background: #dc143c;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Responsive para actividades */
+@media (max-width: 768px) {
+    .memory-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+    
+    .memory-card {
+        width: 40px !important;
+        height: 40px !important;
+        font-size: 1.2rem !important;
+    }
+    
+    .shield-preview {
+        width: 80px !important;
+        height: 96px !important;
+    }
+    
+    .castle-preview {
+        width: 150px !important;
+        height: 112px !important;
+    }
+    
+    .armor-preview {
+        width: 100px !important;
+        height: 133px !important;
+    }
+    
+    .battle-arena .row {
+        flex-direction: column;
+    }
+    
+    .battle-arena .col-6 {
+        width: 100% !important;
+        margin-bottom: 1rem;
+    }
+    
+    .mission-info .col-4 {
+        border-right: none;
+        border-bottom: 1px solid #dee2e6;
+        margin-bottom: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+    
+    .mission-info .col-4:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
     }
 }
 </style>
@@ -1608,4 +2116,339 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicializar juego clicker
     startClickerGame();
 });
+
+// ==================== FUNCIONES PARA ACTIVIDADES DIVERTIDAS ====================
+
+// Generador de Nombres Templarios
+function generateTemplarName() {
+    const prefixes = ['Sir', 'Lord', 'Sir', 'Don', 'Maestro', 'Gran'];
+    const names = ['Arturo', 'Lancelot', 'Galahad', 'Percival', 'Gawain', 'Tristán', 'Bors', 'Bedivere', 'Mordred', 'Agravain'];
+    const surnames = ['de la Cruz', 'del Escudo', 'de la Espada', 'de la Torre', 'del León', 'del Águila', 'de la Rosa', 'del Dragón', 'de la Corona', 'del Sol'];
+    
+    const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+    const name = names[Math.floor(Math.random() * names.length)];
+    const surname = surnames[Math.floor(Math.random() * surnames.length)];
+    
+    const fullName = `${prefix} ${name} ${surname}`;
+    
+    const nameDiv = document.getElementById('templarName');
+    nameDiv.querySelector('h6').textContent = fullName;
+    nameDiv.style.display = 'block';
+    
+    // Efecto de aparición
+    nameDiv.style.opacity = '0';
+    nameDiv.style.transform = 'translateY(20px)';
+    setTimeout(() => {
+        nameDiv.style.transition = 'all 0.5s ease';
+        nameDiv.style.opacity = '1';
+        nameDiv.style.transform = 'translateY(0)';
+    }, 100);
+}
+
+// Constructor de Castillos
+function startCastleBuilder() {
+    document.getElementById('castleContainer').style.display = 'block';
+    updateCastle();
+}
+
+function updateCastle() {
+    const castleColor = document.getElementById('castleColor').value;
+    const flagType = document.getElementById('flagType').value;
+    const castleSize = document.getElementById('castleSize').value;
+    
+    const castle = document.getElementById('castlePreview');
+    const towers = castle.querySelectorAll('.castle-tower');
+    const flag = castle.querySelector('.castle-flag');
+    
+    castle.style.width = castleSize + 'px';
+    castle.style.background = `linear-gradient(45deg, ${castleColor}, ${darkenColor(castleColor, 20)})`;
+    castle.style.borderColor = darkenColor(castleColor, 30);
+    
+    towers.forEach(tower => {
+        tower.style.background = castleColor;
+    });
+    
+    flag.textContent = flagType;
+}
+
+// Simulador de Batalla
+let templarHealth = 100;
+let enemyHealth = 100;
+let battleActive = false;
+
+function startBattle() {
+    templarHealth = 100;
+    enemyHealth = 100;
+    battleActive = true;
+    document.getElementById('battleContainer').style.display = 'block';
+    updateBattleDisplay();
+}
+
+function attack() {
+    if (!battleActive) return;
+    
+    // Daño del templario al enemigo
+    const templarDamage = Math.floor(Math.random() * 20) + 10;
+    enemyHealth = Math.max(0, enemyHealth - templarDamage);
+    
+    // Daño del enemigo al templario
+    const enemyDamage = Math.floor(Math.random() * 15) + 5;
+    templarHealth = Math.max(0, templarHealth - enemyDamage);
+    
+    updateBattleDisplay();
+    
+    if (templarHealth <= 0) {
+        showBattleResult('¡Has sido derrotado! 💀', 'danger');
+    } else if (enemyHealth <= 0) {
+        showBattleResult('¡Victoria! Has derrotado al enemigo! ⚔️', 'success');
+    }
+}
+
+function updateBattleDisplay() {
+    document.getElementById('templarHealth').style.width = templarHealth + '%';
+    document.getElementById('templarHealthText').textContent = templarHealth;
+    document.getElementById('enemyHealth').style.width = enemyHealth + '%';
+    document.getElementById('enemyHealthText').textContent = enemyHealth;
+}
+
+function showBattleResult(message, type) {
+    battleActive = false;
+    const result = document.createElement('div');
+    result.className = `alert alert-${type} mt-3`;
+    result.textContent = message;
+    document.getElementById('battleContainer').appendChild(result);
+}
+
+// Simulador de Torneo
+let tournamentData = {
+    currentRound: 1,
+    playerScore: 0,
+    opponentScore: 0,
+    finalPlayerScore: 0,
+    finalOpponentScore: 0,
+    isFinal: false
+};
+
+function startTournament() {
+    tournamentData = {
+        currentRound: 1,
+        playerScore: 0,
+        opponentScore: 0,
+        finalPlayerScore: 0,
+        finalOpponentScore: 0,
+        isFinal: false
+    };
+    
+    document.getElementById('tournamentContainer').style.display = 'block';
+    document.getElementById('tournament-results').style.display = 'none';
+    updateTournamentDisplay();
+}
+
+function playMatch() {
+    if (!tournamentData.isFinal) {
+        // Ronda 1
+        const playerRoll = Math.floor(Math.random() * 20) + 1;
+        const opponentRoll = Math.floor(Math.random() * 20) + 1;
+        
+        tournamentData.playerScore += playerRoll;
+        tournamentData.opponentScore += opponentRoll;
+        
+        if (tournamentData.playerScore >= 50 || tournamentData.opponentScore >= 50) {
+            tournamentData.isFinal = true;
+            document.getElementById('playBtn').textContent = 'Jugar Final';
+            document.getElementById('finalPlayer').textContent = tournamentData.playerScore > tournamentData.opponentScore ? 'Tú' : 'Sir Lancelot';
+        }
+    } else {
+        // Final
+        const playerRoll = Math.floor(Math.random() * 20) + 1;
+        const opponentRoll = Math.floor(Math.random() * 20) + 1;
+        
+        tournamentData.finalPlayerScore += playerRoll;
+        tournamentData.finalOpponentScore += opponentRoll;
+        
+        if (tournamentData.finalPlayerScore >= 30 || tournamentData.finalOpponentScore >= 30) {
+            showTournamentResults();
+            return;
+        }
+    }
+    
+    updateTournamentDisplay();
+}
+
+function updateTournamentDisplay() {
+    document.getElementById('score1').textContent = tournamentData.playerScore;
+    document.getElementById('score2').textContent = tournamentData.opponentScore;
+    document.getElementById('finalScore1').textContent = tournamentData.finalPlayerScore;
+    document.getElementById('finalScore2').textContent = tournamentData.finalOpponentScore;
+}
+
+function showTournamentResults() {
+    const isWinner = tournamentData.finalPlayerScore > tournamentData.finalOpponentScore;
+    const result = isWinner ? '¡Felicidades! Has ganado el torneo! 🏆' : 'Has sido derrotado en la final. ¡Inténtalo de nuevo! ⚔️';
+    
+    document.getElementById('tournamentResult').textContent = result;
+    document.getElementById('tournament-results').style.display = 'block';
+    document.getElementById('playBtn').style.display = 'none';
+}
+
+// Creador de Escudos
+function startShieldCreator() {
+    document.getElementById('shieldContainer').style.display = 'block';
+    updateShield();
+}
+
+function updateShield() {
+    const primaryColor = document.getElementById('primaryColor').value;
+    const symbol = document.getElementById('shieldSymbol').value;
+    
+    const shield = document.getElementById('shieldPreview');
+    const symbolDiv = shield.querySelector('.shield-symbol');
+    
+    shield.style.background = `linear-gradient(45deg, ${primaryColor}, ${darkenColor(primaryColor, 20)})`;
+    symbolDiv.textContent = symbol;
+}
+
+function darkenColor(color, percent) {
+    const num = parseInt(color.replace("#", ""), 16);
+    const amt = Math.round(2.55 * percent);
+    const R = (num >> 16) - amt;
+    const G = (num >> 8 & 0x00FF) - amt;
+    const B = (num & 0x0000FF) - amt;
+    return "#" + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+        (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+        (B < 255 ? B < 1 ? 0 : B : 255)).toString(16).slice(1);
+}
+
+// Creador de Armaduras
+function startArmorCreator() {
+    document.getElementById('armorContainer').style.display = 'block';
+    updateArmor();
+}
+
+function updateArmor() {
+    const material = document.getElementById('armorMaterial').value;
+    const symbol = document.getElementById('armorSymbol').value;
+    const level = document.getElementById('armorLevel').value;
+    
+    const armor = document.getElementById('armorPreview');
+    const helmet = armor.querySelector('.armor-helmet');
+    const body = armor.querySelector('.armor-body');
+    const symbolDiv = armor.querySelector('.armor-symbol');
+    
+    // Actualizar colores según el material
+    helmet.style.background = material;
+    body.style.background = material;
+    armor.style.background = `linear-gradient(45deg, ${material}, ${darkenColor(material, 20)})`;
+    armor.style.borderColor = darkenColor(material, 30);
+    
+    // Actualizar símbolo
+    symbolDiv.textContent = symbol;
+    
+    // Actualizar nivel de protección (tamaño)
+    const size = 120 + (level * 10);
+    armor.style.width = size + 'px';
+    armor.style.height = (size * 1.33) + 'px';
+    
+    // Actualizar texto del nivel
+    document.getElementById('armorLevelText').textContent = level;
+}
+
+// Simulador de Misiones
+let missionData = {
+    currentMission: null,
+    progress: 0,
+    isActive: false
+};
+
+const missions = [
+    {
+        title: "Rescate de la Princesa",
+        difficulty: "Fácil",
+        reward: "50 oro",
+        duration: "2 días",
+        maxProgress: 100
+    },
+    {
+        title: "Defensa del Castillo",
+        difficulty: "Media",
+        reward: "100 oro",
+        duration: "3 días",
+        maxProgress: 100
+    },
+    {
+        title: "Búsqueda del Santo Grial",
+        difficulty: "Difícil",
+        reward: "200 oro",
+        duration: "5 días",
+        maxProgress: 100
+    },
+    {
+        title: "Batalla contra el Dragón",
+        difficulty: "Épica",
+        reward: "500 oro",
+        duration: "7 días",
+        maxProgress: 100
+    }
+];
+
+function startMission() {
+    // Seleccionar misión aleatoria
+    missionData.currentMission = missions[Math.floor(Math.random() * missions.length)];
+    missionData.progress = 0;
+    missionData.isActive = true;
+    
+    document.getElementById('missionContainer').style.display = 'block';
+    document.getElementById('mission-results').style.display = 'none';
+    
+    // Actualizar información de la misión
+    document.getElementById('missionTitle').textContent = missionData.currentMission.title;
+    document.getElementById('missionDifficulty').textContent = missionData.currentMission.difficulty;
+    document.getElementById('missionReward').textContent = missionData.currentMission.reward;
+    document.getElementById('missionDuration').textContent = missionData.currentMission.duration;
+    
+    updateMissionDisplay();
+}
+
+function advanceMission() {
+    if (!missionData.isActive) return;
+    
+    // Avanzar progreso aleatoriamente
+    const progressGain = Math.floor(Math.random() * 25) + 10;
+    missionData.progress = Math.min(missionData.progress + progressGain, missionData.currentMission.maxProgress);
+    
+    updateMissionDisplay();
+    
+    // Verificar si la misión está completa
+    if (missionData.progress >= missionData.currentMission.maxProgress) {
+        completeMission();
+    }
+}
+
+function updateMissionDisplay() {
+    const progressBar = document.getElementById('missionProgress');
+    const progressText = document.getElementById('missionProgressText');
+    
+    progressBar.style.width = missionData.progress + '%';
+    progressText.textContent = missionData.progress + '%';
+    
+    // Cambiar color según el progreso
+    if (missionData.progress < 30) {
+        progressBar.className = 'progress-bar bg-danger';
+    } else if (missionData.progress < 70) {
+        progressBar.className = 'progress-bar bg-warning';
+    } else {
+        progressBar.className = 'progress-bar bg-success';
+    }
+}
+
+function completeMission() {
+    missionData.isActive = false;
+    
+    const result = `¡Misión completada! Has terminado "${missionData.currentMission.title}" exitosamente.`;
+    document.getElementById('missionResult').textContent = result;
+    document.getElementById('finalReward').textContent = missionData.currentMission.reward;
+    
+    document.getElementById('mission-results').style.display = 'block';
+    document.getElementById('missionBtn').style.display = 'none';
+}
 </script>
